@@ -1,1 +1,207 @@
-/* You can add global styles to this file, and also import other style files */
+/*
+ * re: https://twitter.com/CodePen/status/355107665099231232
+ *
+ * this version uses <i> for the icons; this is the first time i've constructed icons out of pure css using pseudo elements (MUCH more on that here: http://css-tricks.com/pseudo-element-roundup/ )
+ *
+ * next version(s) might substitute the <i>s with @fontface & unicode range; i'd like to also try to get more semantic with this (though i think this is pretty semantic to start with... no? maybe not); i'd also like to get this modernizr'd and compatible way back to ie version who-knows-what
+ *
+ * feel free to hit me up w/criticisms @ jeremy.buller@gmail.com
+ */
+
+body {
+  background: white;
+  color: #95979d;
+}
+
+.home-container {
+  font: normal normal normal 12px/1.333 'Helvetica Neue', arial, sans-serif;
+}
+
+/* HOME COMPONENT */
+
+.logo-container {
+  margin-top: 25px;
+  margin-bottom: 50px;
+}
+
+.logo-separator {
+  margin-botttom: 50px !important;
+}
+
+.button-project {
+  cursor: pointer;
+  margin: auto;
+  width: 80%;
+  font-size: 1.25rem;
+  display: block;
+  position: relative;
+  padding: .75em 5em .75em 1em;
+  border-radius: .25em;
+  margin-bottom: 1.2em;
+  background: #fff;
+  box-shadow:
+    /* regular bottom */
+    0 .0625em .125em rgba(0, 0, 0, .125),
+    /* inset bottom */
+    inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
+    /* category color (left) */
+    inset 1em 0 0 -.7em #ed8b00,
+    /* arrow background (right) */
+    inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
+  box-shadow:
+    0 .0625em .125em rgba(0, 0, 0, .125),
+    inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
+    inset 1em 0 0 -.7em #ed8b00,
+    inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
+}
+
+.button-project:hover {
+  box-shadow:
+    inset 1em 0 0 -.7em rgba(0, 0, 0, .5),
+    inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
+}
+
+.home-container .list-group {
+  width: 80%;
+  margin: auto;
+  margin-bottom: 15px;
+  color: #464a4c;
+  cursor: pointer;
+}
+
+.home-container .list-group h5 {
+  font-weight: bold;
+}
+
+.home-container .list-group .project-name {
+  display: inline-block !important;
+  width: 80%;
+}
+
+/* PROJECT COMPONENT */
+
+.footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
+
+.main-container {
+  margin-top: 20px;
+}
+.list-project {
+  height: 450px;
+  border: 1px solid rgba(0,0,0,.125);
+}
+
+.release-item {
+  font-size: 1.5rem;
+}
+
+.button-group {
+  margin-top: 10px;
+}
+
+.btn-delete {
+  float: right;
+}
+
+.project-column {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.project-container {
+  margin-top: 30px;
+}
+
+.project-column h3, .project-column hr {
+  color: black;
+}
+
+.container-release {
+  margin-bottom: 20px;
+  width: 100%;
+  height: 100px;
+  border-radius: 15px;
+  border: 2px solid transparent;
+  background: #e1e1e1;
+  list-style: none;
+}
+
+.release-name {
+  display: block;
+  font-size: 25px;
+  margin-left: 20px;
+  margin-top: 5px;
+  color: black;
+}
+
+.release-description {
+  margin-left: 20px;
+}
+
+.add-btn {
+  background: #ed8b00;
+  color: rgb(255,255,255);
+  border-radius: 50%;
+  font-size: 24px;
+  height: 65px;
+  margin: auto;
+  min-width: 65px;
+  width: 65px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 1px 1.5px 0 rgba(0, 0, 0, 0.12), 0 1px 1px 0 rgba(0, 0, 0, 0.24);
+  line-height: normal;
+  cursor: pointer;
+}
+
+.container-feature {
+  margin-bottom: 20px;
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background: #e1e1e1;
+  list-style: none;
+}
+
+.feature-name {
+  display: block;
+  font-size: 20px;
+  margin-left: 20px;
+  margin-top: 5px;
+  color: black;
+  line-height: 35px;
+}
+
+.project-column ul {
+  padding: 0px;
+}
+
+.features-container {
+  max-height: 450px;
+  overflow-y: scroll;
+}
+
+.releases-container {
+  max-height: 450px;
+  overflow-y: scroll;
+}
+
+/* MODALS */
+
+.custom-modal-container {
+    padding: 15px;
+}
+
+.custom-modal-header {
+    background-color: #219161;
+    color: #fff;
+    -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
+    margin-top: -15px;
+    margin-bottom: 40px;
+}

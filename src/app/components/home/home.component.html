@@ -1,0 +1,63 @@
+<div class="container home-container">
+
+  <div class="logo-container">
+    <img src="../../../assets/Supersede.png">
+    <hr class="logo-separator">
+  </div>
+
+  <div *ngFor="let project of projects" class="list-group">
+    <a (click)="goToProject(project.id)" class="list-group-item list-group-item-action flex-column align-items-start">
+      <div class="d-flex project-name justify-content-between">
+        <h5 class="mb-1">{{ project.name }}</h5>
+      </div>
+      <div>
+        <i class="fa fa-trash" aria-hidden="true"></i>
+      </div>
+      <p class="mb-1">{{ project.description }}</p>
+    </a>
+  </div>
+
+  <div class="text-center">
+    <button (click)="addProject()" type="button" class="btn add-btn">+</button>
+  </div>
+
+</div>
+
+<!-- Modal to add projects -->
+<div class="modal fade" id="add-project-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add new Project</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formProject">
+          <div class="form-group">
+            <label for="name" class="form-control-label">Name:</label>
+            <input type="text" class="form-control" id="nameProject" formControlName="name">
+          </div>
+          <div class="form-group">
+            <label for="description" class="form-control-label">Description:</label>
+            <textarea class="form-control" id="descriptionProject" formControlName="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="effort_unit" class="form-control-label">Effort unit:</label>
+            <input type="text" class="form-control" id="effort_unit" formControlName="effort_unit">
+          </div>
+          <div class="form-group">
+            <label for="hours_per_effort_unit" class="form-control-label">Hours per effort unit:</label>
+            <input type="number" class="form-control" id="hours_per_effort_unit" formControlName="hours_per_effort_unit">
+          </div>
+          <div class="form-group">
+            <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource:</label>
+            <input type="number" class="form-control" id="hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button (click)="addNewProject()" type="button" class="btn btn-primary">Add Project</button>
+      </div>
+    </div>
+  </div>
+</div>
