@@ -28,6 +28,31 @@ export class replanAPIService {
       })
   }
 
+  deleteProject(id: number) {
+    let url = this.projectsURL + id;
+    return this.http.delete( url )
+      .map(res => res.json())
+  }
+
+  editProject(project: string, idProject: number) {
+    let url = this.projectsURL + idProject;
+    let body = project;
+    let headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.put(url, body, { headers })
+      .map(res=>{
+        console.log(res.json());
+        return res.json();
+      })
+  }
+
+  getProject(id: number) {
+    let url = this.projectsURL + id;
+    return this.http.get( url )
+      .map(res=>res.json() );
+  }
+
   getFeaturesProject(id:number) {
     let url = this.projectsURL + id + "/features";
     return this.http.get( url )
@@ -62,6 +87,18 @@ export class replanAPIService {
       .map(res=>{
         return res.json();
       })
+  }
+
+  deleteFeature(idProject: number, idFeature: number) {
+    let url = this.projectsURL + idProject + "/features/" + idFeature;
+    return this.http.delete( url )
+      .map(res => res.json())
+  }
+
+  deleteRelease(idProject: number, idRelease: number) {
+    let url = this.projectsURL + idProject + "/releases/" + idRelease;
+    return this.http.delete( url )
+      .map(res => res.json())
   }
 
 }

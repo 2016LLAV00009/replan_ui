@@ -6,12 +6,14 @@
       <h3>Features</h3>
       <hr>
       <ul class="features-container" dnd-list="list">
-        <li *ngFor="let feature of features" class="container-feature"
+        <li *ngFor="let feature of features" class="list-group-item list-group-item-action li-features"
             dnd-draggable
             [dragEnabled]="true"
             [dragData]="(feature.id)">
             <span class="feature-name"> {{ feature.name }} </span>
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <a class="delete-icon" (click)="deleteFeature(feature.id)">
+              <i class="fa fa-trash-o" aria-hidden="true" ></i>
+            </a>
         </li>
       </ul>
       <div class="text-center">
@@ -21,12 +23,17 @@
     <div class="col-md-6 project-column">
       <h3>Releases</h3>
       <hr>
-      <ul class="releases-container" dnd-list="list">
-        <li *ngFor="let release of releases" class="container-release"
+      <ul class="list-group releases-container" dnd-list="list">
+        <li *ngFor="let release of releases" class="list-group-item list-group-item-action li-releases"
             dnd-droppable
             (onDropSuccess)="transferDataSuccess($event)">
-            <span class="release-name"> {{ release.name }} </span>
-            <span class="release-description"> {{ release.description }} </span>
+            <div (click)="goToProject(project.id)" class="d-flex project-name justify-content-between">
+              <h5 class="mb-1"> {{ release.name }} </h5>
+              <p class="mb-1"> {{ release.description }} </p>
+            </div>
+            <a class="delete-icon" (click)="deleteRelease(release.id)">
+              <i class="fa fa-trash-o fa-2x" aria-hidden="true" ></i>
+            </a>
         </li>
       </ul>
       <div class="text-center">

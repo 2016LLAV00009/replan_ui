@@ -6,15 +6,18 @@
   </div>
 
   <div *ngFor="let project of projects" class="list-group">
-    <a (click)="goToProject(project.id)" class="list-group-item list-group-item-action flex-column align-items-start">
-      <div class="d-flex project-name justify-content-between">
+    <li class="list-group-item list-group-item-action li-projects">
+      <div (click)="goToProject(project.id)" class="d-flex project-name justify-content-between">
         <h5 class="mb-1">{{ project.name }}</h5>
+        <p class="mb-1">{{ project.description }}</p>
       </div>
-      <div>
-        <i class="fa fa-trash" aria-hidden="true"></i>
-      </div>
-      <p class="mb-1">{{ project.description }}</p>
-    </a>
+      <a class="delete-icon" (click)="editProject(project.id)">
+        <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+      </a>
+      <a class="delete-icon" (click)="deleteProject(project.id)">
+        <i class="fa fa-trash-o fa-2x" aria-hidden="true" ></i>
+      </a>
+    </li>
   </div>
 
   <div class="text-center">
@@ -57,6 +60,37 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button (click)="addNewProject()" type="button" class="btn btn-primary">Add Project</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal to edit projects -->
+<div class="modal fade" id="edit-project-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Project</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formEditProject">
+          <div class="form-group">
+            <label for="effort_unit" class="form-control-label">Effort unit:</label>
+            <input type="text" class="form-control" id="edit_effort_unit" formControlName="effort_unit">
+          </div>
+          <div class="form-group">
+            <label for="hours_per_effort_unit" class="form-control-label">Hours per effort unit:</label>
+            <input type="number" class="form-control" id="edit_hours_per_effort_unit" formControlName="hours_per_effort_unit">
+          </div>
+          <div class="form-group">
+            <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource:</label>
+            <input type="number" class="form-control" id="edit_hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button (click)="editProjectAPI()" type="button" class="btn btn-primary">Edit Project</button>
       </div>
     </div>
   </div>

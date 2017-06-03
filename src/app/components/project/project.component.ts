@@ -82,6 +82,16 @@ export class ProjectComponent implements OnInit {
         });
   }
 
+  deleteFeature(idFeature: number) {
+    this._replanAPIService.deleteFeature(this.idProject, idFeature)
+      .subscribe( data => {
+        this._replanAPIService.getFeaturesProject(this.idProject)
+          .subscribe( data =>{
+            this.features = data;
+          });
+      });
+  }
+
   addNewRelease() {
     $('#add-release-modal').modal('hide')
     this._replanAPIService.addReleaseToProject(JSON.stringify(this.formRelease.value), this.idProject)
@@ -91,7 +101,16 @@ export class ProjectComponent implements OnInit {
               this.releases = data;
             });
         });
+  }
 
+  deleteRelease(idRelease: number) {
+    this._replanAPIService.deleteRelease(this.idProject, idRelease)
+      .subscribe( data => {
+        this._replanAPIService.getReleasesProject(this.idProject)
+          .subscribe( data =>{
+            this.releases = data;
+          });
+      });
   }
 
 }

@@ -17,11 +17,37 @@ body {
   font: normal normal normal 12px/1.333 'Helvetica Neue', arial, sans-serif;
 }
 
+.fa:hover {
+  color: #ed8b00 !important;
+}
+
 /* HOME COMPONENT */
 
 .logo-container {
   margin-top: 25px;
   margin-bottom: 50px;
+}
+
+.project-name {
+  padding: 15px 20px 20px 20px;
+}
+
+.li-projects {
+  padding: 0 !important;
+}
+
+.li-features {
+  margin-bottom: 10px;
+  padding: 0 !important;
+}
+
+.li-releases {
+  margin-bottom: 20px;
+  padding: 0 !important;
+}
+
+.delete-icon {
+  padding: 5px;
 }
 
 .logo-separator {
@@ -75,10 +101,15 @@ body {
 
 .home-container .list-group .project-name {
   display: inline-block !important;
-  width: 80%;
+  width: 91%;
 }
 
 /* PROJECT COMPONENT */
+
+.project-container .list-group .project-name {
+  display: inline-block !important;
+  width: 88%;
+}
 
 .footer {
   position: absolute;
@@ -171,9 +202,11 @@ body {
   display: block;
   font-size: 20px;
   margin-left: 20px;
-  margin-top: 5px;
   color: black;
   line-height: 35px;
+  width: 88%;
+  padding: 5px 5px 5px 5px;
+  margin-top: 0;
 }
 
 .project-column ul {
@@ -181,13 +214,14 @@ body {
 }
 
 .features-container {
-  max-height: 450px;
+  max-height: 380px;
   overflow-y: scroll;
 }
 
 .releases-container {
-  max-height: 450px;
+  max-height: 380px;
   overflow-y: scroll;
+  margin-bottom: 1rem;
 }
 
 /* MODALS */
