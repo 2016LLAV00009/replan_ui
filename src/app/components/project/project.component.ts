@@ -12,7 +12,6 @@ declare var $: any;
 })
 export class ProjectComponent implements OnInit {
 
-  featureCode:number = 1000;
   releases:string[] = [];
   features:string[] = [];
   idProject: number;
