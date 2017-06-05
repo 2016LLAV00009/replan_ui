@@ -20,7 +20,6 @@ export class ProjectComponent implements OnInit {
   receivedData: Array<any> = [];
   restrictedDrop2: any = null;
 
-
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute) {
 
@@ -62,16 +61,16 @@ export class ProjectComponent implements OnInit {
       this.receivedData.push($event);
   }
 
-  addFeature() {
+  addFeatureModal() {
     $('#add-feature-modal').modal();
   }
 
-  addRelease() {
+  addReleaseModal() {
     $('#add-release-modal').modal();
   }
 
   addNewFeature() {
-    $('#add-feature-modal').modal('hide')
+    $('#add-feature-modal').modal('hide');
     this._replanAPIService.addFeatureToProject(JSON.stringify(this.formFeature.value), this.idProject)
         .subscribe( data => {
           this._replanAPIService.getFeaturesProject(this.idProject)

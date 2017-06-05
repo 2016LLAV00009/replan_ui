@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
     this.router.navigate( ['/project', id] );
   }
 
-  addProject() {
+  addProjectModal() {
     $('#add-project-modal').modal();
   }
 
@@ -63,7 +63,7 @@ export class HomeComponent implements OnInit {
   }
 
   addNewProject() {
-    $('#add-project-modal').modal('hide')
+    $('#add-project-modal').modal('hide');
     this._replanAPIService.addProject(JSON.stringify(this.formProject.value))
         .subscribe( data => {
           this._replanAPIService.getProjectsAPI()
