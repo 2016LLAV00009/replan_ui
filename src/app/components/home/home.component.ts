@@ -16,8 +16,8 @@ export class HomeComponent implements OnInit {
   formEditProject: FormGroup;
   projects: any[] = [];
   idProjectToEdit: number;
-  isEditButtonClicked = false;
-  isDeleteButtonClicked = false;
+  isEditButtonClicked: boolean;
+  isDeleteButtonClicked: boolean;
 
   constructor( private _replanAPIService: replanAPIService,
                private router: Router) {
@@ -43,11 +43,11 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
-
+    this.isDeleteButtonClicked = false;
+    this.isEditButtonClicked = false;
   }
 
   goToProject(id: number) {
-    debugger;
     if (!this.isEditButtonClicked && !this.isDeleteButtonClicked) {
       this.router.navigate( ['/project', id] );
     }
@@ -60,7 +60,6 @@ export class HomeComponent implements OnInit {
   }
 
   editProject(idProject: number) {
-    debugger;
     this.isEditButtonClicked = true;
     this._replanAPIService.getProject(idProject)
       .subscribe( data => {
@@ -84,7 +83,6 @@ export class HomeComponent implements OnInit {
   }
 
   deleteProject(id: number) {
-    debugger;
     this.isDeleteButtonClicked = true;
     this._replanAPIService.deleteProject(id)
       .subscribe( data => {
