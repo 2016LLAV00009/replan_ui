@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { replanAPIService } from '../../services/replanAPI.service';
 import { Router } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { Project } from '../../interfaces/project.interface'
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Project } from '../../interfaces/project.interface';
 
 declare var $: any;
 
@@ -12,15 +12,15 @@ declare var $: any;
 })
 export class HomeComponent implements OnInit {
 
-  formProject:FormGroup;
-  formEditProject:FormGroup;
-  projects:any[] = [];
+  formProject: FormGroup;
+  formEditProject: FormGroup;
+  projects: any[] = [];
   idProjectToEdit: number;
 
   constructor( private _replanAPIService: replanAPIService,
-               private router:Router) {
+               private router: Router) {
           this._replanAPIService.getProjectsAPI()
-            .subscribe( data =>{
+            .subscribe( data => {
               this.projects = data;
             });
 
@@ -30,20 +30,20 @@ export class HomeComponent implements OnInit {
               'effort_unit': new FormControl('', Validators.required),
               'hours_per_effort_unit': new FormControl('', Validators.required),
               'hours_per_week_and_full_time_resource': new FormControl('', Validators.required)
-            })
+            });
 
             this.formEditProject = new FormGroup({
                 'effort_unit': new FormControl(''),
                 'hours_per_effort_unit': new FormControl(''),
                 'hours_per_week_and_full_time_resource': new FormControl('')
-              })
+              });
    }
 
 
   ngOnInit() {
   }
 
-  goToProject(id:number) {
+  goToProject(id: number) {
     this.router.navigate( ['/project', id] );
   }
 
@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
 
   editProject(idProject: number) {
     this._replanAPIService.getProject(idProject)
-      .subscribe( data =>{
+      .subscribe( data => {
         this.idProjectToEdit = data.id;
         $('#edit-project-modal').modal();
         $('#edit_effort_unit').val(data.effort_unit);
@@ -67,8 +67,8 @@ export class HomeComponent implements OnInit {
     this._replanAPIService.addProject(JSON.stringify(this.formProject.value))
         .subscribe( data => {
           this._replanAPIService.getProjectsAPI()
-            .subscribe( data =>{
-              this.projects = data;
+            .subscribe( data2 => {
+              this.projects = data2;
             });
         });
   }
@@ -77,8 +77,8 @@ export class HomeComponent implements OnInit {
     this._replanAPIService.deleteProject(id)
       .subscribe( data => {
         this._replanAPIService.getProjectsAPI()
-          .subscribe( data =>{
-            this.projects = data;
+          .subscribe( data2 => {
+            this.projects = data2;
           });
       });
   }
@@ -88,8 +88,8 @@ export class HomeComponent implements OnInit {
     this._replanAPIService.editProject(JSON.stringify(this.formEditProject.value), this.idProjectToEdit)
         .subscribe( data => {
           this._replanAPIService.getProjectsAPI()
-            .subscribe( data => {
-              this.projects = data;
+            .subscribe( data2 => {
+              this.projects = data2;
             });
         });
   }
