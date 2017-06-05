@@ -21,6 +21,18 @@ body {
   color: #ed8b00 !important;
 }
 
+/* LISTS STYLES */
+
+.list-item-content {
+  display: inline-block !important;
+  width: 91%;
+}
+
+.icons-content {
+  display: inline-block;
+  width: 8%;
+}
+
 /* HOME COMPONENT */
 
 .logo-container {
@@ -51,7 +63,7 @@ body {
 }
 
 .logo-separator {
-  margin-botttom: 50px !important;
+  margin-bottom: 50px !important;
 }
 
 .button-project {
@@ -101,7 +113,7 @@ body {
 
 .home-container .list-group .project-name {
   display: inline-block !important;
-  width: 91%;
+  width: 100%;
 }
 
 /* PROJECT COMPONENT */
