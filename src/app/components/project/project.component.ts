@@ -80,6 +80,10 @@ export class ProjectComponent implements OnInit {
         });
   }
 
+  editFeature(idFeature: number) {
+
+  }
+
   deleteFeature(idFeature: number) {
     this._replanAPIService.deleteFeature(this.idProject, idFeature)
       .subscribe( data => {
@@ -99,6 +103,10 @@ export class ProjectComponent implements OnInit {
               this.releases = data2;
             });
         });
+  }
+
+  editRelease(idRelease: number) {
+
   }
 
   deleteRelease(idRelease: number) {
