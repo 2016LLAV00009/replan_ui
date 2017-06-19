@@ -34,7 +34,7 @@
         <li *ngFor="let release of releases" class="list-group-item list-group-item-action li-releases"
             dnd-droppable
             (onDropSuccess)="transferDataSuccess($event)">
-            <div (click)="goToProject(project.id)" class="d-flex project-name justify-content-between">
+            <div class="d-flex project-name justify-content-between">
               <div class="list-item-content-releases">
                 <h5 class="mb-1"> {{ release.name }} </h5>
                 <p class="mb-1"> {{ release.description }} </p>
@@ -100,6 +100,45 @@
   </div>
 </div>
 
+<!-- Modal to edit features -->
+<div class="modal fade" id="edit-feature-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Feature</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formEditFeature">
+          <div class="form-group">
+            <label for="name" class="form-control-label">Name:</label>
+            <input type="text" class="form-control" id="nameFeatureEdit" formControlName="name">
+          </div>
+          <div class="form-group">
+            <label for="description" class="form-control-label">Description:</label>
+            <input type="text" class="form-control" id="descriptionFeatureEdit" formControlName="description">
+          </div>
+          <div class="form-group">
+            <label for="effort" class="form-control-label">Effort:</label>
+            <input type="number" class="form-control" id="effortFeatureEdit" formControlName="effort">
+          </div>
+          <div class="form-group">
+            <label for="deadline" class="form-control-label">Deadline:</label>
+            <input type="date" class="form-control" id="deadlineFeatureEdit" formControlName="deadline">
+          </div>
+          <div class="form-group">
+            <label for="priority" class="form-control-label">Priority:</label>
+            <input type="number" class="form-control" id="priorityFeatureEdit" formControlName="priority">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button (click)="editFeatureAPI()" type="button" class="btn btn-primary">Edit Feature</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal to add releases -->
 <div class="modal fade" id="add-release-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -130,6 +169,41 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button (click)="addNewRelease()" type="button" class="btn btn-primary">Add Release</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal to edit releases -->
+<div class="modal fade" id="edit-release-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Release</h5>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formEditRelease">
+          <div class="form-group">
+            <label for="name" class="form-control-label">Name:</label>
+            <input type="text" class="form-control" id="nameReleaseEdit" formControlName="name">
+          </div>
+          <div class="form-group">
+            <label for="description" class="form-control-label">Description:</label>
+            <input type="text" class="form-control" id="descriptionReleaseEdit" formControlName="description">
+          </div>
+          <div class="form-group">
+            <label for="starts_at" class="form-control-label">Starts at:</label>
+            <input type="date" class="form-control" id="starts_atReleaseEdit" formControlName="starts_at">
+          </div>
+          <div class="form-group">
+            <label for="deadline" class="form-control-label">Deadline:</label>
+            <input type="date" class="form-control" id="deadlineReleaseEdit" formControlName="deadline">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button (click)="editReleaseAPI()" type="button" class="btn btn-primary">Edit Release</button>
       </div>
     </div>
   </div>

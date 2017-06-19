@@ -94,7 +94,7 @@ export class HomeComponent implements OnInit {
   }
 
   editProjectAPI() {
-    $('#edit-project-modal').modal('hide')
+    $('#edit-project-modal').modal('hide');
     this._replanAPIService.editProject(JSON.stringify(this.formEditProject.value), this.idProjectToEdit)
         .subscribe( data => {
           this._replanAPIService.getProjectsAPI()

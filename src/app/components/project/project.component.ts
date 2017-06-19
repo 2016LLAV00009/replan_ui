@@ -17,6 +17,14 @@ export class ProjectComponent implements OnInit {
   idProject: number;
   formFeature: FormGroup;
   formRelease: FormGroup;
+  formEditFeature: FormGroup;
+  formEditRelease: FormGroup;
+  isEditFeatureButtonClicked: boolean;
+  isDeleteFeatureButtonClicked: boolean;
+  isEditReleaseButtonClicked: boolean;
+  isDeleteReleaseButtonClicked: boolean;
+  idFeatureToEdit: number;
+  idReleaseToEdit: number;
   receivedData: Array<any> = [];
   restrictedDrop2: any = null;
 
@@ -44,6 +52,14 @@ export class ProjectComponent implements OnInit {
                   'priority': new FormControl('', Validators.required)
                 });
 
+                this.formEditFeature = new FormGroup({
+                  'name': new FormControl(''),
+                  'description': new FormControl(''),
+                  'effort': new FormControl(''),
+                  'deadline': new FormControl(''),
+                  'priority': new FormControl('')
+                });
+
                 this.formRelease = new FormGroup({
                   'name': new FormControl('', Validators.required),
                   'description': new FormControl('', Validators.required),
@@ -51,10 +67,20 @@ export class ProjectComponent implements OnInit {
                   'deadline': new FormControl('', Validators.required)
                 });
 
+                this.formEditRelease = new FormGroup({
+                  'name': new FormControl(''),
+                  'description': new FormControl(''),
+                  'starts_at': new FormControl(''),
+                  'deadline': new FormControl('')
+                });
+
   }
 
   ngOnInit() {
-
+    this.isDeleteFeatureButtonClicked = false;
+    this.isDeleteReleaseButtonClicked = false;
+    this.isEditFeatureButtonClicked = false;
+    this.isEditReleaseButtonClicked = false;
   }
 
   transferDataSuccess($event: any) {
@@ -81,7 +107,28 @@ export class ProjectComponent implements OnInit {
   }
 
   editFeature(idFeature: number) {
+    this.isEditFeatureButtonClicked = true;
+    this._replanAPIService.getFeature(this.idProject, idFeature)
+      .subscribe( data => {
+        this.idFeatureToEdit = data.id;
+        $('#edit-feature-modal').modal();
+        $('#nameFeatureEdit').val(data.name);
+        $('#descriptionFeatureEdit').val(data.description);
+        $('#effortFeatureEdit').val(data.effort);
+        $('#deadlineFeatureEdit').val(data.deadline);
+        $('#priorityFeatureEdit').val(data.priority);
+      });
+  }
 
+  editFeatureAPI() {
+    $('#edit-feature-modal').modal('hide');
+    this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.idFeatureToEdit)
+        .subscribe( data => {
+          this._replanAPIService.getFeaturesProject(this.idProject)
+            .subscribe( data2 => {
+              this.features = data2;
+            });
+        });
   }
 
   deleteFeature(idFeature: number) {
@@ -106,7 +153,29 @@ export class ProjectComponent implements OnInit {
   }
 
   editRelease(idRelease: number) {
+    this.isEditReleaseButtonClicked = true;
+    this._replanAPIService.getRelease(this.idProject, idRelease)
+      .subscribe( data => {
+        this.idReleaseToEdit = data.id;
+        debugger;
+        $('#edit-release-modal').modal();
+        $('#nameReleaseEdit').val(data.name);
+        $('#descriptionReleaseEdit').val(data.description);
+        $('#starts_atReleaseEdit').val(data.starts_at);
+        $('#deadlineReleaseEdit').val(data.deadline);
+      });
+  }
 
+  editReleaseAPI() {
+    $('#edit-release-modal').modal('hide');
+    debugger;
+    this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.idReleaseToEdit)
+        .subscribe( data => {
+          this._replanAPIService.getReleasesProject(this.idProject)
+            .subscribe( data2 => {
+              this.releases = data2;
+            });
+        });
   }
 
   deleteRelease(idRelease: number) {
