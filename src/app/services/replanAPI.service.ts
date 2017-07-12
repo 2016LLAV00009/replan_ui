@@ -150,4 +150,10 @@ export class replanAPIService {
       });
   }
 
+  getReleasePlan(idProject: number, idRelease: number) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/plan';
+    return this.http.get( url )
+      .map(res => res.json() );
+  }
+
 }

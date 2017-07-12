@@ -34,7 +34,7 @@
         <li *ngFor="let release of releases" class="list-group-item list-group-item-action li-releases"
             dnd-droppable
             (onDropSuccess)="transferDataSuccess($event, release.id)">
-            <div class="d-flex project-name justify-content-between">
+            <div (click)="goToPlan(release.id)" class="d-flex project-name justify-content-between">
               <div class="list-item-content-releases">
                 <h5 class="mb-1"> {{ release.name }} </h5>
                 <p class="mb-1"> {{ release.description }} </p>

@@ -3,6 +3,7 @@ import { replanAPIService } from '../../services/replanAPI.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {DndModule} from 'ng2-dnd';
+import { Router } from '@angular/router';
 
 declare var $: any;
 
@@ -28,7 +29,8 @@ export class ProjectComponent implements OnInit {
   restrictedDrop2: any = null;
 
   constructor(private _replanAPIService: replanAPIService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private router: Router) {
 
                 this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
@@ -209,6 +211,14 @@ export class ProjectComponent implements OnInit {
               this.features = data2.filter(f => f.release === 'pending');
             });
         });
+  }
+
+  goToPlan(idRelease: number) {
+    if (!this.isEditReleaseButtonClicked && !this.isDeleteReleaseButtonClicked) {
+      this.router.navigate( ['/project', this.idProject, 'release', idRelease, 'plan'] );
+    }
+    this.isEditReleaseButtonClicked = false;
+    this.isDeleteReleaseButtonClicked = false;
   }
 
 }

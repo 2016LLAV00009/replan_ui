@@ -15,13 +15,15 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProjectComponent } from './components/project/project.component';
+import { PlanComponent } from './components/plan/plan.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     HomeComponent,
-    ProjectComponent
+    ProjectComponent,
+    PlanComponent
   ],
   entryComponents: [],
   imports: [
