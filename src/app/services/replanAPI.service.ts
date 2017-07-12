@@ -41,7 +41,7 @@ export class replanAPIService {
       'Content-Type': 'application/json'
     });
     return this.http.put(url, body, { headers })
-      .map(res=>{
+      .map(res => {
         console.log(res.json());
         return res.json();
       });
@@ -104,7 +104,7 @@ export class replanAPIService {
   }
 
   addFeatureToProject(feature: string, id: number) {
-    const url = this.projectsURL + id + '/features/create_on';
+    const url = this.projectsURL + id + '/features/create_one';
     const body = feature;
     const headers = new Headers({
       'Content-Type': 'application/json'
@@ -137,6 +137,17 @@ export class replanAPIService {
     const url = this.projectsURL + idProject + '/releases/' + idRelease;
     return this.http.delete( url )
       .map(res => res.json());
+  }
+
+  addFeatureToRelease(idProject: number, idRelease: number, body: string) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/features';
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, body, { headers })
+      .map(res => {
+        return res.json();
+      });
   }
 
 }

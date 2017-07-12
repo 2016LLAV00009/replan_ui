@@ -25,7 +25,6 @@ export class ProjectComponent implements OnInit {
   isDeleteReleaseButtonClicked: boolean;
   idFeatureToEdit: number;
   idReleaseToEdit: number;
-  receivedData: Array<any> = [];
   restrictedDrop2: any = null;
 
   constructor(private _replanAPIService: replanAPIService,
@@ -35,7 +34,7 @@ export class ProjectComponent implements OnInit {
                   this.idProject = params['id'];
                   this._replanAPIService.getFeaturesProject(this.idProject)
                     .subscribe( data => {
-                      this.features = data;
+                      this.features = data.filter(f => f.release === 'pending');
                     });
                   this._replanAPIService.getReleasesProject(this.idProject)
                     .subscribe( data => {
@@ -83,10 +82,6 @@ export class ProjectComponent implements OnInit {
     this.isEditReleaseButtonClicked = false;
   }
 
-  transferDataSuccess($event: any) {
-      this.receivedData.push($event);
-  }
-
   addFeatureModal() {
     $('#add-feature-modal').modal();
   }
@@ -101,7 +96,7 @@ export class ProjectComponent implements OnInit {
         .subscribe( data => {
           this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
-              this.features = data2;
+              this.features = data2.filter(f => f.release === 'pending');
             });
         });
   }
@@ -121,12 +116,17 @@ export class ProjectComponent implements OnInit {
   }
 
   editFeatureAPI() {
+    this.formEditFeature.value.name = $('#nameFeatureEdit').val();
+    this.formEditFeature.value.description = $('#descriptionFeatureEdit').val();
+    this.formEditFeature.value.effort = $('#effortFeatureEdit').val();
+    this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
+    this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
     $('#edit-feature-modal').modal('hide');
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.idFeatureToEdit)
         .subscribe( data => {
           this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
-              this.features = data2;
+              this.features = data2.filter(f => f.release === 'pending');
             });
         });
   }
@@ -136,7 +136,7 @@ export class ProjectComponent implements OnInit {
       .subscribe( data => {
         this._replanAPIService.getFeaturesProject(this.idProject)
           .subscribe( data2 => {
-            this.features = data2;
+            this.features = data2.filter(f => f.release === 'pending');
           });
       });
   }
@@ -157,18 +157,26 @@ export class ProjectComponent implements OnInit {
     this._replanAPIService.getRelease(this.idProject, idRelease)
       .subscribe( data => {
         this.idReleaseToEdit = data.id;
-        debugger;
         $('#edit-release-modal').modal();
         $('#nameReleaseEdit').val(data.name);
         $('#descriptionReleaseEdit').val(data.description);
+        if (data.starts_at) {
+          data.starts_at = data.starts_at.substring(0, 10);
+        }
         $('#starts_atReleaseEdit').val(data.starts_at);
+        if (data.deadline) {
+          data.deadline = data.deadline.substring(0, 10);
+        }
         $('#deadlineReleaseEdit').val(data.deadline);
       });
   }
 
   editReleaseAPI() {
+    this.formEditRelease.value.name = $('#nameReleaseEdit').val();
+    this.formEditRelease.value.description = $('#descriptionReleaseEdit').val();
+    this.formEditRelease.value.starts_at = $('#starts_atReleaseEdit').val();
+    this.formEditRelease.value.deadline = $('#deadlineReleaseEdit').val();
     $('#edit-release-modal').modal('hide');
-    debugger;
     this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.idReleaseToEdit)
         .subscribe( data => {
           this._replanAPIService.getReleasesProject(this.idProject)
@@ -186,6 +194,21 @@ export class ProjectComponent implements OnInit {
             this.releases = data2;
           });
       });
+  }
+
+  transferDataSuccess($event: any, idRelease: number) {
+      this.addFeatureToRelease($event.dragData, idRelease);
+  }
+
+  addFeatureToRelease(idFeature: number, idRelease: number) {
+    const body = '[{"feature_id":' + idFeature + '}]';
+     this._replanAPIService.addFeatureToRelease(this.idProject, idRelease, body)
+        .subscribe( data => {
+          this._replanAPIService.getFeaturesProject(this.idProject)
+            .subscribe( data2 => {
+              this.features = data2.filter(f => f.release === 'pending');
+            });
+        });
   }
 
 }

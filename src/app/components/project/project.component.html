@@ -33,7 +33,7 @@
       <ul class="list-group releases-container scroll-style" dnd-list="list">
         <li *ngFor="let release of releases" class="list-group-item list-group-item-action li-releases"
             dnd-droppable
-            (onDropSuccess)="transferDataSuccess($event)">
+            (onDropSuccess)="transferDataSuccess($event, release.id)">
             <div class="d-flex project-name justify-content-between">
               <div class="list-item-content-releases">
                 <h5 class="mb-1"> {{ release.name }} </h5>
@@ -158,7 +158,7 @@
           </div>
           <div class="form-group">
             <label for="starts_at" class="form-control-label">Starts at:</label>
-            <input type="date" class="form-control" id="starts_at" formControlName="starts_at">
+            <input type="date" class="form-control" id="starts_atRelease" formControlName="starts_at">
           </div>
           <div class="form-group">
             <label for="deadline" class="form-control-label">Deadline:</label>
