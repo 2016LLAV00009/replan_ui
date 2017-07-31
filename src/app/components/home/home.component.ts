@@ -21,10 +21,6 @@ export class HomeComponent implements OnInit {
 
   constructor( private _replanAPIService: replanAPIService,
                private router: Router) {
-          this._replanAPIService.getProjectsAPI()
-            .subscribe( data => {
-              this.projects = data;
-            });
 
           this.formProject = new FormGroup({
               'name': new FormControl('', Validators.required),
@@ -43,6 +39,14 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
+    $('#loading_for_projects').show();
+    $('#addProjectDiv').addClass('margin_to_loading');
+    this._replanAPIService.getProjectsAPI()
+      .subscribe( data => {
+        $('#loading_for_projects').hide();
+        $('#addProjectDiv').removeClass('margin_to_loading');
+        this.projects = data;
+      });
     this.isDeleteButtonClicked = false;
     this.isEditButtonClicked = false;
   }

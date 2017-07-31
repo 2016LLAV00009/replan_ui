@@ -34,14 +34,6 @@ export class ProjectComponent implements OnInit {
 
                 this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
-                  this._replanAPIService.getFeaturesProject(this.idProject)
-                    .subscribe( data => {
-                      this.features = data.filter(f => f.release === 'pending');
-                    });
-                  this._replanAPIService.getReleasesProject(this.idProject)
-                    .subscribe( data => {
-                      this.releases = data;
-                    });
                 });
 
                 this.formFeature = new FormGroup({
@@ -78,6 +70,22 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    $('#loading_for_features').show();
+    $('#loading_for_releases').show();
+    $('#addFeatureDiv').addClass('margin_to_loading');
+    $('#addReleaseDiv').addClass('margin_to_loading');
+    this._replanAPIService.getFeaturesProject(this.idProject)
+      .subscribe( data => {
+        $('#loading_for_features').hide();
+        $('#addFeatureDiv').removeClass('margin_to_loading');
+        this.features = data.filter(f => f.release === 'pending');
+      });
+    this._replanAPIService.getReleasesProject(this.idProject)
+      .subscribe( data => {
+        $('#loading_for_releases').hide();
+        $('#addReleaseDiv').removeClass('margin_to_loading');
+        this.releases = data;
+      });
     this.isDeleteFeatureButtonClicked = false;
     this.isDeleteReleaseButtonClicked = false;
     this.isEditFeatureButtonClicked = false;

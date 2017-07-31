@@ -5,6 +5,8 @@
     <hr class="logo-separator">
   </div>
 
+  <div id="loading_for_projects" class="loading_spinner"></div>
+
   <div *ngFor="let project of projects" class="list-group">
     <li class="list-group-item list-group-item-action li-projects">
       <div (click)="goToProject(project.id)" class="d-flex project-name justify-content-between">
@@ -24,7 +26,7 @@
     </li>
   </div>
 
-  <div class="text-center">
+  <div id="addProjectDiv" class="text-center">
     <button (click)="addProjectModal()" type="button" class="btn add-btn">+</button>
   </div>
 

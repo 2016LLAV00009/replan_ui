@@ -5,6 +5,7 @@
     <div class="col-md-6 project-column">
       <h3>Features</h3>
       <hr>
+      <div id="loading_for_features" class="loading_spinner"></div>
       <ul class="features-container scroll-style" dnd-list="list">
         <li *ngFor="let feature of features" class="list-group-item list-group-item-action li-features"
             dnd-draggable
@@ -23,13 +24,14 @@
             </div>
         </li>
       </ul>
-      <div class="text-center">
+      <div id="addFeatureDiv" class="text-center">
         <button (click)="addFeatureModal()" type="button" class="btn add-btn">+</button>
       </div>
     </div>
     <div class="col-md-6 project-column">
       <h3>Releases</h3>
       <hr>
+      <div id="loading_for_releases" class="loading_spinner"></div>
       <ul class="list-group releases-container scroll-style" dnd-list="list">
         <li *ngFor="let release of releases" class="list-group-item list-group-item-action li-releases"
             dnd-droppable
@@ -50,7 +52,7 @@
             </div>
         </li>
       </ul>
-      <div class="text-center">
+      <div id="addReleaseDiv" class="text-center">
         <button (click)="addReleaseModal()" type="button" class="btn add-btn">+</button>
       </div>
     </div>
