@@ -72,6 +72,11 @@ body {
   padding: 5px;
 }
 
+.margin-right-icon {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
 .logo-separator {
   margin-bottom: 50px !important;
 }
@@ -250,6 +255,12 @@ body {
   width: 99% !important;
 }
 
+/* NAVBAR COMPONENT */
+
+.nav-item {
+  cursor: pointer;
+}
+
 /* MODALS */
 
 .custom-modal-container {
@@ -355,3 +366,32 @@ body {
  100%  { transform: rotate(360deg); }
 }
 
+/* Animate */
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.fast {
+  -webkit-animation-duration: 0.4s;
+  animation-duration: 0.4s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+}

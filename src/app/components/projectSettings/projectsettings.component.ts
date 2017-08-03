@@ -5,32 +5,25 @@ import { ActivatedRoute } from '@angular/router';
 declare var $: any;
 
 @Component({
-  selector: 'app-plan',
-  templateUrl: './plan.component.html'
+  selector: 'app-projectsettings',
+  templateUrl: './projectsettings.component.html'
 })
-export class PlanComponent implements OnInit {
+export class ProjectSettingsComponent implements OnInit {
 
   idProject: number;
-  idRelease: number;
-  plan: any;
 
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute) {
 
               this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
-                  this.idRelease = params['id2'];
-
-                  this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
-                    .subscribe( data => {
-                      this.plan = data;
-                    });
               });
 
   }
 
   ngOnInit() {
-    $('li.nav-item').removeClass('active');
+    $('.nav-settings').siblings().removeClass('active');
+    $('.nav-settings').addClass('active');
   }
 
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewContainerRef, ViewEncapsulation  } from '@angular/core';
 import { replanAPIService } from '../../services/replanAPI.service';
+import { GlobalDataService } from '../../services/globaldata.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {DndModule} from 'ng2-dnd';
@@ -30,10 +31,12 @@ export class ProjectComponent implements OnInit {
 
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute,
-              private router: Router) {
+              private router: Router,
+              private globaldata: GlobalDataService) {
 
                 this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
+                  this.globaldata.setCurrentProjectId(this.idProject);
                 });
 
                 this.formFeature = new FormGroup({
@@ -70,6 +73,8 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    $('.nav-home').siblings().removeClass('active');
+    $('.nav-home').addClass('active');
     $('#loading_for_features').show();
     $('#loading_for_releases').show();
     $('#addFeatureDiv').addClass('margin_to_loading');

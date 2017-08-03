@@ -9,6 +9,7 @@ import { app_routing } from './app.routes';
 
 // Services
 import { replanAPIService } from './services/replanAPI.service';
+import { GlobalDataService } from './services/globaldata.service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -16,6 +17,7 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { ProjectComponent } from './components/project/project.component';
 import { PlanComponent } from './components/plan/plan.component';
+import { ProjectSettingsComponent } from './components/projectSettings/projectsettings.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { PlanComponent } from './components/plan/plan.component';
     NavbarComponent,
     HomeComponent,
     ProjectComponent,
-    PlanComponent
+    PlanComponent,
+    ProjectSettingsComponent
   ],
   entryComponents: [],
   imports: [
@@ -35,7 +38,8 @@ import { PlanComponent } from './components/plan/plan.component';
     DndModule.forRoot()
   ],
   providers: [
-    replanAPIService
+    replanAPIService,
+    GlobalDataService
   ],
   bootstrap: [AppComponent]
 })
