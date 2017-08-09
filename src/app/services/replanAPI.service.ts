@@ -9,6 +9,8 @@ export class replanAPIService {
 
   constructor( private http: Http ) {  }
 
+  /* PROJECTS */
+
   getProjectsAPI() {
     const url = `${this.projectsURL}`;
     return this.http.get( url )
@@ -53,6 +55,8 @@ export class replanAPIService {
       .map(res => res.json() );
   }
 
+  /* FEATURES */
+
   getFeaturesProject(id:number) {
     const url = this.projectsURL + id + '/features';
     return this.http.get( url )
@@ -77,6 +81,37 @@ export class replanAPIService {
         return res.json();
       });
   }
+
+  deleteFeature(idProject: number, idFeature: number) {
+    const url = this.projectsURL + idProject + '/features/' + idFeature;
+    return this.http.delete( url )
+      .map(res => res.json());
+  }
+
+  addFeatureToProject(feature: string, id: number) {
+    const url = this.projectsURL + id + '/features/create_one';
+    const body = feature;
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, body, { headers })
+      .map(res => {
+        return res.json();
+      });
+  }
+
+  addFeatureToRelease(idProject: number, idRelease: number, body: string) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/features';
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, body, { headers })
+      .map(res => {
+        return res.json();
+      });
+  }
+
+  /* RELEASES */
 
   getReleasesProject(id:number) {
     const url = this.projectsURL + id + '/releases';
@@ -103,16 +138,10 @@ export class replanAPIService {
       });
   }
 
-  addFeatureToProject(feature: string, id: number) {
-    const url = this.projectsURL + id + '/features/create_one';
-    const body = feature;
-    const headers = new Headers({
-      'Content-Type': 'application/json'
-    });
-    return this.http.post(url, body, { headers })
-      .map(res => {
-        return res.json();
-      });
+  deleteRelease(idProject: number, idRelease: number) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease;
+    return this.http.delete( url )
+      .map(res => res.json());
   }
 
   addReleaseToProject(release: string, id: number) {
@@ -127,20 +156,51 @@ export class replanAPIService {
       });
   }
 
-  deleteFeature(idProject: number, idFeature: number) {
-    const url = this.projectsURL + idProject + '/features/' + idFeature;
+  /* PLAN */
+
+  getReleasePlan(idProject: number, idRelease: number) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/plan';
+    return this.http.get( url )
+      .map(res => res.json() );
+  }
+
+  /* RESOURCES */
+
+  getResourcesProject(id:number) {
+    const url = this.projectsURL + id + '/resources';
+    return this.http.get( url )
+      .map(res => res.json() );
+  }
+
+  deleteResourceFromProject(idProject: number, idResource: number) {
+    const url = this.projectsURL + idProject + '/resources/' + idResource;
     return this.http.delete( url )
       .map(res => res.json());
   }
 
-  deleteRelease(idProject: number, idRelease: number) {
-    const url = this.projectsURL + idProject + '/releases/' + idRelease;
+  deleteResourcesFromRelease(idProject: number, idRelease: number) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/resources';
     return this.http.delete( url )
       .map(res => res.json());
   }
 
-  addFeatureToRelease(idProject: number, idRelease: number, body: string) {
-    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/features';
+  /* SKILLS */
+
+  getSkillsProject(id:number) {
+    const url = this.projectsURL + id + '/skills';
+    return this.http.get( url )
+      .map(res => res.json() );
+  }
+
+  deleteSkillFromProject(idProject: number, idSkill: number) {
+    const url = this.projectsURL + idProject + '/skills/' + idSkill;
+    return this.http.delete( url )
+      .map(res => res.json());
+  }
+
+  addSkillToProject(skill: string, id: number) {
+    const url = this.projectsURL + id + '/skills';
+    const body = skill;
     const headers = new Headers({
       'Content-Type': 'application/json'
     });
@@ -148,12 +208,6 @@ export class replanAPIService {
       .map(res => {
         return res.json();
       });
-  }
-
-  getReleasePlan(idProject: number, idRelease: number) {
-    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/plan';
-    return this.http.get( url )
-      .map(res => res.json() );
   }
 
 }

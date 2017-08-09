@@ -1,16 +1,10 @@
-/*
- * re: https://twitter.com/CodePen/status/355107665099231232
- *
- * this version uses <i> for the icons; this is the first time i've constructed icons out of pure css using pseudo elements (MUCH more on that here: http://css-tricks.com/pseudo-element-roundup/ )
- *
- * next version(s) might substitute the <i>s with @fontface & unicode range; i'd like to also try to get more semantic with this (though i think this is pretty semantic to start with... no? maybe not); i'd also like to get this modernizr'd and compatible way back to ie version who-knows-what
- *
- * feel free to hit me up w/criticisms @ jeremy.buller@gmail.com
- */
-
 body {
-  background: white;
+  background: #F5F5F5;
   color: #95979d;
+}
+
+hr {
+  border-color: #ed8b00;
 }
 
 .home-container {
@@ -19,6 +13,10 @@ body {
 
 .fa:hover {
   color: #ed8b00 !important;
+}
+
+.icons-resources-content .fa:hover {
+  color: grey !important;
 }
 
 /* LISTS STYLES */
@@ -255,6 +253,90 @@ body {
   width: 99% !important;
 }
 
+/* PROJECT SETTINGS COMPONENT */
+
+.project-settings {
+  color: black;
+}
+
+.project-settings .jumbotron {
+  padding: 1.5rem 2rem;
+  background-color: rgba(237, 139, 0, 0.7);
+  border-radius: 0;
+}
+
+.edit-settings-icon {
+  position: absolute;
+  bottom: 0px;
+  cursor: pointer;
+}
+
+.skills-container {
+  margin-bottom: 10px;
+}
+
+.skills-container button {
+  cursor: pointer;
+}
+
+.skill-card {
+  margin-bottom: 10px;
+}
+
+#addSkillDiv {
+  margin-bottom: 40px;
+}
+
+#addResourceDiv {
+  margin-bottom: 40px;
+}
+
+.resource-title {
+    border-bottom: 1px solid;
+    padding-bottom: 5px;
+    font-size: 35px;
+}
+
+.resource-skills {
+  margin-bottom: 10px;
+}
+
+.icons-resources-content {
+  width: 100%;
+}
+
+.icons-resources-content a {
+  cursor: pointer;
+}
+
+.disponability-content {
+  margin-bottom: 15px;
+}
+
+.disponability {
+  font-size: 15px;
+}
+
+.resources-container {
+  margin-bottom: 10px;
+}
+
+.resource-card {
+  margin-bottom: 10px;
+}
+
+.resources-container .card-success {
+  background-color: rgba(92, 184, 92, 0.6);
+}
+
+.resources-container .card-warning {
+  background-color: rgba(240, 173, 78, 0.6);
+}
+
+.resources-container .card-danger {
+  background-color: rgba(217, 83, 79, 0.6);
+}
+
 /* NAVBAR COMPONENT */
 
 .nav-item {
@@ -275,6 +357,19 @@ body {
     box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.75);
     margin-top: -15px;
     margin-bottom: 40px;
+}
+
+.modal-header {
+  border-bottom-color: #ed8b00 !important;
+}
+
+.modal-footer .btn-primary {
+  background-color: #ed8b00 !important;
+  border-color: #ed8b00 !important;
+}
+
+.modal-footer .btn {
+  cursor: pointer;
 }
 
 /* Scrolls */
