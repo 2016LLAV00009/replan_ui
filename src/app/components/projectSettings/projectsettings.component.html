@@ -9,14 +9,14 @@
     <div class="row mt-4 mb-5">
         <div class="col-5">
             <label class="col-12 col-form-label pl-0">Hours/Effort Unit</label>
-            <input type="text" class="form-control">
+            <input [readonly]="true" [value]="project?.hours_per_effort_unit" type="text" class="form-control">
         </div>
         <div class="col-5 pl-0">
             <label class="col-12 col-form-label pl-0">Hours/Week and Full Time Resource</label>
-            <input type="text" class="form-control">
+            <input [readonly]="true" [value]="project?.hours_per_week_and_full_time_resource" type="text" class="form-control">
         </div>
         <div class="col-2 pr-2">
-            <a class="padding-icon edit-settings-icon">
+            <a (click)="editProject()" class="padding-icon edit-settings-icon">
                 <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
             </a>
         </div>
@@ -58,7 +58,7 @@
                         </span> 
                     </div>
                     <h4 class="card-title disponability-content">
-                        {{resource.availability}}% <span class="disponability">availability</span>
+                        {{resource.availability}}% <span class="disponability">available</span>
                     </h4>
                     <div class="icons-resources-content">
                         <a class="padding-icon" (click)="editResourceModal()">
@@ -75,6 +75,37 @@
 
     <div id="addResourceDiv" class="text-center">
         <button (click)="addResourceModal()" type="button" class="btn add-btn">+</button>
+    </div>
+
+    <!-- Modal to edit Project -->
+    <div class="modal fade" id="edit-project-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Project</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formEditProject">
+                    <div [hidden]="true" class="form-group">
+                        <label for="effort_unit" class="form-control-label">Effort unit:</label>
+                        <input type="text" class="form-control" id="edit_effort_unit" formControlName="effort_unit">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours_per_effort_unit" class="form-control-label">Hours per effort unit:</label>
+                        <input type="number" class="form-control" id="edit_hours_per_effort_unit" formControlName="hours_per_effort_unit">
+                    </div>
+                    <div class="form-group">
+                        <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource:</label>
+                        <input type="number" class="form-control" id="edit_hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button (click)="editProjectAPI()" type="button" class="btn btn-primary">Edit Project</button>
+            </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal to add skills -->
@@ -105,6 +136,35 @@
     </div>
 
     <!--Modal to add resources-->
+     <div class="modal fade" id="add-resource-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add new Resource</h5>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="formResource">
+                <div class="form-group">
+                    <label for="name" class="form-control-label">Name:</label>
+                    <input type="text" class="form-control" id="nameResource" formControlName="name">
+                </div>
+                <div class="form-group">
+                    <label for="description" class="form-control-label">Description:</label>
+                    <textarea class="form-control" id="descriptionResource" formControlName="description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="availability" class="form-control-label">Availability:</label>
+                    <input type="number" class="form-control" id="availabilityResource" formControlName="availability">
+                </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button (click)="addNewResource()" type="button" class="btn btn-primary">Add Resource</button>
+            </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 

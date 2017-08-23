@@ -184,6 +184,18 @@ export class replanAPIService {
       .map(res => res.json());
   }
 
+  addResourceToProject(resource: string, id: number) {
+    const url = this.projectsURL + id + '/resources';
+    const body = resource;
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, body, { headers })
+      .map(res => {
+        return res.json();
+      });
+  }
+
   /* SKILLS */
 
   getSkillsProject(id:number) {

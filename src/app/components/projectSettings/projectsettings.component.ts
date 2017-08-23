@@ -12,6 +12,8 @@ declare var $: any;
 export class ProjectSettingsComponent implements OnInit {
 
   formSkill: FormGroup;
+  formResource: FormGroup;
+  formEditProject: FormGroup;
   idProject: number;
   project: any;
   resources: any;
@@ -36,9 +38,21 @@ export class ProjectSettingsComponent implements OnInit {
                   });
               });
 
+              this.formEditProject = new FormGroup({
+                'effort_unit': new FormControl(''),
+                'hours_per_effort_unit': new FormControl(''),
+                'hours_per_week_and_full_time_resource': new FormControl('')
+              });
+
               this.formSkill = new FormGroup({
                 'name': new FormControl('', Validators.required),
                 'description': new FormControl(''),
+              });
+
+              this.formResource = new FormGroup({
+                'name': new FormControl('', Validators.required),
+                'description': new FormControl(''),
+                'availability': new FormControl('')
               });
   }
 
@@ -56,6 +70,27 @@ export class ProjectSettingsComponent implements OnInit {
     } else {
         return 'card-success';
     }
+  }
+
+  editProject() {
+      $('#edit-project-modal').modal();
+      $('#edit_effort_unit').val(this.project.effort_unit);
+      $('#edit_hours_per_effort_unit').val(this.project.hours_per_effort_unit);
+      $('#edit_hours_per_week_and_full_time_resource').val(this.project.hours_per_week_and_full_time_resource);
+  }
+
+  editProjectAPI() {
+    this.formEditProject.value.effort_unit = $('#edit_effort_unit').val();
+    this.formEditProject.value.hours_per_effort_unit = $('#edit_hours_per_effort_unit').val();
+    this.formEditProject.value.hours_per_week_and_full_time_resource = $('#edit_hours_per_week_and_full_time_resource').val();
+    $('#edit-project-modal').modal('hide');
+    this._replanAPIService.editProject(JSON.stringify(this.formEditProject.value), this.idProject)
+      .subscribe( data => {
+        this._replanAPIService.getProject(this.idProject)
+          .subscribe( data2 => {
+            this.project = data2;
+          });
+      });
   }
 
   deleteSkill(id: number) {
@@ -84,7 +119,18 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   addResourceModal() {
-    //$('#add-resource-modal').modal();
+    $('#add-resource-modal').modal();
+  }
+
+  addNewResource() {
+    $('#add-resource-modal').modal('hide');
+    this._replanAPIService.addResourceToProject(JSON.stringify(this.formResource.value), this.idProject)
+        .subscribe( data => {
+          this._replanAPIService.getResourcesProject(this.idProject)
+            .subscribe( data2 => {
+              this.resources = data2;
+            });
+        });
   }
 
   editResourceModal() {
