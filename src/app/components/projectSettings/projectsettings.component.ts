@@ -45,12 +45,12 @@ export class ProjectSettingsComponent implements OnInit {
               });
 
               this.formSkill = new FormGroup({
-                'name': new FormControl('', Validators.required),
+                'name': new FormControl(''),
                 'description': new FormControl(''),
               });
 
               this.formResource = new FormGroup({
-                'name': new FormControl('', Validators.required),
+                'name': new FormControl(''),
                 'description': new FormControl(''),
                 'availability': new FormControl('')
               });

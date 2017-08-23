@@ -87,15 +87,15 @@
             <div class="modal-body">
                 <form [formGroup]="formEditProject">
                     <div [hidden]="true" class="form-group">
-                        <label for="effort_unit" class="form-control-label">Effort unit:</label>
+                        <label for="effort_unit" class="form-control-label">Effort unit</label>
                         <input type="text" class="form-control" id="edit_effort_unit" formControlName="effort_unit">
                     </div>
                     <div class="form-group">
-                        <label for="hours_per_effort_unit" class="form-control-label">Hours per effort unit:</label>
+                        <label for="hours_per_effort_unit" class="form-control-label">Hours per effort unit</label>
                         <input type="number" class="form-control" id="edit_hours_per_effort_unit" formControlName="hours_per_effort_unit">
                     </div>
                     <div class="form-group">
-                        <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource:</label>
+                        <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource</label>
                         <input type="number" class="form-control" id="edit_hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource">
                     </div>
                 </form>
@@ -117,19 +117,19 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="formSkill">
-                <div class="form-group">
-                    <label for="name" class="form-control-label">Name:</label>
-                    <input type="text" class="form-control" id="nameSkill" formControlName="name">
-                </div>
-                <div class="form-group">
-                    <label for="description" class="form-control-label">Description:</label>
-                    <textarea class="form-control" id="descriptionSkill" formControlName="description"></textarea>
-                </div>
+                    <div class="form-group">
+                        <label for="name" class="form-control-label">Name *</label>
+                        <input type="text" class="form-control" id="nameSkill" formControlName="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="form-control-label">Description</label>
+                        <textarea class="form-control" id="descriptionSkill" formControlName="description"></textarea>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button (click)="addNewSkill()" type="button" class="btn btn-primary">Add Skill</button>
+                <button [disabled]="!formSkill.valid" (click)="addNewSkill()" type="button" class="btn btn-primary">Add Skill</button>
             </div>
             </div>
         </div>
@@ -145,22 +145,22 @@
             <div class="modal-body">
                 <form [formGroup]="formResource">
                 <div class="form-group">
-                    <label for="name" class="form-control-label">Name:</label>
-                    <input type="text" class="form-control" id="nameResource" formControlName="name">
+                    <label for="name" class="form-control-label">Name *</label>
+                    <input type="text" class="form-control" id="nameResource" formControlName="name" required>
                 </div>
                 <div class="form-group">
-                    <label for="description" class="form-control-label">Description:</label>
+                    <label for="description" class="form-control-label">Description</label>
                     <textarea class="form-control" id="descriptionResource" formControlName="description"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="availability" class="form-control-label">Availability:</label>
-                    <input type="number" class="form-control" id="availabilityResource" formControlName="availability">
+                    <label for="availability" class="form-control-label">Availability *</label>
+                    <input type="number" class="form-control" id="availabilityResource" formControlName="availability" required>
                 </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button (click)="addNewResource()" type="button" class="btn btn-primary">Add Resource</button>
+                <button [disabled]="!formResource.valid" (click)="addNewResource()" type="button" class="btn btn-primary">Add Resource</button>
             </div>
             </div>
         </div>
