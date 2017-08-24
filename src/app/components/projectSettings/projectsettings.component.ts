@@ -14,9 +14,11 @@ export class ProjectSettingsComponent implements OnInit {
   formSkill: FormGroup;
   formResource: FormGroup;
   formEditProject: FormGroup;
+  formEditResource: FormGroup;
   idProject: number;
   project: any;
   resources: any;
+  resourceToEdit: any;
   skills: any;
 
   constructor(private _replanAPIService: replanAPIService,
@@ -50,6 +52,12 @@ export class ProjectSettingsComponent implements OnInit {
               });
 
               this.formResource = new FormGroup({
+                'name': new FormControl(''),
+                'description': new FormControl(''),
+                'availability': new FormControl('')
+              });
+
+              this.formEditResource = new FormGroup({
                 'name': new FormControl(''),
                 'description': new FormControl(''),
                 'availability': new FormControl('')
@@ -133,8 +141,31 @@ export class ProjectSettingsComponent implements OnInit {
         });
   }
 
-  editResourceModal() {
-    //$('#edit-resource-modal').modal();
+  editResource(idResource: number) {
+      debugger;
+      this.resourceToEdit = this.resources.filter(f => f.id === idResource);
+      $('#edit-resource-modal').modal();
+      if (this.resourceToEdit[0] !== undefined) {
+         $('#nameResourceEdit').val(this.resourceToEdit[0].name);
+        $('#availabilityResourceEdit').val(this.resourceToEdit[0].availability);
+        $('#descriptionResourceEdit').val(this.resourceToEdit[0].description);
+      }
+  }
+
+  editResourceAPI() {
+    /*this.formEditFeature.value.name = $('#nameFeatureEdit').val();
+    this.formEditFeature.value.description = $('#descriptionFeatureEdit').val();
+    this.formEditFeature.value.effort = $('#effortFeatureEdit').val();
+    this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
+    this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
+    $('#edit-feature-modal').modal('hide');
+    this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.idFeatureToEdit)
+        .subscribe( data => {
+          this._replanAPIService.getFeaturesProject(this.idProject)
+            .subscribe( data2 => {
+              this.features = data2.filter(f => f.release === 'pending');
+            });
+        });*/
   }
 
   deleteResource(id: number) {

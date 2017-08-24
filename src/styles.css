@@ -70,6 +70,10 @@ hr {
   padding: 5px;
 }
 
+.left-icon {
+  margin-left: 50%;
+}
+
 .margin-right-icon {
   margin-right: 10px;
   cursor: pointer;

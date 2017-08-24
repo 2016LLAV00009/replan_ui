@@ -13,10 +13,8 @@ declare var $: any;
 export class HomeComponent implements OnInit {
 
   formProject: FormGroup;
-  formEditProject: FormGroup;
   projects: any[] = [];
   idProjectToEdit: number;
-  isEditButtonClicked: boolean;
   isDeleteButtonClicked: boolean;
 
   constructor( private _replanAPIService: replanAPIService,
@@ -30,11 +28,6 @@ export class HomeComponent implements OnInit {
               'hours_per_week_and_full_time_resource': new FormControl('', Validators.required)
             });
 
-            this.formEditProject = new FormGroup({
-                'effort_unit': new FormControl(''),
-                'hours_per_effort_unit': new FormControl(''),
-                'hours_per_week_and_full_time_resource': new FormControl('')
-              });
    }
 
 
@@ -48,45 +41,17 @@ export class HomeComponent implements OnInit {
         this.projects = data;
       });
     this.isDeleteButtonClicked = false;
-    this.isEditButtonClicked = false;
   }
 
   goToProject(id: number) {
-    if (!this.isEditButtonClicked && !this.isDeleteButtonClicked) {
+    if (!this.isDeleteButtonClicked) {
       this.router.navigate( ['/project', id] );
     }
-    this.isEditButtonClicked = false;
     this.isDeleteButtonClicked = false;
   }
 
   addProjectModal() {
     $('#add-project-modal').modal();
-  }
-
-  editProject(idProject: number) {
-    this.isEditButtonClicked = true;
-    this._replanAPIService.getProject(idProject)
-      .subscribe( data => {
-        this.idProjectToEdit = data.id;
-        $('#edit-project-modal').modal();
-        $('#edit_effort_unit').val(data.effort_unit);
-        $('#edit_hours_per_effort_unit').val(data.hours_per_effort_unit);
-        $('#edit_hours_per_week_and_full_time_resource').val(data.hours_per_week_and_full_time_resource);
-      });
-  }
-
-  editProjectAPI() {
-    this.formEditProject.value.effort_unit = $('#edit_effort_unit').val();
-    this.formEditProject.value.hours_per_effort_unit = $('#edit_hours_per_effort_unit').val();
-    this.formEditProject.value.hours_per_week_and_full_time_resource = $('#edit_hours_per_week_and_full_time_resource').val();
-    $('#edit-project-modal').modal('hide');
-    this._replanAPIService.editProject(JSON.stringify(this.formEditProject.value), this.idProjectToEdit)
-        .subscribe( data => {
-          this._replanAPIService.getProjectsAPI()
-            .subscribe( data2 => {
-              this.projects = data2;
-            });
-        });
   }
 
   addNewProject() {
