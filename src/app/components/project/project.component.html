@@ -62,37 +62,45 @@
 </div>
 
 <!-- Modal to add features -->
-<div class="modal fade" id="add-feature-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="add-feature-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add new Feature</h5>
       </div>
       <div class="modal-body">
         <form [formGroup]="formFeature">
-          <div class="form-group">
-            <label for="code" class="form-control-label">Code:</label>
-            <input type="number" class="form-control" id="code" formControlName="code">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="code" class="form-control-label">Code:</label>
+              <input type="number" class="form-control" id="code" formControlName="code">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="name" class="form-control-label">Name:</label>
+              <input type="text" class="form-control" id="nameFeature" formControlName="name">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="name" class="form-control-label">Name:</label>
-            <input type="text" class="form-control" id="nameFeature" formControlName="name">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="effort" class="form-control-label">Effort:</label>
+              <input type="number" class="form-control" id="effort" formControlName="effort">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="priority" class="form-control-label">Priority:</label>
+              <input type="number" class="form-control" id="priority" formControlName="priority">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="description" class="form-control-label">Description:</label>
-            <textarea class="form-control" id="descriptionFeature" formControlName="description"></textarea>
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="description" class="form-control-label">Description:</label>
+              <textarea class="form-control" id="descriptionFeature" formControlName="description"></textarea>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="effort" class="form-control-label">Effort:</label>
-            <input type="number" class="form-control" id="effort" formControlName="effort">
-          </div>
-          <div class="form-group">
-            <label for="deadline" class="form-control-label">Deadline:</label>
-            <input type="date" class="form-control" id="deadlineFeature" formControlName="deadline">
-          </div>
-          <div class="form-group">
-            <label for="priority" class="form-control-label">Priority:</label>
-            <input type="number" class="form-control" id="priority" formControlName="priority">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="deadline" class="form-control-label">Deadline:</label>
+              <input type="date" class="form-control" id="deadlineFeature" formControlName="deadline">
+            </div>
           </div>
         </form>
       </div>
@@ -184,29 +192,33 @@
 </div>
 
 <!-- Modal to add releases -->
-<div class="modal fade" id="add-release-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="add-release-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add new Release</h5>
       </div>
       <div class="modal-body">
         <form [formGroup]="formRelease">
-          <div class="form-group">
-            <label for="name" class="form-control-label">Name:</label>
-            <input type="text" class="form-control" id="nameRelease" formControlName="name">
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label for="name" class="form-control-label">Name:</label>
+              <input type="text" class="form-control" id="nameRelease" formControlName="name">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="starts_at" class="form-control-label">Starts at:</label>
+              <input type="date" class="form-control" id="starts_atRelease" formControlName="starts_at">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="deadline" class="form-control-label">Deadline:</label>
+              <input type="date" class="form-control" id="deadlineRelease" formControlName="deadline">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="description" class="form-control-label">Description:</label>
-            <textarea class="form-control" id="descriptionRelease" formControlName="description"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="starts_at" class="form-control-label">Starts at:</label>
-            <input type="date" class="form-control" id="starts_atRelease" formControlName="starts_at">
-          </div>
-          <div class="form-group">
-            <label for="deadline" class="form-control-label">Deadline:</label>
-            <input type="date" class="form-control" id="deadlineRelease" formControlName="deadline">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="description" class="form-control-label">Description:</label>
+              <textarea class="form-control" id="descriptionRelease" formControlName="description"></textarea>
+            </div>
           </div>
         </form>
       </div>

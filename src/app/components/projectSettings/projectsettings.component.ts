@@ -26,27 +26,8 @@ export class ProjectSettingsComponent implements OnInit {
 
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute) {
-
               this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
-                  this._replanAPIService.getProject(this.idProject)
-                  .subscribe( data => {
-                    this.project = data;
-                  });
-                  this._replanAPIService.getResourcesProject(this.idProject)
-                  .subscribe( data => {
-                    this.resources = data;
-                    if (this.resources.length === 0) {
-                      $('.resources-span').text('No resources found');
-                    }
-                  });
-                  this._replanAPIService.getSkillsProject(this.idProject)
-                  .subscribe( data => {
-                    this.skills = data;
-                    if (this.skills.length === 0) {
-                      $('.skills-span').text('No skills found');
-                    }
-                  });
               });
 
               this.formEditProject = new FormGroup({
@@ -74,6 +55,29 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   ngOnInit() {
+    $('#loading_for_project').show();
+    $('.project-information-container').hide();
+    this._replanAPIService.getProject(this.idProject)
+    .subscribe( data => {
+      this.project = data;
+    });
+    this._replanAPIService.getResourcesProject(this.idProject)
+    .subscribe( data => {
+      this.resources = data;
+      if (this.resources.length === 0) {
+        $('.resources-span').text('No resources found');
+      }
+    });
+    this._replanAPIService.getSkillsProject(this.idProject)
+    .subscribe( data => {
+      this.skills = data;
+      if (this.skills.length === 0) {
+        $('.skills-span').text('No skills found');
+      }
+      $('#loading_for_project').hide();
+      $('.project-information-container').show();
+    });
+
     $('.nav-settings').siblings().removeClass('active');
     $('.nav-settings').addClass('active');
   }
@@ -189,6 +193,13 @@ export class ProjectSettingsComponent implements OnInit {
     this.formEditResource.value.availability = $('#availabilityResourceEdit').val();
     this.formEditResource.value.description = $('#descriptionResourceEdit').val();
     $('#edit-resource-modal').modal('hide');
+    let objArray = [];
+    this.skillsToAssign.forEach(skill => {
+      let obj = {
+        id: skill.id
+      };
+      objArray.push(obj);
+    });
     this._replanAPIService.editResource(JSON.stringify(this.formEditResource.value), this.idProject, this.resourceToEdit.id)
         .subscribe( data => {
           this._replanAPIService.getResourcesProject(this.idProject)

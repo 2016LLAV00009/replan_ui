@@ -44,6 +44,10 @@ export class ProjectComponent implements OnInit {
                 this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
                   this.globaldata.setCurrentProjectId(this.idProject);
+                  this._replanAPIService.getProject(this.idProject)
+                  .subscribe( data => {
+                    $('.navbar-center').text(data.name);
+                  });
                   this._replanAPIService.getSkillsProject(this.idProject)
                   .subscribe( data => {
                     this.skills = data;
@@ -168,6 +172,13 @@ export class ProjectComponent implements OnInit {
     this.formEditFeature.value.effort = $('#effortFeatureEdit').val();
     this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
     this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
+    let objArray = [];
+    this.skillsToAssign.forEach(skill => {
+      let obj = {
+        id: skill.id
+      };
+      objArray.push(obj);
+    });
     $('#edit-feature-modal').modal('hide');
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.featureToEdit.id)
         .subscribe( data => {
@@ -230,7 +241,6 @@ export class ProjectComponent implements OnInit {
     this.resourcesNotAssigned = [];
     this.resourcesToAssign = [];
     this.releaseToEdit = this.releases.filter(f => f.id === idRelease)[0];
-    debugger;
     this.releaseToEdit.resources.forEach(resource => {
       this.resourcesToAssign.push(resource);
     });
@@ -258,6 +268,13 @@ export class ProjectComponent implements OnInit {
     this.formEditRelease.value.starts_at = $('#starts_atReleaseEdit').val();
     this.formEditRelease.value.deadline = $('#deadlineReleaseEdit').val();
     $('#edit-release-modal').modal('hide');
+    let objArray = [];
+    this.resourcesToAssign.forEach(resource => {
+      let obj = {
+        id: resource.id
+      };
+      objArray.push(obj);
+    });
     this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.releaseToEdit.id)
         .subscribe( data => {
           this._replanAPIService.getReleasesProject(this.idProject)

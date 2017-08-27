@@ -73,6 +73,7 @@ hr {
 
 .padding-icon {
   padding: 5px;
+  z-index: 3;
 }
 
 .left-icon {
@@ -376,6 +377,21 @@ hr {
   cursor: pointer;
 }
 
+.navbar-center
+{
+    position: absolute;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    text-align: center;
+    font-size: 28px;
+}
+
+.navbar-nav {
+  z-index: 3;
+}
+
 /* MODALS */
 
 .custom-modal-container {
@@ -483,6 +499,10 @@ hr {
     border-top-color: transparent;
     border-left-color: transparent;
     border-radius: 50%;
+}
+
+#loading_for_project {
+  top: 120px;
 }
 
 .margin_to_loading {
