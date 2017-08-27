@@ -14,8 +14,8 @@ declare var $: any;
 })
 export class ProjectComponent implements OnInit {
 
-  releases: string[] = [];
-  features: string[] = [];
+  releases: any;
+  features: any;
   idProject: number;
   formFeature: FormGroup;
   formRelease: FormGroup;
@@ -25,9 +25,16 @@ export class ProjectComponent implements OnInit {
   isDeleteFeatureButtonClicked: boolean;
   isEditReleaseButtonClicked: boolean;
   isDeleteReleaseButtonClicked: boolean;
-  idFeatureToEdit: number;
-  idReleaseToEdit: number;
-  restrictedDrop2: any = null;
+
+  skills: any;
+  skillsNotAssigned: any;
+  skillsToAssign: any;
+  featureToEdit: any;
+
+  resources: any;
+  resourcesNotAssigned: any;
+  resourcesToAssign: any;
+  releaseToEdit: any;
 
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute,
@@ -37,6 +44,14 @@ export class ProjectComponent implements OnInit {
                 this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
                   this.globaldata.setCurrentProjectId(this.idProject);
+                  this._replanAPIService.getSkillsProject(this.idProject)
+                  .subscribe( data => {
+                    this.skills = data;
+                  });
+                  this._replanAPIService.getResourcesProject(this.idProject)
+                  .subscribe( data => {
+                    this.resources = data;
+                  });
                 });
 
                 this.formFeature = new FormGroup({
@@ -84,12 +99,18 @@ export class ProjectComponent implements OnInit {
         $('#loading_for_features').hide();
         $('#addFeatureDiv').removeClass('margin_to_loading');
         this.features = data.filter(f => f.release === 'pending');
+        if (this.features.length === 0) {
+          $('.features-span').text('No features found');
+        }
       });
     this._replanAPIService.getReleasesProject(this.idProject)
       .subscribe( data => {
         $('#loading_for_releases').hide();
         $('#addReleaseDiv').removeClass('margin_to_loading');
         this.releases = data;
+        if (this.releases.length === 0) {
+          $('.releases-span').text('No releases found');
+        }
       });
     this.isDeleteFeatureButtonClicked = false;
     this.isDeleteReleaseButtonClicked = false;
@@ -113,21 +134,32 @@ export class ProjectComponent implements OnInit {
             .subscribe( data2 => {
               this.features = data2.filter(f => f.release === 'pending');
             });
+            if (this.features.length === 0) {
+              $('.features-span').text('No features found');
+            }
         });
   }
 
   editFeature(idFeature: number) {
     this.isEditFeatureButtonClicked = true;
-    this._replanAPIService.getFeature(this.idProject, idFeature)
-      .subscribe( data => {
-        this.idFeatureToEdit = data.id;
-        $('#edit-feature-modal').modal();
-        $('#nameFeatureEdit').val(data.name);
-        $('#descriptionFeatureEdit').val(data.description);
-        $('#effortFeatureEdit').val(data.effort);
-        $('#deadlineFeatureEdit').val(data.deadline);
-        $('#priorityFeatureEdit').val(data.priority);
-      });
+    const self = this;
+    this.skillsNotAssigned = [];
+    this.skillsToAssign = [];
+    this.featureToEdit = this.features.filter(f => f.id === idFeature)[0];
+    this.featureToEdit.required_skills.forEach(skill => {
+      this.skillsToAssign.push(skill);
+    });
+    this.skills.forEach(skill => {
+      if (!self.skillsToAssign.some(x => x.id === skill.id )) {
+        self.skillsNotAssigned.push(skill);
+      }
+    });
+    $('#edit-feature-modal').modal();
+    $('#nameFeatureEdit').val(this.featureToEdit.name);
+    $('#descriptionFeatureEdit').val(this.featureToEdit.description);
+    $('#effortFeatureEdit').val(this.featureToEdit.effort);
+    $('#deadlineFeatureEdit').val(this.featureToEdit.deadline);
+    $('#priorityFeatureEdit').val(this.featureToEdit.priority);
   }
 
   editFeatureAPI() {
@@ -137,13 +169,30 @@ export class ProjectComponent implements OnInit {
     this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
     this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
     $('#edit-feature-modal').modal('hide');
-    this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.idFeatureToEdit)
+    this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.featureToEdit.id)
         .subscribe( data => {
           this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
               this.features = data2.filter(f => f.release === 'pending');
+              if (this.features.length === 0) {
+                $('.features-span').text('No features found');
+              }
             });
         });
+  }
+
+  transferSkill($event: any) {
+    this.skillsNotAssigned = this.skillsNotAssigned.filter(obj => obj !== $event.dragData);
+    this.skillsToAssign.push($event.dragData);
+  }
+
+  removeSkill($event: any) {
+    this.skillsToAssign = this.skillsToAssign.filter(obj => obj !== $event.dragData);
+    this.skillsNotAssigned.push($event.dragData);
+  }
+
+  allowDropFunction(skills: any) {
+    return (dragData: any) => !skills.some(skill => skill === dragData);
   }
 
   deleteFeature(idFeature: number) {
@@ -152,6 +201,9 @@ export class ProjectComponent implements OnInit {
         this._replanAPIService.getFeaturesProject(this.idProject)
           .subscribe( data2 => {
             this.features = data2.filter(f => f.release === 'pending');
+            if (this.features.length === 0) {
+              $('.features-span').text('No features found');
+            }
           });
       });
   }
@@ -163,27 +215,41 @@ export class ProjectComponent implements OnInit {
           this._replanAPIService.getReleasesProject(this.idProject)
             .subscribe( data2 => {
               this.releases = data2;
+              if (this.releases.length === 0) {
+                $('.releases-span').text('No releases found');
+              } else {
+                $('.releases-span').text('');
+              }
             });
         });
   }
 
   editRelease(idRelease: number) {
     this.isEditReleaseButtonClicked = true;
-    this._replanAPIService.getRelease(this.idProject, idRelease)
-      .subscribe( data => {
-        this.idReleaseToEdit = data.id;
-        $('#edit-release-modal').modal();
-        $('#nameReleaseEdit').val(data.name);
-        $('#descriptionReleaseEdit').val(data.description);
-        if (data.starts_at) {
-          data.starts_at = data.starts_at.substring(0, 10);
-        }
-        $('#starts_atReleaseEdit').val(data.starts_at);
-        if (data.deadline) {
-          data.deadline = data.deadline.substring(0, 10);
-        }
-        $('#deadlineReleaseEdit').val(data.deadline);
-      });
+    const self = this;
+    this.resourcesNotAssigned = [];
+    this.resourcesToAssign = [];
+    this.releaseToEdit = this.releases.filter(f => f.id === idRelease)[0];
+    debugger;
+    this.releaseToEdit.resources.forEach(resource => {
+      this.resourcesToAssign.push(resource);
+    });
+    this.resources.forEach(resource => {
+      if (!self.resourcesToAssign.some(x => x.id === resource.id )) {
+        self.resourcesNotAssigned.push(resource);
+      }
+    });
+    $('#edit-release-modal').modal();
+    $('#nameReleaseEdit').val(this.releaseToEdit.name);
+    $('#descriptionReleaseEdit').val(this.releaseToEdit.description);
+    if (this.releaseToEdit.starts_at) {
+      this.releaseToEdit.starts_at = this.releaseToEdit.starts_at.substring(0, 10);
+    }
+    $('#starts_atReleaseEdit').val(this.releaseToEdit.starts_at);
+    if (this.releaseToEdit.deadline) {
+      this.releaseToEdit.deadline = this.releaseToEdit.deadline.substring(0, 10);
+    }
+    $('#deadlineReleaseEdit').val(this.releaseToEdit.deadline);
   }
 
   editReleaseAPI() {
@@ -192,13 +258,30 @@ export class ProjectComponent implements OnInit {
     this.formEditRelease.value.starts_at = $('#starts_atReleaseEdit').val();
     this.formEditRelease.value.deadline = $('#deadlineReleaseEdit').val();
     $('#edit-release-modal').modal('hide');
-    this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.idReleaseToEdit)
+    this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.releaseToEdit.id)
         .subscribe( data => {
           this._replanAPIService.getReleasesProject(this.idProject)
             .subscribe( data2 => {
               this.releases = data2;
+              if (this.releases.length === 0) {
+                $('.releases-span').text('No releases found');
+              }
             });
         });
+  }
+
+  transferResource($event: any) {
+    this.resourcesNotAssigned = this.resourcesNotAssigned.filter(obj => obj !== $event.dragData);
+    this.resourcesToAssign.push($event.dragData);
+  }
+
+  removeResource($event: any) {
+    this.resourcesToAssign = this.resourcesToAssign.filter(obj => obj !== $event.dragData);
+    this.resourcesNotAssigned.push($event.dragData);
+  }
+
+  allowDropFunctionResources(resources: any) {
+    return (dragData: any) => !resources.some(resource => resource === dragData);
   }
 
   deleteRelease(idRelease: number) {
@@ -207,6 +290,9 @@ export class ProjectComponent implements OnInit {
         this._replanAPIService.getReleasesProject(this.idProject)
           .subscribe( data2 => {
             this.releases = data2;
+            if (this.releases.length === 0) {
+              $('.releases-span').text('No releases found');
+            }
           });
       });
   }
@@ -222,6 +308,11 @@ export class ProjectComponent implements OnInit {
           this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
               this.features = data2.filter(f => f.release === 'pending');
+              if (this.features.length === 0) {
+                $('.features-span').text('No features found');
+              } else {
+                $('.features-span').text('');
+              }
             });
         });
   }

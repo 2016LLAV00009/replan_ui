@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { replanAPIService } from '../../services/replanAPI.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {DndModule} from 'ng2-dnd';
 
 declare var $: any;
 
@@ -20,6 +21,8 @@ export class ProjectSettingsComponent implements OnInit {
   resources: any;
   resourceToEdit: any;
   skills: any;
+  skillsNotAssigned: any;
+  skillsToAssign: any;
 
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute) {
@@ -33,10 +36,16 @@ export class ProjectSettingsComponent implements OnInit {
                   this._replanAPIService.getResourcesProject(this.idProject)
                   .subscribe( data => {
                     this.resources = data;
+                    if (this.resources.length === 0) {
+                      $('.resources-span').text('No resources found');
+                    }
                   });
                   this._replanAPIService.getSkillsProject(this.idProject)
                   .subscribe( data => {
                     this.skills = data;
+                    if (this.skills.length === 0) {
+                      $('.skills-span').text('No skills found');
+                    }
                   });
               });
 
@@ -107,6 +116,9 @@ export class ProjectSettingsComponent implements OnInit {
         this._replanAPIService.getSkillsProject(this.idProject)
           .subscribe( data2 => {
             this.skills = data2;
+            if (this.skills.length === 0) {
+              $('.skills-span').text('No skills found');
+            }
           });
       });
   }
@@ -122,6 +134,11 @@ export class ProjectSettingsComponent implements OnInit {
           this._replanAPIService.getSkillsProject(this.idProject)
             .subscribe( data2 => {
               this.skills = data2;
+              if (this.skills.length === 0) {
+                $('.skills-span').text('No skills found');
+              } else {
+                $('.skills-span').text('');
+              }
             });
         });
   }
@@ -137,35 +154,65 @@ export class ProjectSettingsComponent implements OnInit {
           this._replanAPIService.getResourcesProject(this.idProject)
             .subscribe( data2 => {
               this.resources = data2;
+              if (this.resources.length === 0) {
+                $('.resources-span').text('No resources found');
+              } else {
+                $('.resources-span').text('');
+              }
             });
         });
   }
 
   editResource(idResource: number) {
-      debugger;
-      this.resourceToEdit = this.resources.filter(f => f.id === idResource);
-      $('#edit-resource-modal').modal();
-      if (this.resourceToEdit[0] !== undefined) {
-         $('#nameResourceEdit').val(this.resourceToEdit[0].name);
-        $('#availabilityResourceEdit').val(this.resourceToEdit[0].availability);
-        $('#descriptionResourceEdit').val(this.resourceToEdit[0].description);
+    const self = this;
+    this.skillsNotAssigned = [];
+    this.skillsToAssign = [];
+    this.resourceToEdit = this.resources.filter(f => f.id === idResource)[0];
+    this.resourceToEdit.skills.forEach(skill => {
+      this.skillsToAssign.push(skill);
+    });
+    this.skills.forEach(skill => {
+      if (!self.skillsToAssign.some(x => x.id === skill.id )) {
+        self.skillsNotAssigned.push(skill);
       }
+    });
+    $('#edit-resource-modal').modal();
+    if (this.resourceToEdit !== undefined) {
+      $('#nameResourceEdit').val(this.resourceToEdit.name);
+      $('#availabilityResourceEdit').val(this.resourceToEdit.availability);
+      $('#descriptionResourceEdit').val(this.resourceToEdit.description);
+    }
   }
 
   editResourceAPI() {
-    /*this.formEditFeature.value.name = $('#nameFeatureEdit').val();
-    this.formEditFeature.value.description = $('#descriptionFeatureEdit').val();
-    this.formEditFeature.value.effort = $('#effortFeatureEdit').val();
-    this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
-    this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
-    $('#edit-feature-modal').modal('hide');
-    this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.idFeatureToEdit)
+    this.formEditResource.value.name = $('#nameResourceEdit').val();
+    this.formEditResource.value.availability = $('#availabilityResourceEdit').val();
+    this.formEditResource.value.description = $('#descriptionResourceEdit').val();
+    $('#edit-resource-modal').modal('hide');
+    this._replanAPIService.editResource(JSON.stringify(this.formEditResource.value), this.idProject, this.resourceToEdit.id)
         .subscribe( data => {
-          this._replanAPIService.getFeaturesProject(this.idProject)
+          this._replanAPIService.getResourcesProject(this.idProject)
             .subscribe( data2 => {
-              this.features = data2.filter(f => f.release === 'pending');
+              this.resources = data2;
+              if (this.resources.length === 0) {
+                $('.resources-span').text('No resources found');
+              }
             });
-        });*/
+        });
+  }
+
+  transferSkill($event: any) {
+    this.skillsNotAssigned = this.skillsNotAssigned.filter(obj => obj !== $event.dragData);
+    this.skillsToAssign.push($event.dragData);
+  }
+
+  removeSkill($event: any) {
+    this.skillsToAssign = this.skillsToAssign.filter(obj => obj !== $event.dragData);
+    this.skillsNotAssigned.push($event.dragData);
+  }
+
+  allowDropFunction(skills: any) {
+    return (dragData: any) => !skills.some(skill => skill === dragData);
   }
 
   deleteResource(id: number) {
@@ -174,6 +221,9 @@ export class ProjectSettingsComponent implements OnInit {
         this._replanAPIService.getResourcesProject(this.idProject)
           .subscribe( data2 => {
             this.resources = data2;
+            if (this.resources.length === 0) {
+              $('.resources-span').text('No resources found');
+            }
           });
       });
   }

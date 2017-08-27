@@ -25,6 +25,8 @@
     <h3>Skills</h3>
     <hr>
 
+    <div class="skills-span data-founded" [hidden]="skills?.length !== 0"></div>
+
     <div class="card-group row skills-container">
         <div class="col-sm-4 skill-card" *ngFor="let skill of skills"> 
             <div class="card text-center">
@@ -44,6 +46,8 @@
 
     <h3>Resources</h3>
     <hr>
+
+    <div class="resources-span data-founded" [hidden]="resources?.length !== 0"></div>
 
     <div class="card-group row resources-container">
         <div class="col-sm-3 resource-card" *ngFor="let resource of resources"> 
@@ -175,23 +179,57 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="formEditResource">
-                <div class="row">
-                    <div class="form-group col-md-6">
-                        <label for="name" class="form-control-label">Name *</label>
-                        <input type="text" class="form-control" id="nameResourceEdit" formControlName="name" required>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="name" class="form-control-label">Name *</label>
+                            <input type="text" class="form-control" id="nameResourceEdit" formControlName="name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="availability" class="form-control-label">Availability *</label>
+                            <input type="number" class="form-control" id="availabilityResourceEdit" formControlName="availability" required>
+                        </div>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="availability" class="form-control-label">Availability *</label>
-                        <input type="number" class="form-control" id="availabilityResourceEdit" formControlName="availability" required>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label for="description" class="form-control-label">Description</label>
+                            <textarea class="form-control" id="descriptionResourceEdit" formControlName="description"></textarea>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label for="description" class="form-control-label">Description</label>
-                        <textarea class="form-control" id="descriptionResourceEdit" formControlName="description"></textarea>
-                    </div>
-                </div>
                 </form>
+                <div class="resource-skills-container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Project's skills</h5>
+                            <hr>
+                            <ul class="list-group skills-management-container scroll-style"
+                                dnd-droppable
+                                [allowDrop]="allowDropFunction(skillsNotAssigned)"
+                                (onDropSuccess)="removeSkill($event)">
+                                <li class="list-group-item list-group-item-action" *ngFor="let skill of skillsNotAssigned"
+                                    dnd-draggable
+                                    [dragEnabled]="true"
+                                    [dragData]="(skill)">
+                                   {{skill.name}}
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Resource's skills</h5>
+                            <hr>
+                            <ul class="list-group skills-management-container scroll-style"
+                                dnd-droppable
+                                [allowDrop]="allowDropFunction(skillsToAssign)"
+                                (onDropSuccess)="transferSkill($event)">
+                                <li class="list-group-item list-group-item-action" *ngFor="let skill of skillsToAssign"
+                                    dnd-draggable
+                                    [dragEnabled]="true"
+                                    [dragData]="(skill)">
+                                    {{skill.name}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

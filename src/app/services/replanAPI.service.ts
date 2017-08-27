@@ -166,10 +166,22 @@ export class replanAPIService {
 
   /* RESOURCES */
 
-  getResourcesProject(id:number) {
+  getResourcesProject(id: number) {
     const url = this.projectsURL + id + '/resources';
     return this.http.get( url )
       .map(res => res.json() );
+  }
+
+  editResource(resource: string, idProject: number, idResource: number) {
+    const url = this.projectsURL + idProject + '/resources/' + idResource;
+    const body = resource;
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.put(url, body, { headers })
+      .map(res => {
+        return res.json();
+      });
   }
 
   deleteResourceFromProject(idProject: number, idResource: number) {

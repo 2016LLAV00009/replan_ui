@@ -39,7 +39,10 @@ export class HomeComponent implements OnInit {
         $('#loading_for_projects').hide();
         $('#addProjectDiv').removeClass('margin_to_loading');
         this.projects = data;
-      });
+        if (this.projects.length === 0) {
+          $('.projects-span').text('No projects found');
+        }
+  });
     this.isDeleteButtonClicked = false;
   }
 
@@ -61,6 +64,11 @@ export class HomeComponent implements OnInit {
           this._replanAPIService.getProjectsAPI()
             .subscribe( data2 => {
               this.projects = data2;
+              if (this.projects.length === 0) {
+                $('.projects-span').text('No projects found');
+              } else {
+                $('.projects-span').text('');
+              }
             });
         });
   }
@@ -72,6 +80,9 @@ export class HomeComponent implements OnInit {
         this._replanAPIService.getProjectsAPI()
           .subscribe( data2 => {
             this.projects = data2;
+            if (this.projects.length === 0) {
+              $('.projects-span').text('No projects found');
+            }
           });
       });
   }

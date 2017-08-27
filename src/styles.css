@@ -19,6 +19,11 @@ hr {
   color: grey !important;
 }
 
+.data-founded {
+  text-align: center;
+  color: #95979d;
+}
+
 /* LISTS STYLES */
 
 .list-item-content {
@@ -257,6 +262,20 @@ hr {
   width: 99% !important;
 }
 
+.feature-skills-container {
+  margin-top: 20px;
+}
+
+.release-resources-container {
+  margin-top: 20px;
+}
+
+.resources-management-container {
+  max-height: 250px; 
+  min-height: 250px; 
+  overflow-y: scroll; 
+}
+
 /* PROJECT SETTINGS COMPONENT */
 
 .project-settings {
@@ -339,6 +358,16 @@ hr {
 
 .resources-container .card-danger {
   background-color: rgba(217, 83, 79, 0.6);
+}
+
+.resource-skills-container {
+  margin-top: 20px;
+}
+
+.skills-management-container {
+  max-height: 250px; 
+  min-height: 250px; 
+  overflow-y: scroll; 
 }
 
 /* NAVBAR COMPONENT */

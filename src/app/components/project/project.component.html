@@ -6,6 +6,7 @@
       <h3>Features</h3>
       <hr>
       <div id="loading_for_features" class="loading_spinner"></div>
+      <div class="features-span data-founded" [hidden]="features?.length !== 0"></div>
       <ul class="features-container scroll-style" dnd-list="list">
         <li *ngFor="let feature of features" class="list-group-item list-group-item-action li-features"
             dnd-draggable
@@ -32,6 +33,7 @@
       <h3>Releases</h3>
       <hr>
       <div id="loading_for_releases" class="loading_spinner"></div>
+      <div class="releases-span data-founded" [hidden]="releases?.length !== 0"></div>
       <ul class="list-group releases-container scroll-style" dnd-list="list">
         <li *ngFor="let release of releases" class="list-group-item list-group-item-action li-releases"
             dnd-droppable
@@ -103,35 +105,75 @@
 </div>
 
 <!-- Modal to edit features -->
-<div class="modal fade" id="edit-feature-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="edit-feature-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edit Feature</h5>
       </div>
       <div class="modal-body">
         <form [formGroup]="formEditFeature">
-          <div class="form-group">
-            <label for="name" class="form-control-label">Name:</label>
-            <input type="text" class="form-control" id="nameFeatureEdit" formControlName="name">
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label for="name" class="form-control-label">Name:</label>
+              <input type="text" class="form-control" id="nameFeatureEdit" formControlName="name">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="effort" class="form-control-label">Effort:</label>
+              <input type="number" class="form-control" id="effortFeatureEdit" formControlName="effort">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="priority" class="form-control-label">Priority:</label>
+              <input type="number" class="form-control" id="priorityFeatureEdit" formControlName="priority">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="description" class="form-control-label">Description:</label>
-            <input type="text" class="form-control" id="descriptionFeatureEdit" formControlName="description">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="description" class="form-control-label">Description:</label>
+              <textarea class="form-control" id="descriptionFeatureEdit" formControlName="description"></textarea>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="effort" class="form-control-label">Effort:</label>
-            <input type="number" class="form-control" id="effortFeatureEdit" formControlName="effort">
-          </div>
-          <div class="form-group">
-            <label for="deadline" class="form-control-label">Deadline:</label>
-            <input type="date" class="form-control" id="deadlineFeatureEdit" formControlName="deadline">
-          </div>
-          <div class="form-group">
-            <label for="priority" class="form-control-label">Priority:</label>
-            <input type="number" class="form-control" id="priorityFeatureEdit" formControlName="priority">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="deadline" class="form-control-label">Deadline:</label>
+              <input type="date" class="form-control" id="deadlineFeatureEdit" formControlName="deadline">
+            </div>
           </div>
         </form>
+        <div class="feature-skills-container">
+          <div class="row">
+              <div class="col-md-6">
+                  <h5>Project's skills</h5>
+                  <hr>
+                  <ul class="list-group skills-management-container scroll-style"
+                      dnd-droppable
+                      [allowDrop]="allowDropFunction(skillsNotAssigned)"
+                      (onDropSuccess)="removeSkill($event)">
+                      <li class="list-group-item list-group-item-action" *ngFor="let skill of skillsNotAssigned"
+                          dnd-draggable
+                          [dragEnabled]="true"
+                          [dragData]="(skill)">
+                          {{skill.name}}
+                      </li>
+                  </ul>
+              </div>
+              <div class="col-md-6">
+                  <h5>Feature's required skills</h5>
+                  <hr>
+                  <ul class="list-group skills-management-container scroll-style"
+                      dnd-droppable
+                      [allowDrop]="allowDropFunction(skillsToAssign)"
+                      (onDropSuccess)="transferSkill($event)">
+                      <li class="list-group-item list-group-item-action" *ngFor="let skill of skillsToAssign"
+                          dnd-draggable
+                          [dragEnabled]="true"
+                          [dragData]="(skill)">
+                          {{skill.name}}
+                      </li>
+                  </ul>
+              </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -177,31 +219,69 @@
 </div>
 
 <!-- Modal to edit releases -->
-<div class="modal fade" id="edit-release-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="edit-release-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Edit Release</h5>
       </div>
       <div class="modal-body">
         <form [formGroup]="formEditRelease">
-          <div class="form-group">
-            <label for="name" class="form-control-label">Name:</label>
-            <input type="text" class="form-control" id="nameReleaseEdit" formControlName="name">
+          <div class="row">
+            <div class="form-group col-md-4">
+              <label for="name" class="form-control-label">Name:</label>
+              <input type="text" class="form-control" id="nameReleaseEdit" formControlName="name">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="starts_at" class="form-control-label">Starts at:</label>
+              <input type="date" class="form-control" id="starts_atReleaseEdit" formControlName="starts_at">
+            </div>
+            <div class="form-group col-md-4">
+              <label for="deadline" class="form-control-label">Deadline:</label>
+              <input type="date" class="form-control" id="deadlineReleaseEdit" formControlName="deadline">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="description" class="form-control-label">Description:</label>
-            <input type="text" class="form-control" id="descriptionReleaseEdit" formControlName="description">
-          </div>
-          <div class="form-group">
-            <label for="starts_at" class="form-control-label">Starts at:</label>
-            <input type="date" class="form-control" id="starts_atReleaseEdit" formControlName="starts_at">
-          </div>
-          <div class="form-group">
-            <label for="deadline" class="form-control-label">Deadline:</label>
-            <input type="date" class="form-control" id="deadlineReleaseEdit" formControlName="deadline">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="description" class="form-control-label">Description:</label>
+              <textarea class="form-control" id="descriptionReleaseEdit" formControlName="description"></textarea>
+            </div>
           </div>
         </form>
+        <div class="release-resources-container">
+          <div class="row">
+              <div class="col-md-6">
+                  <h5>Project's resources</h5>
+                  <hr>
+                  <ul class="list-group resources-management-container scroll-style"
+                      dnd-droppable
+                      [allowDrop]="allowDropFunctionResources(resourcesNotAssigned)"
+                      (onDropSuccess)="removeResource($event)">
+                      <li class="list-group-item list-group-item-action" *ngFor="let resource of resourcesNotAssigned"
+                          dnd-draggable
+                          [dragEnabled]="true"
+                          [dragData]="(resource)">
+                          {{resource.name}}
+                      </li>
+                  </ul>
+              </div>
+              <div class="col-md-6">
+                  <h5>Release's resources</h5>
+                  <hr>
+                  <ul class="list-group resources-management-container scroll-style"
+                      dnd-droppable
+                      [allowDrop]="allowDropFunctionResources(resourcesToAssign)"
+                      (onDropSuccess)="transferResource($event)">
+                      <li class="list-group-item list-group-item-action" *ngFor="let resource of resourcesToAssign"
+                          dnd-draggable
+                          [dragEnabled]="true"
+                          [dragData]="(resource)">
+                          {{resource.name}}
+                      </li>
+                  </ul>
+              </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
