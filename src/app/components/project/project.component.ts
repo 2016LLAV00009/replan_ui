@@ -59,12 +59,12 @@ export class ProjectComponent implements OnInit {
                 });
 
                 this.formFeature = new FormGroup({
-                  'code': new FormControl('', Validators.required),
-                  'name': new FormControl('', Validators.required),
+                  'code': new FormControl(''),
+                  'name': new FormControl(''),
                   'description': new FormControl(''),
-                  'effort': new FormControl('', Validators.required),
-                  'deadline': new FormControl('', Validators.required),
-                  'priority': new FormControl('', Validators.required)
+                  'effort': new FormControl(''),
+                  'deadline': new FormControl(''),
+                  'priority': new FormControl('')
                 });
 
                 this.formEditFeature = new FormGroup({
@@ -76,10 +76,10 @@ export class ProjectComponent implements OnInit {
                 });
 
                 this.formRelease = new FormGroup({
-                  'name': new FormControl('', Validators.required),
-                  'description': new FormControl('', Validators.required),
-                  'starts_at': new FormControl('', Validators.required),
-                  'deadline': new FormControl('', Validators.required)
+                  'name': new FormControl(''),
+                  'description': new FormControl(''),
+                  'starts_at': new FormControl(''),
+                  'deadline': new FormControl('')
                 });
 
                 this.formEditRelease = new FormGroup({
@@ -159,11 +159,11 @@ export class ProjectComponent implements OnInit {
       }
     });
     $('#edit-feature-modal').modal();
-    $('#nameFeatureEdit').val(this.featureToEdit.name);
-    $('#descriptionFeatureEdit').val(this.featureToEdit.description);
-    $('#effortFeatureEdit').val(this.featureToEdit.effort);
-    $('#deadlineFeatureEdit').val(this.featureToEdit.deadline);
-    $('#priorityFeatureEdit').val(this.featureToEdit.priority);
+    this.formEditFeature.controls['name'].setValue(this.featureToEdit.name);
+    this.formEditFeature.controls['description'].setValue(this.featureToEdit.descriptionname);
+    this.formEditFeature.controls['effort'].setValue(this.featureToEdit.effort);
+    this.formEditFeature.controls['deadline'].setValue(this.featureToEdit.deadline);
+    this.formEditFeature.controls['priority'].setValue(this.featureToEdit.priority);
   }
 
   editFeatureAPI() {
@@ -250,16 +250,16 @@ export class ProjectComponent implements OnInit {
       }
     });
     $('#edit-release-modal').modal();
-    $('#nameReleaseEdit').val(this.releaseToEdit.name);
-    $('#descriptionReleaseEdit').val(this.releaseToEdit.description);
+    this.formEditRelease.controls['name'].setValue(this.releaseToEdit.name);
+    this.formEditRelease.controls['description'].setValue(this.releaseToEdit.description);
     if (this.releaseToEdit.starts_at) {
       this.releaseToEdit.starts_at = this.releaseToEdit.starts_at.substring(0, 10);
     }
-    $('#starts_atReleaseEdit').val(this.releaseToEdit.starts_at);
+    this.formEditRelease.controls['starts_at'].setValue(this.releaseToEdit.starts_at);
     if (this.releaseToEdit.deadline) {
       this.releaseToEdit.deadline = this.releaseToEdit.deadline.substring(0, 10);
     }
-    $('#deadlineReleaseEdit').val(this.releaseToEdit.deadline);
+    this.formEditRelease.controls['deadline'].setValue(this.releaseToEdit.deadline);
   }
 
   editReleaseAPI() {

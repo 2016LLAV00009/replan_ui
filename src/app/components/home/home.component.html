@@ -32,39 +32,45 @@
 </div>
 
 <!-- Modal to add projects -->
-<div class="modal fade" id="add-project-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="add-project-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Add new Project</h5>
       </div>
       <div class="modal-body">
         <form [formGroup]="formProject">
-          <div class="form-group">
-            <label for="name" class="form-control-label">Name:</label>
-            <input type="text" class="form-control" id="nameProject" formControlName="name">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="name" class="form-control-label">Name *</label>
+              <input type="text" class="form-control" id="nameProject" formControlName="name" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="effort_unit" class="form-control-label">Effort unit *</label>
+              <input type="text" class="form-control" id="effort_unit" formControlName="effort_unit" required>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="description" class="form-control-label">Description:</label>
-            <textarea class="form-control" id="descriptionProject" formControlName="description"></textarea>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="hours_per_effort_unit" class="form-control-label">Hours per effort unit *</label>
+              <input type="number" class="form-control" id="hours_per_effort_unit" formControlName="hours_per_effort_unit" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource *</label>
+              <input type="number" class="form-control" id="hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource" required>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="effort_unit" class="form-control-label">Effort unit:</label>
-            <input type="text" class="form-control" id="effort_unit" formControlName="effort_unit">
-          </div>
-          <div class="form-group">
-            <label for="hours_per_effort_unit" class="form-control-label">Hours per effort unit:</label>
-            <input type="number" class="form-control" id="hours_per_effort_unit" formControlName="hours_per_effort_unit">
-          </div>
-          <div class="form-group">
-            <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource:</label>
-            <input type="number" class="form-control" id="hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource">
+          <div class="row">
+            <div class="form-group col-md-12">
+              <label for="description" class="form-control-label">Description</label>
+              <textarea class="form-control" id="descriptionProject" formControlName="description"></textarea>
+            </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button (click)="addNewProject()" type="button" class="btn btn-primary">Add Project</button>
+        <button [disabled]="!formProject.valid" (click)="addNewProject()" type="button" class="btn btn-primary">Add Project</button>
       </div>
     </div>
   </div>

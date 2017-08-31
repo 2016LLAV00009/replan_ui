@@ -184,6 +184,24 @@ export class replanAPIService {
       });
   }
 
+  deleteSkillsFromResource(idProject: number, idResource: number) {
+    const url = this.projectsURL + idProject + '/resources/' + idResource + '/skills';
+    return this.http.delete( url )
+      .map(res => res.json());
+  }
+
+  addSkillsToResource(skills: string, idProject: number, idResource: number) {
+    const url = this.projectsURL + idProject + '/resources/' + idResource + '/skills';
+    const body = skills;
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, body, { headers })
+      .map(res => {
+        return res.json();
+      });
+  }
+
   deleteResourceFromProject(idProject: number, idResource: number) {
     const url = this.projectsURL + idProject + '/resources/' + idResource;
     return this.http.delete( url )

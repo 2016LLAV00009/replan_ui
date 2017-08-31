@@ -62,8 +62,7 @@ hr {
 }
 
 .li-features {
-  margin-bottom: 10px;
-  padding: 0 !important;
+  margin-bottom: 5px;
 }
 
 .li-releases {
@@ -250,6 +249,7 @@ hr {
 
 .features-container {
   max-height: 380px;
+  margin-bottom: 1rem;
   overflow-y: scroll;
 }
 
@@ -398,6 +398,14 @@ hr {
     padding: 15px;
 }
 
+.modal-body label {
+  color: black;
+}
+
+.modal-content h5 {
+  color: black;
+}
+
 .custom-modal-header {
     background-color: #219161;
     color: #fff;
@@ -459,28 +467,25 @@ hr {
 /* Drag & Drop Styles */
 
 .dnd-drag-start {
-    -moz-transform:scale(0.8);
-    -webkit-transform:scale(0.8);
-    transform:scale(0.8);
-    opacity:0.7;
-    border: 2px dashed #000;
+    -moz-transform:scale(0.9);
+    -webkit-transform:scale(0.9);
+    transform:scale(0.9);
+    border: 2px solid #ed8b00;
 }
 
 .dnd-drag-enter {
     opacity:0.7;
-    border: 2px dashed #000;
 }
 
 .dnd-drag-over {
-    border: 2px dashed #000;
+    border: 2px solid #ed8b00; 
 }
 
 .dnd-sortable-drag {
   -moz-transform:scale(0.9);
   -webkit-transform:scale(0.9);
   transform:scale(0.9);
-  opacity:0.7;
-  border: 1px dashed #000;
+  border: 2px solid #ed8b00;
 }
 
 /* Loading modal styles */

@@ -23,6 +23,7 @@ export class ProjectSettingsComponent implements OnInit {
   skills: any;
   skillsNotAssigned: any;
   skillsToAssign: any;
+  skillsModified: any;
 
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute) {
@@ -51,6 +52,25 @@ export class ProjectSettingsComponent implements OnInit {
                 'name': new FormControl(''),
                 'description': new FormControl(''),
                 'availability': new FormControl('')
+              });
+
+              this.formEditResource.valueChanges
+              .subscribe((val) => {
+                debugger;
+                if (this.formEditResource.valid) {
+                  
+                } else {
+                  
+                }
+              });
+              this.formEditResource.statusChanges
+              .subscribe((val) => {
+                debugger;
+                if (this.formEditResource.valid) {
+                  
+                } else {
+                  
+                }
               });
   }
 
@@ -95,9 +115,9 @@ export class ProjectSettingsComponent implements OnInit {
 
   editProject() {
       $('#edit-project-modal').modal();
-      $('#edit_effort_unit').val(this.project.effort_unit);
-      $('#edit_hours_per_effort_unit').val(this.project.hours_per_effort_unit);
-      $('#edit_hours_per_week_and_full_time_resource').val(this.project.hours_per_week_and_full_time_resource);
+      this.formEditProject.controls['effort_unit'].setValue(this.project.effort_unit);
+      this.formEditProject.controls['hours_per_effort_unit'].setValue(this.project.hours_per_effort_unit);
+      this.formEditProject.controls['hours_per_week_and_full_time_resource'].setValue(this.project.hours_per_week_and_full_time_resource);
   }
 
   editProjectAPI() {
@@ -169,6 +189,7 @@ export class ProjectSettingsComponent implements OnInit {
 
   editResource(idResource: number) {
     const self = this;
+    this.skillsModified = false;
     this.skillsNotAssigned = [];
     this.skillsToAssign = [];
     this.resourceToEdit = this.resources.filter(f => f.id === idResource)[0];
@@ -182,9 +203,9 @@ export class ProjectSettingsComponent implements OnInit {
     });
     $('#edit-resource-modal').modal();
     if (this.resourceToEdit !== undefined) {
-      $('#nameResourceEdit').val(this.resourceToEdit.name);
-      $('#availabilityResourceEdit').val(this.resourceToEdit.availability);
-      $('#descriptionResourceEdit').val(this.resourceToEdit.description);
+      this.formEditResource.controls['name'].setValue(this.resourceToEdit.name);
+      this.formEditResource.controls['availability'].setValue(this.resourceToEdit.availability);
+      this.formEditResource.controls['description'].setValue(this.resourceToEdit.description);
     }
   }
 
@@ -193,31 +214,53 @@ export class ProjectSettingsComponent implements OnInit {
     this.formEditResource.value.availability = $('#availabilityResourceEdit').val();
     this.formEditResource.value.description = $('#descriptionResourceEdit').val();
     $('#edit-resource-modal').modal('hide');
-    let objArray = [];
-    this.skillsToAssign.forEach(skill => {
-      let obj = {
-        id: skill.id
-      };
-      objArray.push(obj);
-    });
     this._replanAPIService.editResource(JSON.stringify(this.formEditResource.value), this.idProject, this.resourceToEdit.id)
         .subscribe( data => {
-          this._replanAPIService.getResourcesProject(this.idProject)
+          if (this.skillsModified) {
+            debugger;
+            this._replanAPIService.deleteSkillsFromResource(this.idProject, this.resourceToEdit.id)
+              .subscribe( data => {
+                debugger;
+                let objArray = [];
+                this.skillsToAssign.forEach(skill => {
+                  let obj = {
+                    id: skill.id
+                  };
+                  objArray.push(obj);
+                });
+                this._replanAPIService.addSkillsToResource(objArray.toString(), this.idProject, this.resourceToEdit.id)
+                .subscribe( data => {
+                  debugger;
+                  this._replanAPIService.getResourcesProject(this.idProject)
+                  .subscribe( data2 => {
+                    this.resources = data2;
+                    if (this.resources.length === 0) {
+                      $('.resources-span').text('No resources found');
+                    }
+                  });
+                });
+              });
+
+          } else {
+            this._replanAPIService.getResourcesProject(this.idProject)
             .subscribe( data2 => {
               this.resources = data2;
               if (this.resources.length === 0) {
                 $('.resources-span').text('No resources found');
               }
             });
+          }
         });
   }
 
   transferSkill($event: any) {
+    this.skillsModified = true;
     this.skillsNotAssigned = this.skillsNotAssigned.filter(obj => obj !== $event.dragData);
     this.skillsToAssign.push($event.dragData);
   }
 
   removeSkill($event: any) {
+    this.skillsModified = true;
     this.skillsToAssign = this.skillsToAssign.filter(obj => obj !== $event.dragData);
     this.skillsNotAssigned.push($event.dragData);
   }

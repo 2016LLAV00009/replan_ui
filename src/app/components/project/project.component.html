@@ -7,7 +7,7 @@
       <hr>
       <div id="loading_for_features" class="loading_spinner"></div>
       <div class="features-span data-founded" [hidden]="features?.length !== 0"></div>
-      <ul class="features-container scroll-style" dnd-list="list">
+      <ul class="list-group features-container scroll-style" dnd-list="list">
         <li *ngFor="let feature of features" class="list-group-item list-group-item-action li-features"
             dnd-draggable
             [dragEnabled]="true"
@@ -72,33 +72,33 @@
         <form [formGroup]="formFeature">
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="code" class="form-control-label">Code:</label>
-              <input type="number" class="form-control" id="code" formControlName="code">
+              <label for="code" class="form-control-label">Code *</label>
+              <input type="number" class="form-control" id="code" formControlName="code" required>
             </div>
             <div class="form-group col-md-6">
-              <label for="name" class="form-control-label">Name:</label>
-              <input type="text" class="form-control" id="nameFeature" formControlName="name">
+              <label for="name" class="form-control-label">Name *</label>
+              <input type="text" class="form-control" id="nameFeature" formControlName="name" required>
             </div>
           </div>
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="effort" class="form-control-label">Effort:</label>
+              <label for="effort" class="form-control-label">Effort</label>
               <input type="number" class="form-control" id="effort" formControlName="effort">
             </div>
             <div class="form-group col-md-6">
-              <label for="priority" class="form-control-label">Priority:</label>
+              <label for="priority" class="form-control-label">Priority</label>
               <input type="number" class="form-control" id="priority" formControlName="priority">
             </div>
           </div>
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="description" class="form-control-label">Description:</label>
+              <label for="description" class="form-control-label">Description</label>
               <textarea class="form-control" id="descriptionFeature" formControlName="description"></textarea>
             </div>
           </div>
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="deadline" class="form-control-label">Deadline:</label>
+              <label for="deadline" class="form-control-label">Deadline</label>
               <input type="date" class="form-control" id="deadlineFeature" formControlName="deadline">
             </div>
           </div>
@@ -106,7 +106,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button (click)="addNewFeature()" type="button" class="btn btn-primary">Add Feature</button>
+        <button [disabled]="!formFeature.valid" (click)="addNewFeature()" type="button" class="btn btn-primary">Add Feature</button>
       </div>
     </div>
   </div>
@@ -123,27 +123,27 @@
         <form [formGroup]="formEditFeature">
           <div class="row">
             <div class="form-group col-md-4">
-              <label for="name" class="form-control-label">Name:</label>
-              <input type="text" class="form-control" id="nameFeatureEdit" formControlName="name">
+              <label for="name" class="form-control-label">Name *</label>
+              <input type="text" class="form-control" id="nameFeatureEdit" formControlName="name" required>
             </div>
             <div class="form-group col-md-4">
-              <label for="effort" class="form-control-label">Effort:</label>
+              <label for="effort" class="form-control-label">Effort</label>
               <input type="number" class="form-control" id="effortFeatureEdit" formControlName="effort">
             </div>
             <div class="form-group col-md-4">
-              <label for="priority" class="form-control-label">Priority:</label>
+              <label for="priority" class="form-control-label">Priority</label>
               <input type="number" class="form-control" id="priorityFeatureEdit" formControlName="priority">
             </div>
           </div>
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="description" class="form-control-label">Description:</label>
+              <label for="description" class="form-control-label">Description</label>
               <textarea class="form-control" id="descriptionFeatureEdit" formControlName="description"></textarea>
             </div>
           </div>
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="deadline" class="form-control-label">Deadline:</label>
+              <label for="deadline" class="form-control-label">Deadline</label>
               <input type="date" class="form-control" id="deadlineFeatureEdit" formControlName="deadline">
             </div>
           </div>
@@ -185,7 +185,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button (click)="editFeatureAPI()" type="button" class="btn btn-primary">Edit Feature</button>
+        <button [disabled]="!formEditFeature.valid" (click)="editFeatureAPI()" type="button" class="btn btn-primary">Edit Feature</button>
       </div>
     </div>
   </div>
@@ -202,21 +202,21 @@
         <form [formGroup]="formRelease">
           <div class="row">
             <div class="form-group col-md-4">
-              <label for="name" class="form-control-label">Name:</label>
-              <input type="text" class="form-control" id="nameRelease" formControlName="name">
+              <label for="name" class="form-control-label">Name *</label>
+              <input type="text" class="form-control" id="nameRelease" formControlName="name" required>
             </div>
             <div class="form-group col-md-4">
-              <label for="starts_at" class="form-control-label">Starts at:</label>
-              <input type="date" class="form-control" id="starts_atRelease" formControlName="starts_at">
+              <label for="starts_at" class="form-control-label">Starts at *</label>
+              <input type="date" class="form-control" id="starts_atRelease" formControlName="starts_at" required>
             </div>
             <div class="form-group col-md-4">
-              <label for="deadline" class="form-control-label">Deadline:</label>
-              <input type="date" class="form-control" id="deadlineRelease" formControlName="deadline">
+              <label for="deadline" class="form-control-label">Deadline *</label>
+              <input type="date" class="form-control" id="deadlineRelease" formControlName="deadline" required>
             </div>
           </div>
           <div class="row">
             <div class="form-group col-md-12">
-              <label for="description" class="form-control-label">Description:</label>
+              <label for="description" class="form-control-label">Description</label>
               <textarea class="form-control" id="descriptionRelease" formControlName="description"></textarea>
             </div>
           </div>
@@ -224,7 +224,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button (click)="addNewRelease()" type="button" class="btn btn-primary">Add Release</button>
+        <button [disabled]="!formRelease.valid" (click)="addNewRelease()" type="button" class="btn btn-primary">Add Release</button>
       </div>
     </div>
   </div>
@@ -241,16 +241,16 @@
         <form [formGroup]="formEditRelease">
           <div class="row">
             <div class="form-group col-md-4">
-              <label for="name" class="form-control-label">Name:</label>
-              <input type="text" class="form-control" id="nameReleaseEdit" formControlName="name">
+              <label for="name" class="form-control-label">Name *</label>
+              <input type="text" class="form-control" id="nameReleaseEdit" formControlName="name" required>
             </div>
             <div class="form-group col-md-4">
-              <label for="starts_at" class="form-control-label">Starts at:</label>
-              <input type="date" class="form-control" id="starts_atReleaseEdit" formControlName="starts_at">
+              <label for="starts_at" class="form-control-label">Starts at *</label>
+              <input type="date" class="form-control" id="starts_atReleaseEdit" formControlName="starts_at" required>
             </div>
             <div class="form-group col-md-4">
-              <label for="deadline" class="form-control-label">Deadline:</label>
-              <input type="date" class="form-control" id="deadlineReleaseEdit" formControlName="deadline">
+              <label for="deadline" class="form-control-label">Deadline *</label>
+              <input type="date" class="form-control" id="deadlineReleaseEdit" formControlName="deadline" required>
             </div>
           </div>
           <div class="row">
@@ -297,7 +297,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button (click)="editReleaseAPI()" type="button" class="btn btn-primary">Edit Release</button>
+        <button [disabled]="!formEditRelease.valid" (click)="editReleaseAPI()" type="button" class="btn btn-primary">Edit Release</button>
       </div>
     </div>
   </div>
