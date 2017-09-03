@@ -103,7 +103,7 @@
                     </div>
                     <div class="form-group">
                         <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource *</label>
-                        <input type="number" class="form-control" id="edit_hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource" required>
+                        <input type="number" class="form-control" id="edit_hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource" [max]="60" [min]="0" required>
                     </div>
                 </form>
             </div>
@@ -157,7 +157,7 @@
                 </div>
                 <div class="form-group">
                     <label for="availability" class="form-control-label">Availability *</label>
-                    <input type="number" class="form-control" id="availabilityResource" formControlName="availability" required>
+                    <input type="number" class="form-control" id="availabilityResource" formControlName="availability" [max]="100" [min]="0" required>
                 </div>
                 <div class="form-group">
                     <label for="description" class="form-control-label">Description</label>
@@ -189,7 +189,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="availability" class="form-control-label">Availability *</label>
-                            <input type="number" class="form-control" id="availabilityResourceEdit" formControlName="availability" required>
+                            <input type="number" class="form-control" id="availabilityResourceEdit" formControlName="availability" [max]="100" [min]="0" required>
                         </div>
                     </div>
                     <div class="row">

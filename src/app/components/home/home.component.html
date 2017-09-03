@@ -57,7 +57,7 @@
             </div>
             <div class="form-group col-md-6">
               <label for="hours_per_week_and_full_time_resource" class="form-control-label">Hours per week and full time resource *</label>
-              <input type="number" class="form-control" id="hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource" required>
+              <input type="number" class="form-control" id="hours_per_week_and_full_time_resource" formControlName="hours_per_week_and_full_time_resource" [max]="60" [min]="0" required>
             </div>
           </div>
           <div class="row">

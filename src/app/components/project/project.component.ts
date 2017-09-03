@@ -3,6 +3,7 @@ import { replanAPIService } from '../../services/replanAPI.service';
 import { GlobalDataService } from '../../services/globaldata.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 import {DndModule} from 'ng2-dnd';
 import { Router } from '@angular/router';
 
@@ -30,11 +31,13 @@ export class ProjectComponent implements OnInit {
   skillsNotAssigned: any;
   skillsToAssign: any;
   featureToEdit: any;
+  skillsModified: any;
 
   resources: any;
   resourcesNotAssigned: any;
   resourcesToAssign: any;
   releaseToEdit: any;
+  resourcesModified: any;
 
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute,
@@ -146,6 +149,7 @@ export class ProjectComponent implements OnInit {
 
   editFeature(idFeature: number) {
     this.isEditFeatureButtonClicked = true;
+    this.skillsModified = false;
     const self = this;
     this.skillsNotAssigned = [];
     this.skillsToAssign = [];
@@ -172,32 +176,50 @@ export class ProjectComponent implements OnInit {
     this.formEditFeature.value.effort = $('#effortFeatureEdit').val();
     this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
     this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
-    let objArray = [];
-    this.skillsToAssign.forEach(skill => {
-      let obj = {
-        id: skill.id
-      };
-      objArray.push(obj);
-    });
     $('#edit-feature-modal').modal('hide');
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.featureToEdit.id)
         .subscribe( data => {
-          this._replanAPIService.getFeaturesProject(this.idProject)
+          if (this.skillsModified) {
+            this._replanAPIService.deleteSkillsFromFeature(this.idProject, this.featureToEdit.id)
+              .subscribe( data => {
+                let objArray = [];
+                this.skillsToAssign.forEach(skill => {
+                  let obj = {
+                    id: skill.id
+                  };
+                  objArray.push(obj);
+                });
+                this._replanAPIService.addSkillsToFeature(objArray.toString(), this.idProject, this.featureToEdit.id)
+                .subscribe( data => {
+                  this._replanAPIService.getFeaturesProject(this.idProject)
+                  .subscribe( data2 => {
+                    this.features = data2.filter(f => f.release === 'pending');
+                    if (this.features.length === 0) {
+                      $('.features-span').text('No features found');
+                    }
+                  });
+                });
+              });
+          } else {
+            this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
               this.features = data2.filter(f => f.release === 'pending');
               if (this.features.length === 0) {
                 $('.features-span').text('No features found');
               }
             });
+          }
         });
   }
 
   transferSkill($event: any) {
+    this.skillsModified = true;
     this.skillsNotAssigned = this.skillsNotAssigned.filter(obj => obj !== $event.dragData);
     this.skillsToAssign.push($event.dragData);
   }
 
   removeSkill($event: any) {
+    this.skillsModified = true;
     this.skillsToAssign = this.skillsToAssign.filter(obj => obj !== $event.dragData);
     this.skillsNotAssigned.push($event.dragData);
   }
@@ -237,6 +259,7 @@ export class ProjectComponent implements OnInit {
 
   editRelease(idRelease: number) {
     this.isEditReleaseButtonClicked = true;
+    this.resourcesModified = false;
     const self = this;
     this.resourcesNotAssigned = [];
     this.resourcesToAssign = [];
@@ -268,31 +291,49 @@ export class ProjectComponent implements OnInit {
     this.formEditRelease.value.starts_at = $('#starts_atReleaseEdit').val();
     this.formEditRelease.value.deadline = $('#deadlineReleaseEdit').val();
     $('#edit-release-modal').modal('hide');
-    let objArray = [];
-    this.resourcesToAssign.forEach(resource => {
-      let obj = {
-        id: resource.id
-      };
-      objArray.push(obj);
-    });
     this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.releaseToEdit.id)
         .subscribe( data => {
-          this._replanAPIService.getReleasesProject(this.idProject)
-            .subscribe( data2 => {
-              this.releases = data2;
-              if (this.releases.length === 0) {
-                $('.releases-span').text('No releases found');
-              }
+          if (this.resourcesModified) {
+            this._replanAPIService.deleteResourcesFromRelease(this.idProject, this.releaseToEdit.id)
+            .subscribe( data => {
+              let objArray = [];
+              this.resourcesToAssign.forEach(resource => {
+                let obj = {
+                  id: resource.id
+                };
+                objArray.push(obj);
+              });
+              this._replanAPIService.addResourcesToRelease(objArray.toString(), this.idProject, this.releaseToEdit.id)
+              .subscribe( data => {
+                this._replanAPIService.getReleasesProject(this.idProject)
+                  .subscribe( data2 => {
+                    this.releases = data2;
+                    if (this.releases.length === 0) {
+                      $('.releases-span').text('No releases found');
+                    }
+                  });
+              });
             });
+          } else {
+            this._replanAPIService.getReleasesProject(this.idProject)
+              .subscribe( data2 => {
+                this.releases = data2;
+                if (this.releases.length === 0) {
+                  $('.releases-span').text('No releases found');
+                }
+              });
+          }
         });
   }
 
   transferResource($event: any) {
+    this.resourcesModified = true;
     this.resourcesNotAssigned = this.resourcesNotAssigned.filter(obj => obj !== $event.dragData);
     this.resourcesToAssign.push($event.dragData);
   }
 
   removeResource($event: any) {
+    this.resourcesModified = true;
     this.resourcesToAssign = this.resourcesToAssign.filter(obj => obj !== $event.dragData);
     this.resourcesNotAssigned.push($event.dragData);
   }

@@ -82,6 +82,24 @@ export class replanAPIService {
       });
   }
 
+  deleteSkillsFromFeature(idProject: number, idFeature: number) {
+    const url = this.projectsURL + idProject + '/features/' + idFeature + '/skills';
+    return this.http.delete( url )
+      .map(res => res.json());
+  }
+
+  addSkillsToFeature(skills: string, idProject: number, idFeature: number) {
+    const url = this.projectsURL + idProject + '/features/' + idFeature + '/skills';
+    const body = skills;
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, body, { headers })
+      .map(res => {
+        return res.json();
+      });
+  }
+
   deleteFeature(idProject: number, idFeature: number) {
     const url = this.projectsURL + idProject + '/features/' + idFeature;
     return this.http.delete( url )
@@ -134,6 +152,24 @@ export class replanAPIService {
     return this.http.put(url, body, { headers })
       .map(res => {
         console.log(res.json());
+        return res.json();
+      });
+  }
+
+  deleteResourcesFromRelease(idProject: number, idRelease: number) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/resources';
+    return this.http.delete( url )
+      .map(res => res.json());
+  }
+
+  addResourcesToRelease(resources: string, idProject: number, idRelease: number) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/resources';
+    const body = resources;
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, body, { headers })
+      .map(res => {
         return res.json();
       });
   }
@@ -204,12 +240,6 @@ export class replanAPIService {
 
   deleteResourceFromProject(idProject: number, idResource: number) {
     const url = this.projectsURL + idProject + '/resources/' + idResource;
-    return this.http.delete( url )
-      .map(res => res.json());
-  }
-
-  deleteResourcesFromRelease(idProject: number, idRelease: number) {
-    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/resources';
     return this.http.delete( url )
       .map(res => res.json());
   }

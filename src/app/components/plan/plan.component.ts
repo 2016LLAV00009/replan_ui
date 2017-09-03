@@ -30,6 +30,7 @@ export class PlanComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger;
     $('li.nav-item').removeClass('active');
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { replanAPIService } from '../../services/replanAPI.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CustomValidators } from 'ng2-validation';
 import {DndModule} from 'ng2-dnd';
 
 declare var $: any;
@@ -217,10 +218,8 @@ export class ProjectSettingsComponent implements OnInit {
     this._replanAPIService.editResource(JSON.stringify(this.formEditResource.value), this.idProject, this.resourceToEdit.id)
         .subscribe( data => {
           if (this.skillsModified) {
-            debugger;
             this._replanAPIService.deleteSkillsFromResource(this.idProject, this.resourceToEdit.id)
               .subscribe( data => {
-                debugger;
                 let objArray = [];
                 this.skillsToAssign.forEach(skill => {
                   let obj = {
@@ -230,7 +229,6 @@ export class ProjectSettingsComponent implements OnInit {
                 });
                 this._replanAPIService.addSkillsToResource(objArray.toString(), this.idProject, this.resourceToEdit.id)
                 .subscribe( data => {
-                  debugger;
                   this._replanAPIService.getResourcesProject(this.idProject)
                   .subscribe( data2 => {
                     this.resources = data2;

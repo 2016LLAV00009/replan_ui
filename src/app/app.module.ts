@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {DndModule} from 'ng2-dnd';
+import { CustomFormsModule } from 'ng2-validation';
 
 // Routes
 import { app_routing } from './app.routes';
@@ -32,6 +33,7 @@ import { ProjectSettingsComponent } from './components/projectSettings/projectse
   imports: [
     BrowserModule,
     FormsModule,
+    CustomFormsModule,
     ReactiveFormsModule,
     HttpModule,
     app_routing,
