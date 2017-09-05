@@ -82,9 +82,17 @@ export class replanAPIService {
       });
   }
 
-  deleteSkillsFromFeature(idProject: number, idFeature: number) {
+  deleteSkillsFromFeature(idProject: number, idFeature: number, skills: any) {
     const url = this.projectsURL + idProject + '/features/' + idFeature + '/skills';
-    return this.http.delete( url )
+    let params = '?skill_id=';
+    skills.forEach((item, index) => {
+      if (index === skills.length - 1) {
+        params += skills[index].id;
+      } else {
+        params += skills[index].id + ',';
+      }
+    });
+    return this.http.delete( url + params)
       .map(res => res.json());
   }
 
@@ -156,9 +164,17 @@ export class replanAPIService {
       });
   }
 
-  deleteResourcesFromRelease(idProject: number, idRelease: number) {
+  deleteResourcesFromRelease(idProject: number, idRelease: number, resources: any) {
     const url = this.projectsURL + idProject + '/releases/' + idRelease + '/resources';
-    return this.http.delete( url )
+    let params = '?ResourceId=';
+    resources.forEach((item, index) => {
+      if (index === resources.length - 1) {
+        params += resources[index].id;
+      } else {
+        params += resources[index].id + ',';
+      }
+    });
+    return this.http.delete( url + params )
       .map(res => res.json());
   }
 
@@ -220,9 +236,17 @@ export class replanAPIService {
       });
   }
 
-  deleteSkillsFromResource(idProject: number, idResource: number) {
+  deleteSkillsFromResource(idProject: number, idResource: number, skills: any) {
     const url = this.projectsURL + idProject + '/resources/' + idResource + '/skills';
-    return this.http.delete( url )
+    let params = '?skillId=';
+    skills.forEach((item, index) => {
+      if (index === skills.length - 1) {
+        params += skills[index].id;
+      } else {
+        params += skills[index].id + ',';
+      }
+    });
+    return this.http.delete( url + params )
       .map(res => res.json());
   }
 

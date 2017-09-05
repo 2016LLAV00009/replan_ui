@@ -54,25 +54,6 @@ export class ProjectSettingsComponent implements OnInit {
                 'description': new FormControl(''),
                 'availability': new FormControl('')
               });
-
-              this.formEditResource.valueChanges
-              .subscribe((val) => {
-                debugger;
-                if (this.formEditResource.valid) {
-                  
-                } else {
-                  
-                }
-              });
-              this.formEditResource.statusChanges
-              .subscribe((val) => {
-                debugger;
-                if (this.formEditResource.valid) {
-                  
-                } else {
-                  
-                }
-              });
   }
 
   ngOnInit() {
@@ -218,17 +199,18 @@ export class ProjectSettingsComponent implements OnInit {
     this._replanAPIService.editResource(JSON.stringify(this.formEditResource.value), this.idProject, this.resourceToEdit.id)
         .subscribe( data => {
           if (this.skillsModified) {
-            this._replanAPIService.deleteSkillsFromResource(this.idProject, this.resourceToEdit.id)
+            this._replanAPIService.deleteSkillsFromResource(this.idProject, this.resourceToEdit.id, this.resourceToEdit.skills)
               .subscribe( data => {
                 let objArray = [];
                 this.skillsToAssign.forEach(skill => {
                   let obj = {
-                    id: skill.id
+                    skill_id: skill.id
                   };
                   objArray.push(obj);
                 });
-                this._replanAPIService.addSkillsToResource(objArray.toString(), this.idProject, this.resourceToEdit.id)
+                this._replanAPIService.addSkillsToResource(JSON.stringify(objArray), this.idProject, this.resourceToEdit.id)
                 .subscribe( data => {
+                  debugger; 
                   this._replanAPIService.getResourcesProject(this.idProject)
                   .subscribe( data2 => {
                     this.resources = data2;

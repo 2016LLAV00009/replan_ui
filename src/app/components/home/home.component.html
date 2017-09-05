@@ -9,21 +9,19 @@
 
   <div class="projects-span data-founded" [hidden]="projects?.length !== 0"></div>
 
-  <div *ngFor="let project of projects" class="list-group">
-    <li class="list-group-item list-group-item-action li-projects">
-      <div (click)="goToProject(project.id)" class="d-flex project-name justify-content-between">
-        <div class="list-item-content">
-          <h5 class="mb-1">{{ project.name }}</h5>
-          <p class="mb-1">{{ project.description }}</p>
-        </div>
-        <div class="icons-content">
-          <a class="padding-icon left-icon" (click)="deleteProject(project.id)">
-            <i class="fa fa-trash-o fa-2x" aria-hidden="true" ></i>
-          </a>
-        </div>
+  <ul *ngFor="let project of projects" class="list-group list-group-projects">
+    <li (click)="goToProject(project.id)" class="list-group-item list-group-item-action li-projects">
+      <div class="list-item-content">
+        <h5 class="project-name">{{ project.name }}</h5>
+        <p class="project-description">{{ project.description }}</p>
+      </div>
+      <div class="icons-content">
+        <a class="padding-icon left-icon" (click)="deleteProject(project.id)">
+          <i class="fa fa-trash-o fa-2x" aria-hidden="true" ></i>
+        </a>
       </div>
     </li>
-  </div>
+  </ul>
 
   <div id="addProjectDiv" class="text-center">
     <button (click)="addProjectModal()" type="button" class="btn add-btn">+</button>

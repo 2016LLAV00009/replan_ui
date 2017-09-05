@@ -1,3 +1,5 @@
+@import "../node_modules/dhtmlx-gantt/codebase/dhtmlxgantt.css";
+
 body {
   background: #F5F5F5;
   color: #95979d;
@@ -54,7 +56,15 @@ hr {
 }
 
 .project-name {
-  padding: 15px 20px 20px 20px;
+  display: block;
+  font-size: 20px;
+  color: black;
+  margin-top: 0;
+  margin-left: 10px;
+}
+
+.project-description {
+  margin-left: 10px;
 }
 
 .li-projects {
@@ -63,11 +73,23 @@ hr {
 
 .li-features {
   margin-bottom: 5px;
+  padding: 5px;
+  min-height: 71px;
+  max-height: 71px;
 }
 
 .li-releases {
+  padding: 0px;
+  margin-bottom: 15px;
+  min-height: 91px;
+  max-height: 91px;
+}
+
+.li-projects {
+  padding: 0px;
   margin-bottom: 20px;
-  padding: 0 !important;
+  min-height: 91px;
+  max-height: 91px;
 }
 
 .padding-icon {
@@ -127,6 +149,10 @@ hr {
   margin-bottom: 15px;
   color: #464a4c;
   cursor: pointer;
+}
+
+.home-container .list-group-projects {
+  width: 90% !important;
 }
 
 .home-container .list-group h5 {
@@ -198,11 +224,10 @@ hr {
   display: block;
   font-size: 25px;
   margin-left: 20px;
-  margin-top: 5px;
   color: black;
 }
 
-.release-description {
+.release-dates {
   margin-left: 20px;
 }
 
@@ -234,13 +259,16 @@ hr {
 
 .feature-name {
   display: block;
-  font-size: 20px;
+  font-size: 25px;
   margin-left: 20px;
   color: black;
   line-height: 35px;
   width: 88%;
-  padding: 5px 5px 5px 5px;
   margin-top: 0;
+}
+
+.feature-deadline {
+  margin-left: 20px;
 }
 
 .project-column ul {
@@ -250,12 +278,12 @@ hr {
 .features-container {
   max-height: 380px;
   margin-bottom: 1rem;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .releases-container {
   max-height: 380px;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-bottom: 1rem;
 }
 
@@ -274,7 +302,7 @@ hr {
 .resources-management-container {
   max-height: 250px; 
   min-height: 250px; 
-  overflow-y: scroll; 
+  overflow-y: auto; 
 }
 
 /* PROJECT SETTINGS COMPONENT */
@@ -368,7 +396,7 @@ hr {
 .skills-management-container {
   max-height: 250px; 
   min-height: 250px; 
-  overflow-y: scroll; 
+  overflow-y: auto; 
 }
 
 /* NAVBAR COMPONENT */

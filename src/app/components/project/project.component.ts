@@ -180,16 +180,16 @@ export class ProjectComponent implements OnInit {
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.featureToEdit.id)
         .subscribe( data => {
           if (this.skillsModified) {
-            this._replanAPIService.deleteSkillsFromFeature(this.idProject, this.featureToEdit.id)
+            this._replanAPIService.deleteSkillsFromFeature(this.idProject, this.featureToEdit.id, this.featureToEdit.required_skills)
               .subscribe( data => {
                 let objArray = [];
                 this.skillsToAssign.forEach(skill => {
                   let obj = {
-                    id: skill.id
+                    skill_id: skill.id
                   };
                   objArray.push(obj);
                 });
-                this._replanAPIService.addSkillsToFeature(objArray.toString(), this.idProject, this.featureToEdit.id)
+                this._replanAPIService.addSkillsToFeature(JSON.stringify(objArray), this.idProject, this.featureToEdit.id)
                 .subscribe( data => {
                   this._replanAPIService.getFeaturesProject(this.idProject)
                   .subscribe( data2 => {
@@ -294,16 +294,16 @@ export class ProjectComponent implements OnInit {
     this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.releaseToEdit.id)
         .subscribe( data => {
           if (this.resourcesModified) {
-            this._replanAPIService.deleteResourcesFromRelease(this.idProject, this.releaseToEdit.id)
+            this._replanAPIService.deleteResourcesFromRelease(this.idProject, this.releaseToEdit.id, this.releaseToEdit.resources)
             .subscribe( data => {
               let objArray = [];
               this.resourcesToAssign.forEach(resource => {
                 let obj = {
-                  id: resource.id
+                  resource_id: resource.id
                 };
                 objArray.push(obj);
               });
-              this._replanAPIService.addResourcesToRelease(objArray.toString(), this.idProject, this.releaseToEdit.id)
+              this._replanAPIService.addResourcesToRelease(JSON.stringify(objArray), this.idProject, this.releaseToEdit.id)
               .subscribe( data => {
                 this._replanAPIService.getReleasesProject(this.idProject)
                   .subscribe( data2 => {
@@ -343,6 +343,7 @@ export class ProjectComponent implements OnInit {
   }
 
   deleteRelease(idRelease: number) {
+    this.isDeleteReleaseButtonClicked = true;
     this._replanAPIService.deleteRelease(this.idProject, idRelease)
       .subscribe( data => {
         this._replanAPIService.getReleasesProject(this.idProject)
