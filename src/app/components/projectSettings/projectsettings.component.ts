@@ -58,6 +58,7 @@ export class ProjectSettingsComponent implements OnInit {
 
   ngOnInit() {
     $('#loading_for_project').show();
+    $('#loading_for_resources').hide();
     $('.project-information-container').hide();
     this._replanAPIService.getProject(this.idProject)
     .subscribe( data => {
@@ -196,6 +197,9 @@ export class ProjectSettingsComponent implements OnInit {
     this.formEditResource.value.availability = $('#availabilityResourceEdit').val();
     this.formEditResource.value.description = $('#descriptionResourceEdit').val();
     $('#edit-resource-modal').modal('hide');
+    $('#loading_for_resources').show();
+    $('#addResourceDiv').addClass('margin_to_loading');
+    $('.resources-container').hide();
     this._replanAPIService.editResource(JSON.stringify(this.formEditResource.value), this.idProject, this.resourceToEdit.id)
         .subscribe( data => {
           if (this.skillsModified) {
@@ -210,13 +214,15 @@ export class ProjectSettingsComponent implements OnInit {
                 });
                 this._replanAPIService.addSkillsToResource(JSON.stringify(objArray), this.idProject, this.resourceToEdit.id)
                 .subscribe( data => {
-                  debugger; 
                   this._replanAPIService.getResourcesProject(this.idProject)
                   .subscribe( data2 => {
                     this.resources = data2;
                     if (this.resources.length === 0) {
                       $('.resources-span').text('No resources found');
                     }
+                    $('#loading_for_resources').hide();
+                    $('#addResourceDiv').removeClass('margin_to_loading');
+                    $('.resources-container').show();
                   });
                 });
               });
@@ -228,6 +234,9 @@ export class ProjectSettingsComponent implements OnInit {
               if (this.resources.length === 0) {
                 $('.resources-span').text('No resources found');
               }
+              $('#loading_for_resources').shhideow();
+              $('#addResourceDiv').removeClass('margin_to_loading');
+              $('.resources-container').show();
             });
           }
         });

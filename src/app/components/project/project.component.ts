@@ -30,8 +30,12 @@ export class ProjectComponent implements OnInit {
   skills: any;
   skillsNotAssigned: any;
   skillsToAssign: any;
-  featureToEdit: any;
   skillsModified: any;
+  dependencies: any;
+  dependenciesNotAssigned: any;
+  dependenciesToAssign: any;
+  dependenciesModified: any;
+  featureToEdit: any;
 
   resources: any;
   resourcesNotAssigned: any;
@@ -105,6 +109,7 @@ export class ProjectComponent implements OnInit {
       .subscribe( data => {
         $('#loading_for_features').hide();
         $('#addFeatureDiv').removeClass('margin_to_loading');
+        this.dependencies = data;
         this.features = data.filter(f => f.release === 'pending');
         if (this.features.length === 0) {
           $('.features-span').text('No features found');
@@ -150,16 +155,27 @@ export class ProjectComponent implements OnInit {
   editFeature(idFeature: number) {
     this.isEditFeatureButtonClicked = true;
     this.skillsModified = false;
+    this.dependenciesModified = false;
     const self = this;
     this.skillsNotAssigned = [];
     this.skillsToAssign = [];
+    this.dependenciesNotAssigned = [];
+    this.dependenciesToAssign = [];
     this.featureToEdit = this.features.filter(f => f.id === idFeature)[0];
     this.featureToEdit.required_skills.forEach(skill => {
       this.skillsToAssign.push(skill);
     });
+    this.featureToEdit.depends_on.forEach(feature => {
+      this.dependenciesToAssign.push(feature);
+    });
     this.skills.forEach(skill => {
       if (!self.skillsToAssign.some(x => x.id === skill.id )) {
         self.skillsNotAssigned.push(skill);
+      }
+    });
+    this.dependencies.forEach(feature => {
+      if (!self.dependenciesToAssign.some(x => x.id === feature.id ) && feature.id !== self.featureToEdit.id) {
+        self.dependenciesNotAssigned.push(feature);
       }
     });
     $('#edit-feature-modal').modal();
@@ -177,11 +193,12 @@ export class ProjectComponent implements OnInit {
     this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
     this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
     $('#edit-feature-modal').modal('hide');
-    debugger;
+    $('#loading_for_features').show();
+    $('#addFeatureDiv').addClass('margin_to_loading');
+    $('.features-container').hide();
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.featureToEdit.id)
         .subscribe( data => {
-          if (this.skillsModified) {
-            debugger;
+          if (this.skillsModified || this.dependenciesModified) {
             this._replanAPIService.deleteSkillsFromFeature(this.idProject, this.featureToEdit.id, this.featureToEdit.required_skills)
               .subscribe( data => {
                 let objArray = [];
@@ -191,16 +208,30 @@ export class ProjectComponent implements OnInit {
                   };
                   objArray.push(obj);
                 });
-                debugger;
                 this._replanAPIService.addSkillsToFeature(JSON.stringify(objArray), this.idProject, this.featureToEdit.id)
                 .subscribe( data => {
-                  debugger;
-                  this._replanAPIService.getFeaturesProject(this.idProject)
-                  .subscribe( data2 => {
-                    this.features = data2.filter(f => f.release === 'pending');
-                    if (this.features.length === 0) {
-                      $('.features-span').text('No features found');
-                    }
+                  this._replanAPIService.deleteDependenciesFromFeature(this.idProject, this.featureToEdit.id, this.featureToEdit.depends_on)
+                  .subscribe( data => { 
+                    let objArray2 = [];
+                    this.dependenciesToAssign.forEach(feature => {
+                      let obj = {
+                        feature_id: feature.id
+                      };
+                      objArray2.push(obj);
+                    });
+                    this._replanAPIService.addDependenciesToFeature(JSON.stringify(objArray2), this.idProject, this.featureToEdit.id)
+                    .subscribe( data => {
+                      this._replanAPIService.getFeaturesProject(this.idProject)
+                      .subscribe( data2 => {
+                        this.features = data2.filter(f => f.release === 'pending');
+                        if (this.features.length === 0) {
+                          $('.features-span').text('No features found');
+                        }
+                        $('#loading_for_features').hide();
+                        $('#addFeatureDiv').removeClass('margin_to_loading');
+                        $('.features-container').show();
+                      });
+                     });
                   });
                 });
               });
@@ -211,6 +242,9 @@ export class ProjectComponent implements OnInit {
               if (this.features.length === 0) {
                 $('.features-span').text('No features found');
               }
+              $('#loading_for_features').hide();
+              $('#addFeatureDiv').removeClass('margin_to_loading');
+              $('.features-container').show();
             });
           }
         });
@@ -230,6 +264,22 @@ export class ProjectComponent implements OnInit {
 
   allowDropFunction(skills: any) {
     return (dragData: any) => !skills.some(skill => skill === dragData);
+  }
+
+  transferDependencie($event: any) {
+    this.dependenciesModified = true;
+    this.dependenciesNotAssigned = this.dependenciesNotAssigned.filter(obj => obj !== $event.dragData);
+    this.dependenciesToAssign.push($event.dragData);
+  }
+
+  removeDependencie($event: any) {
+    this.dependenciesModified = true;
+    this.dependenciesToAssign = this.dependenciesToAssign.filter(obj => obj !== $event.dragData);
+    this.dependenciesNotAssigned.push($event.dragData);
+  }
+
+  allowDropFunctionDependencies(dependencies: any) {
+    return (dragData: any) => !dependencies.some(dependencie => dependencie === dragData);
   }
 
   deleteFeature(idFeature: number) {
@@ -295,6 +345,9 @@ export class ProjectComponent implements OnInit {
     this.formEditRelease.value.starts_at = $('#starts_atReleaseEdit').val();
     this.formEditRelease.value.deadline = $('#deadlineReleaseEdit').val();
     $('#edit-release-modal').modal('hide');
+    $('#loading_for_releases').show();
+    $('#addReleaseDiv').addClass('margin_to_loading');
+    $('.releases-container').hide();
     this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.releaseToEdit.id)
         .subscribe( data => {
           if (this.resourcesModified) {
@@ -315,6 +368,9 @@ export class ProjectComponent implements OnInit {
                     if (this.releases.length === 0) {
                       $('.releases-span').text('No releases found');
                     }
+                    $('#loading_for_releases').hide();
+                    $('#addReleaseDiv').removeClass('margin_to_loading');
+                    $('.releases-container').show();
                   });
               });
             });
@@ -325,6 +381,9 @@ export class ProjectComponent implements OnInit {
                 if (this.releases.length === 0) {
                   $('.releases-span').text('No releases found');
                 }
+                $('#loading_for_releases').hide();
+                $('#addReleaseDiv').removeClass('margin_to_loading');
+                $('.releases-container').show();
               });
           }
         });

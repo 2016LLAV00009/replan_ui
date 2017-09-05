@@ -85,7 +85,6 @@ export class replanAPIService {
   deleteSkillsFromFeature(idProject: number, idFeature: number, skills: any) {
     const url = this.projectsURL + idProject + '/features/' + idFeature + '/skills';
     let params = '?skill_id[]=';
-    debugger;
     skills.forEach((item, index) => {
       if (index === 0) {
         params += skills[index].id;
@@ -100,6 +99,32 @@ export class replanAPIService {
   addSkillsToFeature(skills: string, idProject: number, idFeature: number) {
     const url = this.projectsURL + idProject + '/features/' + idFeature + '/skills';
     const body = skills;
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.post(url, body, { headers })
+      .map(res => {
+        return res.json();
+      });
+  }
+
+  deleteDependenciesFromFeature(idProject: number, idFeature: number, dependencies: any) {
+    const url = this.projectsURL + idProject + '/features/' + idFeature + '/dependencies';
+    let params = '?feature_id[]=';
+    dependencies.forEach((item, index) => {
+      if (index === 0) {
+        params += dependencies[index].id;
+      } else {
+        params += '&feature_id[]=' + dependencies[index].id;
+      }
+    });
+    return this.http.delete( url + params)
+      .map(res => res.json());
+  }
+
+  addDependenciesToFeature(dependencies: string, idProject: number, idFeature: number) {
+    const url = this.projectsURL + idProject + '/features/' + idFeature + '/dependencies';
+    const body = dependencies;
     const headers = new Headers({
       'Content-Type': 'application/json'
     });

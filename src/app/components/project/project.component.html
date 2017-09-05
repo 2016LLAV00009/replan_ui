@@ -181,6 +181,42 @@
               </div>
           </div>
         </div>
+
+        <div class="feature-dependencies-container">
+          <div class="row">
+              <div class="col-md-6">
+                  <h5>Project's features</h5>
+                  <hr>
+                  <ul class="list-group skills-management-container scroll-style"
+                      dnd-droppable
+                      [allowDrop]="allowDropFunctionDependencies(dependenciesNotAssigned)"
+                      (onDropSuccess)="removeDependencie($event)">
+                      <li class="list-group-item list-group-item-action" *ngFor="let feature of dependenciesNotAssigned"
+                          dnd-draggable
+                          [dragEnabled]="true"
+                          [dragData]="(feature)">
+                          {{feature.name}}
+                      </li>
+                  </ul>
+              </div>
+              <div class="col-md-6">
+                  <h5>Feature's dependencies</h5>
+                  <hr>
+                  <ul class="list-group skills-management-container scroll-style"
+                      dnd-droppable
+                      [allowDrop]="allowDropFunctionDependencies(dependenciesToAssign)"
+                      (onDropSuccess)="transferDependencie($event)">
+                      <li class="list-group-item list-group-item-action" *ngFor="let feature of dependenciesToAssign"
+                          dnd-draggable
+                          [dragEnabled]="true"
+                          [dragData]="(feature)">
+                          {{feature.name}}
+                      </li>
+                  </ul>
+              </div>
+          </div>
+        </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

@@ -50,7 +50,7 @@
         <hr>
 
         <div class="resources-span data-founded" [hidden]="resources?.length !== 0"></div>
-
+        <div id="loading_for_resources" class="loading_spinner"></div>
         <div class="card-group row resources-container">
             <div class="col-sm-3 resource-card" *ngFor="let resource of resources"> 
                 <div class="card text-center" 
