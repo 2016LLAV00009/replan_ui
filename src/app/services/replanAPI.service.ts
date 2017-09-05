@@ -110,12 +110,12 @@ export class replanAPIService {
 
   deleteDependenciesFromFeature(idProject: number, idFeature: number, dependencies: any) {
     const url = this.projectsURL + idProject + '/features/' + idFeature + '/dependencies';
-    let params = '?feature_id[]=';
+    let params = '?feature_id=';
     dependencies.forEach((item, index) => {
-      if (index === 0) {
+      if (index === dependencies.length - 1) {
         params += dependencies[index].id;
       } else {
-        params += '&feature_id[]=' + dependencies[index].id;
+        params += dependencies[index].id + ',';
       }
     });
     return this.http.delete( url + params)
