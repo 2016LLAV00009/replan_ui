@@ -84,12 +84,13 @@ export class replanAPIService {
 
   deleteSkillsFromFeature(idProject: number, idFeature: number, skills: any) {
     const url = this.projectsURL + idProject + '/features/' + idFeature + '/skills';
-    let params = '?skill_id=';
+    let params = '?skill_id[]=';
+    debugger;
     skills.forEach((item, index) => {
-      if (index === skills.length - 1) {
+      if (index === 0) {
         params += skills[index].id;
       } else {
-        params += skills[index].id + ',';
+        params += '&skill_id[]=' + skills[index].id;
       }
     });
     return this.http.delete( url + params)

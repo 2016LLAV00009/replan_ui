@@ -177,9 +177,11 @@ export class ProjectComponent implements OnInit {
     this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
     this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
     $('#edit-feature-modal').modal('hide');
+    debugger;
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.featureToEdit.id)
         .subscribe( data => {
           if (this.skillsModified) {
+            debugger;
             this._replanAPIService.deleteSkillsFromFeature(this.idProject, this.featureToEdit.id, this.featureToEdit.required_skills)
               .subscribe( data => {
                 let objArray = [];
@@ -189,8 +191,10 @@ export class ProjectComponent implements OnInit {
                   };
                   objArray.push(obj);
                 });
+                debugger;
                 this._replanAPIService.addSkillsToFeature(JSON.stringify(objArray), this.idProject, this.featureToEdit.id)
                 .subscribe( data => {
+                  debugger;
                   this._replanAPIService.getFeaturesProject(this.idProject)
                   .subscribe( data2 => {
                     this.features = data2.filter(f => f.release === 'pending');
