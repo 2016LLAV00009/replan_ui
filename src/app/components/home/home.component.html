@@ -12,8 +12,8 @@
   <ul *ngFor="let project of projects" class="list-group list-group-projects">
     <li (click)="goToProject(project.id)" class="list-group-item list-group-item-action li-projects">
       <div class="list-item-content">
-        <h5 class="project-name">{{ project.name }}</h5>
-        <p class="project-description">{{ project.description }}</p>
+        <span class="project-name">{{ project.name }}</span>
+        <span class="project-description">{{ project.description }}</span>
       </div>
       <div class="icons-content">
         <a class="padding-icon left-icon" (click)="deleteProject(project.id)">

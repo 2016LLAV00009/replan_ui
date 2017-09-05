@@ -1,12 +1,12 @@
 <app-navbar></app-navbar>
+<div class="jumbotron">
+    <h1 class="margin-jumbotron">{{ project?.name }}</h1>      
+    <p class="margin-jumbotron">{{ project?.description }}</p>
+</div>
 <div class="container project-settings">
 
     <div id="loading_for_project" class="loading_spinner"></div>
     <div class="project-information-container">
-        <div class="jumbotron">
-            <h1>{{ project?.name }}</h1>      
-            <p>{{ project?.description }}</p>
-        </div>
 
         <div class="row mt-4 mb-5">
             <div class="col-5">

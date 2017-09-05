@@ -154,7 +154,7 @@
                   <hr>
                   <ul class="list-group skills-management-container scroll-style"
                       dnd-droppable
-                      [allowDrop]="allowDropFunction(skillsNotAssigned)"
+                      [allowDrop]="allowDropFunction(skillsNotAssigned, dependenciesNotAssigned, dependenciesToAssign)"
                       (onDropSuccess)="removeSkill($event)">
                       <li class="list-group-item list-group-item-action" *ngFor="let skill of skillsNotAssigned"
                           dnd-draggable
@@ -169,7 +169,7 @@
                   <hr>
                   <ul class="list-group skills-management-container scroll-style"
                       dnd-droppable
-                      [allowDrop]="allowDropFunction(skillsToAssign)"
+                      [allowDrop]="allowDropFunction(skillsToAssign, dependenciesNotAssigned, dependenciesToAssign)"
                       (onDropSuccess)="transferSkill($event)">
                       <li class="list-group-item list-group-item-action" *ngFor="let skill of skillsToAssign"
                           dnd-draggable
@@ -189,7 +189,7 @@
                   <hr>
                   <ul class="list-group skills-management-container scroll-style"
                       dnd-droppable
-                      [allowDrop]="allowDropFunctionDependencies(dependenciesNotAssigned)"
+                      [allowDrop]="allowDropFunctionDependencies(dependenciesNotAssigned, skillsNotAssigned, skillsToAssign)"
                       (onDropSuccess)="removeDependencie($event)">
                       <li class="list-group-item list-group-item-action" *ngFor="let feature of dependenciesNotAssigned"
                           dnd-draggable
@@ -204,7 +204,7 @@
                   <hr>
                   <ul class="list-group skills-management-container scroll-style"
                       dnd-droppable
-                      [allowDrop]="allowDropFunctionDependencies(dependenciesToAssign)"
+                      [allowDrop]="allowDropFunctionDependencies(dependenciesToAssign, skillsNotAssigned, skillsToAssign)"
                       (onDropSuccess)="transferDependencie($event)">
                       <li class="list-group-item list-group-item-action" *ngFor="let feature of dependenciesToAssign"
                           dnd-draggable

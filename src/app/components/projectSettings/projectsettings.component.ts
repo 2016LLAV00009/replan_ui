@@ -234,7 +234,7 @@ export class ProjectSettingsComponent implements OnInit {
               if (this.resources.length === 0) {
                 $('.resources-span').text('No resources found');
               }
-              $('#loading_for_resources').shhideow();
+              $('#loading_for_resources').hide();
               $('#addResourceDiv').removeClass('margin_to_loading');
               $('.resources-container').show();
             });

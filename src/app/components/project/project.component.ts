@@ -262,8 +262,10 @@ export class ProjectComponent implements OnInit {
     this.skillsNotAssigned.push($event.dragData);
   }
 
-  allowDropFunction(skills: any) {
-    return (dragData: any) => !skills.some(skill => skill === dragData);
+  allowDropFunction(skills: any, depNot: any, depTo: any) {
+    return (dragData: any) => (!skills.some(skill => skill === dragData)
+                              && !depNot.some(dep => dep === dragData)
+                              && !depTo.some(dep2 => dep2 === dragData));
   }
 
   transferDependencie($event: any) {
@@ -278,8 +280,10 @@ export class ProjectComponent implements OnInit {
     this.dependenciesNotAssigned.push($event.dragData);
   }
 
-  allowDropFunctionDependencies(dependencies: any) {
-    return (dragData: any) => !dependencies.some(dependencie => dependencie === dragData);
+  allowDropFunctionDependencies(dependencies: any, skillsNot: any, skillsTo: any) {
+    return (dragData: any) => (!dependencies.some(dependencie => dependencie === dragData)
+                              && !skillsNot.some(skills => skills === dragData)
+                              && !skillsTo.some(skills2 => skills2 === dragData));
   }
 
   deleteFeature(idFeature: number) {
