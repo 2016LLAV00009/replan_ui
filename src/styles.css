@@ -32,10 +32,14 @@ hr {
 .list-group-item-action {
   color: black;
   background-color: #A8CD1B;
+  -webkit-box-shadow: 5px 7px 17px -8px rgba(0,0,0,0.68);
+  -moz-box-shadow: 5px 7px 17px -8px rgba(0,0,0,0.68);
+  box-shadow: 5px 7px 17px -8px rgba(0,0,0,0.68);
 }
 
 .list-group-item-action:hover {
   background-color: #CBE32D;
+  box-shadow: none;
 }
 
 .list-item-content {
@@ -463,6 +467,7 @@ hr {
 
 .modal-content .list-group-item {
   min-height: 35px;
+  box-shadow: none;
 }
 
 .modal-body label {
