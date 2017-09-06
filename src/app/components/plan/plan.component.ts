@@ -14,6 +14,7 @@ export class PlanComponent implements OnInit {
   idProject: number;
   idRelease: number;
   plan: any;
+  featuresNotAssigned: any;
 
   chartRows: any[];
 
@@ -24,10 +25,18 @@ export class PlanComponent implements OnInit {
                   this.idProject = params['id'];
                   this.idRelease = params['id2'];
 
+                  this._replanAPIService.getProject(this.idProject)
+                  .subscribe( data => {
+                    $('.navbar-center').text(data.name);
+                  });
+                  $('#loading_for_plan').show();
                   this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
                     .subscribe( data => {
-                      debugger; 
                       this.plan = data;
+                      $('#loading_for_plan').hide();
+                      if (this.plan.jobs.length === 0) {
+                        $('.plan-span').text('No planification found');
+                      }
                       this.chartLogic(this.plan);
                     });
               });
@@ -35,27 +44,32 @@ export class PlanComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.featuresNotAssigned = [];
+    if (this.featuresNotAssigned.length === 0) {
+      $('.not-assigned-span').text('No features not assigned found');
+    }
     $('li.nav-item').removeClass('active');
   }
 
   chartLogic(data) {
-    this.chartRows = [];
-    data.jobs.forEach(job => {
-      const starts = new Date(job.starts);
-      const ends = new Date(job.ends);
-      const row = [
-        job.resource.name,
-        job.feature.name,
-        new Date(starts.getFullYear(), starts.getMonth(), starts.getDate()),
-        new Date(ends.getFullYear(), ends.getMonth(), ends.getDate())
-      ];
-      this.chartRows.push(row);
-    });
-    this.drawChart(this.chartRows);
+    if (data.jobs.length > 0) {
+      this.chartRows = [];
+      data.jobs.forEach(job => {
+        const starts = new Date(job.starts);
+        const ends = new Date(job.ends);
+        const row = [
+          job.resource.name,
+          job.feature.name,
+          new Date(starts.getFullYear(), starts.getMonth(), starts.getDate()),
+          new Date(ends.getFullYear(), ends.getMonth(), ends.getDate())
+        ];
+        this.chartRows.push(row);
+      });
+      this.drawChart(this.chartRows);
+    }
   }
 
   drawChart(rows) {
-    debugger;
     if (rows.length > 0) {
       const container = document.getElementById('timeline');
       const chart = new google.visualization.Timeline(container);
@@ -66,7 +80,23 @@ export class PlanComponent implements OnInit {
       dataTable.addColumn({ type: 'date', id: 'End' });
       dataTable.addRows(rows);
       chart.draw(dataTable);
+      const height = dataTable.getNumberOfRows() * 31 + 30;
+      $('#timeline').css('height', height + 'px');
     }
+  }
+
+  refreshPlan() {
+    $('#timeline').empty();
+    $('#loading_for_plan').show();
+    this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
+    .subscribe( data => {
+      this.plan = data;
+      $('#loading_for_plan').hide();
+      if (this.plan.length === 0) {
+        $('.plan-span').text('No planification found');
+      }
+      this.chartLogic(this.plan);
+    });
   }
 
 }

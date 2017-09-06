@@ -144,6 +144,7 @@ export class ProjectComponent implements OnInit {
         .subscribe( data => {
           this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
+              this.dependencies = data2;
               this.features = data2.filter(f => f.release === 'pending');
             });
             if (this.features.length === 0) {
@@ -223,6 +224,7 @@ export class ProjectComponent implements OnInit {
                     .subscribe( data => {
                       this._replanAPIService.getFeaturesProject(this.idProject)
                       .subscribe( data2 => {
+                        this.dependencies = data2;
                         this.features = data2.filter(f => f.release === 'pending');
                         if (this.features.length === 0) {
                           $('.features-span').text('No features found');
@@ -238,6 +240,7 @@ export class ProjectComponent implements OnInit {
           } else {
             this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
+              this.dependencies = data2;
               this.features = data2.filter(f => f.release === 'pending');
               if (this.features.length === 0) {
                 $('.features-span').text('No features found');
@@ -291,6 +294,7 @@ export class ProjectComponent implements OnInit {
       .subscribe( data => {
         this._replanAPIService.getFeaturesProject(this.idProject)
           .subscribe( data2 => {
+            this.dependencies = data2;
             this.features = data2.filter(f => f.release === 'pending');
             if (this.features.length === 0) {
               $('.features-span').text('No features found');

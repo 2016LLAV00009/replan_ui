@@ -1,6 +1,22 @@
 <script src="https://www.gstatic.com/charts/loader.js"></script>
 <app-navbar></app-navbar>
 <div class="container">
-    <div id="timeline" style="height: 300px;"></div>
+
+    <div class="planification-title-container">
+        <span class="planification-title">Planification</span>
+        <i (click)="refreshPlan()" class="fa fa-refresh fa-2x" aria-hidden="true"></i>
+    </div>
+    <hr class="hr-planification">
+
+    <div id="loading_for_plan" class="loading_spinner"></div>
+    <div class="plan-span data-founded" [hidden]="plan?.length !== 0"></div>
+    <div id="timeline"></div>
+
+    <div class="margin-features-planification">
+        <span class="planification-title">Features not assigned</span>
+    </div>
+    <hr class="hr-planification">
+    <div class="not-assigned-span data-founded" [hidden]="featuresNotAssigned?.length !== 0"></div>
+
 </div>
 

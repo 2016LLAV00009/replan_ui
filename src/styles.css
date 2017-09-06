@@ -62,6 +62,30 @@ hr {
   width: 14%;
 }
 
+/* PLAN COMPONENT */
+
+.hr-planification {
+  margin-top: 0;
+}
+
+.planification-title-container {
+  margin-top: 40px;
+}
+
+.margin-features-planification {
+  margin-top: 30px;
+}
+
+.planification-title {
+  font-size: 30px;
+  font-family: 'Nunito', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+.fa-refresh {
+  float: right;
+  cursor: pointer;
+}
+
 /* HOME COMPONENT */
 
 .logo-container {
