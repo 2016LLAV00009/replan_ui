@@ -33,6 +33,7 @@ export class HomeComponent implements OnInit {
 
 
   ngOnInit() {
+    const self = this;
     $('#loading_for_projects').show();
     $('#addProjectDiv').addClass('margin_to_loading');
     this._replanAPIService.getProjectsAPI()
@@ -43,8 +44,11 @@ export class HomeComponent implements OnInit {
         if (this.projects.length === 0) {
           $('.projects-span').text('No projects found');
         }
-  });
+    });
     this.isDeleteButtonClicked = false;
+    $('#add-project-modal').on('hidden.bs.modal', function (e) {
+      self.clearModal();
+    });
   }
 
   goToProject(id: number) {
@@ -60,10 +64,16 @@ export class HomeComponent implements OnInit {
 
   addNewProject() {
     $('#add-project-modal').modal('hide');
+    $('#loading_for_projects').show();
+    $('#addProjectDiv').addClass('margin_to_loading');
+    $('.list-group-projects').hide();
     this._replanAPIService.addProject(JSON.stringify(this.formProject.value))
         .subscribe( data => {
           this._replanAPIService.getProjectsAPI()
             .subscribe( data2 => {
+              $('#loading_for_projects').hide();
+              $('#addProjectDiv').removeClass('margin_to_loading');
+              $('.list-group-projects').show();
               this.projects = data2;
               if (this.projects.length === 0) {
                 $('.projects-span').text('No projects found');
@@ -76,16 +86,30 @@ export class HomeComponent implements OnInit {
 
   deleteProject(id: number) {
     this.isDeleteButtonClicked = true;
+    $('#loading_for_projects').show();
+    $('#addProjectDiv').addClass('margin_to_loading');
+    $('.list-group-projects').hide();
     this._replanAPIService.deleteProject(id)
       .subscribe( data => {
         this._replanAPIService.getProjectsAPI()
           .subscribe( data2 => {
+            $('.list-group-projects').show();
+            $('#loading_for_projects').hide();
+            $('#addProjectDiv').removeClass('margin_to_loading');
             this.projects = data2;
             if (this.projects.length === 0) {
               $('.projects-span').text('No projects found');
             }
           });
       });
+  }
+
+  clearModal() {
+    $('#nameProject').val('');
+    $('#effort_unit').val('');
+    $('#hours_per_effort_unit').val('');
+    $('#hours_per_week_and_full_time_resource').val('');
+    $('#descriptionProject').val('');
   }
 
 }

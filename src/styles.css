@@ -3,11 +3,16 @@
 body {
   background-color: #F3FAB6;
   color: black;
-  font-family: 'Nunito', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif !important;
 }
 
 hr {
   border-color: #005A31;
+}
+
+.not-margin {
+  margin: 0 !important; 
+  padding-bottom: 0 !important;
 }
 
 .home-container {
@@ -88,6 +93,11 @@ hr {
 
 /* HOME COMPONENT */
 
+#addProjectDiv {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 .logo-container {
   margin-top: 25px;
   margin-bottom: 50px;
@@ -115,10 +125,21 @@ hr {
 }
 
 .li-features {
+  background-color: #A8CD1B;
+  box-shadow: 5px 7px 17px -8px rgba(0,0,0,0.68);
+  border: 1px solid rgba(0,0,0,.125);
   margin-bottom: 5px;
-  padding: 5px;
-  min-height: 71px;
-  max-height: 71px;
+  text-align: center;
+}
+
+.padding-features {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.li-features:hover {
+  background-color: #CBE32D;
+  box-shadow: none;
 }
 
 .li-releases {
@@ -208,6 +229,12 @@ hr {
 }
 
 /* PROJECT COMPONENT */
+
+@media (min-width: 1200px) {
+  .project-container {
+      width: 1250px !important;
+  }
+}
 
 .project-container .list-group .project-name {
   display: inline-block !important;
@@ -302,16 +329,23 @@ hr {
 
 .feature-name {
   display: block;
-  font-size: 25px;
-  margin-left: 20px;
+  font-size: 25px;;
   color: black;
-  line-height: 35px;
-  width: 88%;
-  margin-top: 0;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 
-.feature-deadline {
-  margin-left: 20px;
+.icons-features-content {
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+#addFeatureDiv {
+  margin-bottom: 20px;
+}
+
+#addReleaseDiv {
+  margin-bottom: 20px;
 }
 
 .project-column ul {
@@ -319,8 +353,9 @@ hr {
 }
 
 .features-container {
-  max-height: 380px;
+  margin: 0;
   margin-bottom: 1rem;
+  max-height: 565px;
   overflow-y: auto;
 }
 
@@ -354,18 +389,30 @@ hr {
 
 /* PROJECT SETTINGS COMPONENT */
 
+.title-project {
+  font-size: 50px;
+  font-weight: 600;
+  font-family: 'Josefin Slab', serif;
+}
+
+.description-project {
+  font-family: 'Josefin Slab', serif;
+  font-size: 25px;
+}
+
 .project-settings {
   color: black;
 }
 
 .jumbotron {
+  margin-top: 30px;
+  background-color: #F3FAB6;
   padding: 1.5rem 2rem;
-  background-color: #A8CD1B;
   border-radius: 0;
 }
 
-.margin-jumbotron {
-  margin-left: 60px;
+.jumbo-container {
+  text-align: center;
 }
 
 .edit-settings-icon {
@@ -404,7 +451,7 @@ hr {
 
 .resource-title {
     border-bottom: 1px solid;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     font-size: 35px;
 }
 
@@ -466,13 +513,14 @@ hr {
 
 .navbar-center
 {
+    font-family: 'Josefin Slab', serif;
     position: absolute;
     width: 100%;
     left: 0;
-    top: 0;
+    top: -2px;
     z-index: 2;
     text-align: center;
-    font-size: 28px;
+    font-size: 40px;
 }
 
 .navbar-nav {

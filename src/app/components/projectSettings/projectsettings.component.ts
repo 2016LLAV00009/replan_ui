@@ -57,8 +57,10 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   ngOnInit() {
+    const self = this;
     $('#loading_for_project').show();
     $('#loading_for_resources').hide();
+    $('#loading_for_skills').hide();
     $('.project-information-container').hide();
     this._replanAPIService.getProject(this.idProject)
     .subscribe( data => {
@@ -83,6 +85,12 @@ export class ProjectSettingsComponent implements OnInit {
 
     $('.nav-settings').siblings().removeClass('active');
     $('.nav-settings').addClass('active');
+    $('#add-skill-modal').on('hidden.bs.modal', function (e) {
+      self.clearAddSkillModal();
+    });
+    $('#add-resource-modal').on('hidden.bs.modal', function (e) {
+      self.clearAddResourceModal();
+    });
   }
 
   getClass(availability: string) {
@@ -118,10 +126,16 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   deleteSkill(id: number) {
+    $('#loading_for_skills').show();
+    $('#addSkillDiv').addClass('margin_to_loading');
+    $('.skills-container').hide();
     this._replanAPIService.deleteSkillFromProject(this.idProject, id)
       .subscribe( data => {
         this._replanAPIService.getSkillsProject(this.idProject)
           .subscribe( data2 => {
+            $('#loading_for_skills').hide();
+            $('#addSkillDiv').removeClass('margin_to_loading');
+            $('.skills-container').show();
             this.skills = data2;
             if (this.skills.length === 0) {
               $('.skills-span').text('No skills found');
@@ -136,10 +150,16 @@ export class ProjectSettingsComponent implements OnInit {
 
   addNewSkill() {
     $('#add-skill-modal').modal('hide');
+    $('#loading_for_skills').show();
+    $('#addSkillDiv').addClass('margin_to_loading');
+    $('.skills-container').hide();
     this._replanAPIService.addSkillToProject(JSON.stringify(this.formSkill.value), this.idProject)
         .subscribe( data => {
           this._replanAPIService.getSkillsProject(this.idProject)
             .subscribe( data2 => {
+              $('#loading_for_skills').hide();
+              $('#addSkillDiv').removeClass('margin_to_loading');
+              $('.skills-container').show();
               this.skills = data2;
               if (this.skills.length === 0) {
                 $('.skills-span').text('No skills found');
@@ -156,10 +176,16 @@ export class ProjectSettingsComponent implements OnInit {
 
   addNewResource() {
     $('#add-resource-modal').modal('hide');
+    $('#loading_for_resources').show();
+    $('#addResourceDiv').addClass('margin_to_loading');
+    $('.resources-container').hide();
     this._replanAPIService.addResourceToProject(JSON.stringify(this.formResource.value), this.idProject)
         .subscribe( data => {
           this._replanAPIService.getResourcesProject(this.idProject)
             .subscribe( data2 => {
+              $('#loading_for_resources').hide();
+              $('#addResourceDiv').removeClass('margin_to_loading');
+              $('.resources-container').show();
               this.resources = data2;
               if (this.resources.length === 0) {
                 $('.resources-span').text('No resources found');
@@ -259,16 +285,33 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   deleteResource(id: number) {
+    $('#loading_for_resources').show();
+    $('#addResourceDiv').addClass('margin_to_loading');
+    $('.resources-container').hide();
     this._replanAPIService.deleteResourceFromProject(this.idProject, id)
       .subscribe( data => {
         this._replanAPIService.getResourcesProject(this.idProject)
           .subscribe( data2 => {
+            $('#loading_for_resources').hide();
+            $('#addResourceDiv').removeClass('margin_to_loading');
+            $('.resources-container').show();
             this.resources = data2;
             if (this.resources.length === 0) {
               $('.resources-span').text('No resources found');
             }
           });
       });
+  }
+
+  clearAddSkillModal() {
+    $('#nameSkill').val('');
+    $('#descriptionSkill').val('');
+  }
+
+  clearAddResourceModal() {
+    $('#nameResource').val('');
+    $('#availabilityResource').val('');
+    $('#descriptionResource').val('');
   }
 
 }

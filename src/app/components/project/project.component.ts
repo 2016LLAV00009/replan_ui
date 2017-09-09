@@ -53,7 +53,7 @@ export class ProjectComponent implements OnInit {
                   this.globaldata.setCurrentProjectId(this.idProject);
                   this._replanAPIService.getProject(this.idProject)
                   .subscribe( data => {
-                    $('.navbar-center').text(data.name);
+                    $('.title-project').text(data.name);
                   });
                   this._replanAPIService.getSkillsProject(this.idProject)
                   .subscribe( data => {
@@ -99,6 +99,7 @@ export class ProjectComponent implements OnInit {
   }
 
   ngOnInit() {
+    const self = this;
     $('.nav-home').siblings().removeClass('active');
     $('.nav-home').addClass('active');
     $('#loading_for_features').show();
@@ -111,6 +112,7 @@ export class ProjectComponent implements OnInit {
         $('#addFeatureDiv').removeClass('margin_to_loading');
         this.dependencies = data;
         this.features = data.filter(f => f.release === 'pending');
+        debugger;
         if (this.features.length === 0) {
           $('.features-span').text('No features found');
         }
@@ -128,6 +130,12 @@ export class ProjectComponent implements OnInit {
     this.isDeleteReleaseButtonClicked = false;
     this.isEditFeatureButtonClicked = false;
     this.isEditReleaseButtonClicked = false;
+    $('#add-feature-modal').on('hidden.bs.modal', function (e) {
+      self.clearAddFeatureModal();
+    });
+    $('#add-release-modal').on('hidden.bs.modal', function (e) {
+      self.clearAddReleaseModal();
+    });
   }
 
   addFeatureModal() {
@@ -140,10 +148,16 @@ export class ProjectComponent implements OnInit {
 
   addNewFeature() {
     $('#add-feature-modal').modal('hide');
+    $('#loading_for_features').show();
+    $('#addFeatureDiv').addClass('margin_to_loading');
+    $('.features-container').hide();
     this._replanAPIService.addFeatureToProject(JSON.stringify(this.formFeature.value), this.idProject)
         .subscribe( data => {
           this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
+              $('#loading_for_features').hide();
+              $('#addFeatureDiv').removeClass('margin_to_loading');
+              $('.features-container').show();
               this.dependencies = data2;
               this.features = data2.filter(f => f.release === 'pending');
             });
@@ -181,7 +195,7 @@ export class ProjectComponent implements OnInit {
     });
     $('#edit-feature-modal').modal();
     this.formEditFeature.controls['name'].setValue(this.featureToEdit.name);
-    this.formEditFeature.controls['description'].setValue(this.featureToEdit.descriptionname);
+    this.formEditFeature.controls['description'].setValue(this.featureToEdit.description);
     this.formEditFeature.controls['effort'].setValue(this.featureToEdit.effort);
     this.formEditFeature.controls['deadline'].setValue(this.featureToEdit.deadline);
     this.formEditFeature.controls['priority'].setValue(this.featureToEdit.priority);
@@ -290,10 +304,16 @@ export class ProjectComponent implements OnInit {
   }
 
   deleteFeature(idFeature: number) {
+    $('#loading_for_features').show();
+    $('#addFeatureDiv').addClass('margin_to_loading');
+    $('.features-container').hide();
     this._replanAPIService.deleteFeature(this.idProject, idFeature)
       .subscribe( data => {
         this._replanAPIService.getFeaturesProject(this.idProject)
           .subscribe( data2 => {
+            $('#loading_for_features').hide();
+            $('#addFeatureDiv').removeClass('margin_to_loading');
+            $('.features-container').show();
             this.dependencies = data2;
             this.features = data2.filter(f => f.release === 'pending');
             if (this.features.length === 0) {
@@ -305,10 +325,16 @@ export class ProjectComponent implements OnInit {
 
   addNewRelease() {
     $('#add-release-modal').modal('hide');
+    $('#loading_for_releases').show();
+    $('#addReleaseDiv').addClass('margin_to_loading');
+    $('.releases-container').hide();
     this._replanAPIService.addReleaseToProject(JSON.stringify(this.formRelease.value), this.idProject)
         .subscribe( data => {
           this._replanAPIService.getReleasesProject(this.idProject)
             .subscribe( data2 => {
+              $('#loading_for_releases').hide();
+              $('#addReleaseDiv').removeClass('margin_to_loading');
+              $('.releases-container').show();
               this.releases = data2;
               if (this.releases.length === 0) {
                 $('.releases-span').text('No releases found');
@@ -415,10 +441,16 @@ export class ProjectComponent implements OnInit {
 
   deleteRelease(idRelease: number) {
     this.isDeleteReleaseButtonClicked = true;
+    $('#loading_for_releases').show();
+    $('#addReleaseDiv').addClass('margin_to_loading');
+    $('.releases-container').hide();
     this._replanAPIService.deleteRelease(this.idProject, idRelease)
       .subscribe( data => {
         this._replanAPIService.getReleasesProject(this.idProject)
           .subscribe( data2 => {
+            $('#loading_for_releases').hide();
+            $('#addReleaseDiv').removeClass('margin_to_loading');
+            $('.releases-container').show();
             this.releases = data2;
             if (this.releases.length === 0) {
               $('.releases-span').text('No releases found');
@@ -453,6 +485,22 @@ export class ProjectComponent implements OnInit {
     }
     this.isEditReleaseButtonClicked = false;
     this.isDeleteReleaseButtonClicked = false;
+  }
+
+  clearAddFeatureModal() {
+    $('#code').val('');
+    $('#nameFeature').val('');
+    $('#effort').val('');
+    $('#priority').val('');
+    $('#descriptionFeature').val('');
+    $('#deadlineFeature').val('');
+  }
+
+  clearAddReleaseModal() {
+    $('#nameRelease').val('');
+    $('#starts_atRelease').val('');
+    $('#deadlineRelease').val('');
+    $('#descriptionRelease').val('');
   }
 
 }

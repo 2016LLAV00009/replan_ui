@@ -27,7 +27,7 @@ export class PlanComponent implements OnInit {
 
                   this._replanAPIService.getProject(this.idProject)
                   .subscribe( data => {
-                    $('.navbar-center').text(data.name);
+                    $('.title-project').text(data.name);
                   });
                   $('#loading_for_plan').show();
                   this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)

@@ -25,7 +25,6 @@ export class replanAPIService {
     });
     return this.http.post(url, body, { headers })
       .map(res => {
-        console.log(res.json());
         return res.json();
       });
   }
@@ -44,7 +43,6 @@ export class replanAPIService {
     });
     return this.http.put(url, body, { headers })
       .map(res => {
-        console.log(res.json());
         return res.json();
       });
   }
@@ -77,7 +75,6 @@ export class replanAPIService {
     });
     return this.http.put(url, body, { headers })
       .map(res => {
-        console.log(res.json());
         return res.json();
       });
   }
@@ -185,7 +182,6 @@ export class replanAPIService {
     });
     return this.http.put(url, body, { headers })
       .map(res => {
-        console.log(res.json());
         return res.json();
       });
   }

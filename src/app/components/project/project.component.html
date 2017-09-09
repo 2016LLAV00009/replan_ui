@@ -1,4 +1,9 @@
 <app-navbar></app-navbar>
+<div class="jumbotron not-margin">
+    <div class="jumbo-container">
+        <h1 class="title-project"></h1>      
+    </div>
+</div>
 <div class="container project-container animated fadein">
   <div class="row">
 
@@ -7,25 +12,26 @@
       <hr>
       <div id="loading_for_features" class="loading_spinner"></div>
       <div class="features-span data-founded" [hidden]="features?.length !== 0"></div>
-      <ul class="list-group features-container scroll-style" dnd-list="list">
-        <li *ngFor="let feature of features" class="list-group-item list-group-item-action li-features"
+      <div class="features-container row scroll-style">
+        <div *ngFor="let feature of features" class="col-sm-6 padding-features"
             dnd-draggable
             [dragEnabled]="true"
             [dragData]="(feature.id)">
-            <div class="list-item-content">
-              <span class="feature-name"> {{ feature.name }} </span>
-              <span class="feature-deadline"> {{feature?.deadline | date: 'dd/MM/yyyy'}} </span>
+            <div class="li-features">
+              <h4 class="feature-name"> {{ feature.name }} </h4>
+              <p class="feature-deadline" *ngIf="feature?.deadline === null">No Deadline</p>
+              <p class="feature-deadline">{{feature?.deadline | date: 'dd/MM/yyyy'}} </p>
+              <div class="icons-features-content">
+                <a (click)="editFeature(feature.id)">
+                  <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                </a>
+                <a class="padding-icon" (click)="deleteFeature(feature.id)">
+                  <i class="fa fa-trash-o fa-2x" aria-hidden="true" ></i>
+                </a>
+              </div>
             </div>
-            <div class="icons-content">
-              <a (click)="editFeature(feature.id)">
-                <i class="fa fa-pencil" aria-hidden="true"></i>
-              </a>
-              <a class="padding-icon" (click)="deleteFeature(feature.id)">
-                <i class="fa fa-trash-o" aria-hidden="true" ></i>
-              </a>
-            </div>
-        </li>
-      </ul>
+          </div>
+        </div>
       <div id="addFeatureDiv" class="text-center">
         <button (click)="addFeatureModal()" type="button" class="btn add-btn">+</button>
       </div>
@@ -81,12 +87,12 @@
           </div>
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="effort" class="form-control-label">Effort</label>
-              <input type="number" class="form-control" id="effort" formControlName="effort" [max]="1000" [min]="0" number>
+              <label for="effort" class="form-control-label">Effort *</label>
+              <input type="number" class="form-control" id="effort" formControlName="effort" [max]="1000" [min]="0" number required>
             </div>
             <div class="form-group col-md-6">
-              <label for="priority" class="form-control-label">Priority</label>
-              <select class="form-control" id="priority" formControlName="priority">
+              <label for="priority" class="form-control-label">Priority *</label>
+              <select class="form-control" id="priority" formControlName="priority" required>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>
@@ -132,12 +138,12 @@
               <input type="text" class="form-control" id="nameFeatureEdit" formControlName="name" required>
             </div>
             <div class="form-group col-md-4">
-              <label for="effort" class="form-control-label">Effort</label>
-              <input type="number" class="form-control" id="effortFeatureEdit" formControlName="effort" [max]="1000" [min]="0">
+              <label for="effort" class="form-control-label">Effort *</label>
+              <input type="number" class="form-control" id="effortFeatureEdit" formControlName="effort" [max]="1000" [min]="0" required>
             </div>
             <div class="form-group col-md-4">
-              <label for="priority" class="form-control-label">Priority</label>
-              <select class="form-control" id="priority" formControlName="priority">
+              <label for="priority" class="form-control-label">Priority *</label>
+              <select class="form-control" id="priorityFeatureEdit" formControlName="priority" required>
                   <option value="1">1</option>
                   <option value="2">2</option>
                   <option value="3">3</option>

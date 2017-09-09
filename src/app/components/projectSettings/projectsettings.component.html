@@ -1,7 +1,9 @@
 <app-navbar></app-navbar>
 <div class="jumbotron">
-    <h1 class="margin-jumbotron">{{ project?.name }}</h1>      
-    <p class="margin-jumbotron">{{ project?.description }}</p>
+    <div class="jumbo-container">
+        <h1 class="title-project">{{ project?.name }}</h1>      
+        <p class="description-project">{{ project?.description }}</p>
+    </div>
 </div>
 <div class="container project-settings">
 
@@ -9,15 +11,19 @@
     <div class="project-information-container">
 
         <div class="row mt-4 mb-5">
-            <div class="col-5">
+            <div class="col-md-2">
+                <label class="col-12 col-form-label pl-0">Effort unit</label>
+                <input [readonly]="true" [value]="project?.effort_unit" type="text" class="form-control">
+            </div>
+            <div class="col-4">
                 <label class="col-12 col-form-label pl-0">Hours/Effort Unit</label>
                 <input [readonly]="true" [value]="project?.hours_per_effort_unit" type="text" class="form-control">
             </div>
-            <div class="col-5 pl-0">
+            <div class="col-4 pl-0">
                 <label class="col-12 col-form-label pl-0">Hours/Week and Full Time Resource</label>
                 <input [readonly]="true" [value]="project?.hours_per_week_and_full_time_resource" type="text" class="form-control">
             </div>
-            <div class="col-2 pr-2">
+            <div class="col-1 pr-1">
                 <a (click)="editProject()" class="padding-icon edit-settings-icon">
                     <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
                 </a>
@@ -28,7 +34,7 @@
         <hr>
 
         <div class="skills-span data-founded" [hidden]="skills?.length !== 0"></div>
-
+        <div id="loading_for_skills" class="loading_spinner"></div>
         <div class="card-group row skills-container">
             <div class="col-sm-4 skill-card" *ngFor="let skill of skills"> 
                 <div class="card text-center">
@@ -93,9 +99,13 @@
             </div>
             <div class="modal-body">
                 <form [formGroup]="formEditProject">
-                    <div [hidden]="true" class="form-group">
-                        <label for="effort_unit" class="form-control-label">Effort unit</label>
-                        <input type="text" class="form-control" id="edit_effort_unit" formControlName="effort_unit">
+                    <div class="form-group">
+                        <label for="effort_unit" class="form-control-label">Effort unit *</label>
+                        <select class="form-control" id="edit_effort_unit" formControlName="effort_unit" required>
+                            <option value="Hour">Hour</option>
+                            <option value="Day">Day</option>
+                            <option value="Week">Week</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="hours_per_effort_unit" class="form-control-label">Hours per effort unit *</label>
