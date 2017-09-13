@@ -112,7 +112,6 @@ export class ProjectComponent implements OnInit {
         $('#addFeatureDiv').removeClass('margin_to_loading');
         this.dependencies = data;
         this.features = data.filter(f => f.release === 'pending');
-        debugger;
         if (this.features.length === 0) {
           $('.features-span').text('No features found');
         }

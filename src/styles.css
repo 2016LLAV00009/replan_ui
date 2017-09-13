@@ -355,12 +355,12 @@ hr {
 .features-container {
   margin: 0;
   margin-bottom: 1rem;
-  max-height: 565px;
+  max-height: 459px;
   overflow-y: auto;
 }
 
 .releases-container {
-  max-height: 380px;
+  max-height: 459px;
   overflow-y: auto;
   margin-bottom: 1rem;
 }
