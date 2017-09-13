@@ -373,14 +373,14 @@ hr {
 .features-container {
   margin: 0;
   margin-bottom: 1rem;
-  max-height: 565px;
+  max-height: 459px;
   overflow-y: auto;
 }
 
 .releases-container {
   margin: 0;
   margin-bottom: 1rem;
-  max-height: 565px;
+  max-height: 459px;
   overflow-y: auto;
 }
 
