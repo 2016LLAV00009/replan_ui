@@ -43,11 +43,13 @@ export class ProjectComponent implements OnInit {
   releaseToEdit: any;
   resourcesModified: any;
 
+  innerHeight: any;
+  innerWidth: any;
+
   constructor(private _replanAPIService: replanAPIService,
               private activatedRoute: ActivatedRoute,
               private router: Router,
               private globaldata: GlobalDataService) {
-
                 this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
                   this.globaldata.setCurrentProjectId(this.idProject);
@@ -112,7 +114,6 @@ export class ProjectComponent implements OnInit {
         $('#addFeatureDiv').removeClass('margin_to_loading');
         this.dependencies = data;
         this.features = data.filter(f => f.release === 'pending');
-        debugger;
         if (this.features.length === 0) {
           $('.features-span').text('No features found');
         }

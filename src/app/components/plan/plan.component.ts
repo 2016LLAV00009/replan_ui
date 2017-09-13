@@ -52,6 +52,7 @@ export class PlanComponent implements OnInit {
   }
 
   chartLogic(data) {
+    debugger;
     if (data.jobs.length > 0) {
       this.chartRows = [];
       data.jobs.forEach(job => {

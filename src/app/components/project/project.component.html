@@ -41,24 +41,24 @@
       <hr>
       <div id="loading_for_releases" class="loading_spinner"></div>
       <div class="releases-span data-founded" [hidden]="releases?.length !== 0"></div>
-      <ul class="list-group releases-container scroll-style" dnd-list="list">
-        <li *ngFor="let release of releases" (click)="goToPlan(release.id)" class="list-group-item list-group-item-action li-releases"
+      <div class="releases-container row scroll-style">
+        <div *ngFor="let release of releases" (click)="goToPlan(release.id)" class="col-sm-12 padding-features"
             dnd-droppable
             (onDropSuccess)="transferDataSuccess($event, release.id)">
-            <div class="list-item-content-releases">
-              <span class="release-name"> {{ release.name }} </span>
-              <span class="release-dates"> {{release.starts_at | date: 'dd/MM/yyyy'}} - {{release.deadline | date: 'dd/MM/yyyy'}} </span>
+            <div class="li-releases">
+              <h4 class="release-name"> {{ release.name }} </h4>
+              <p class="release-dates"> {{release.starts_at | date: 'dd/MM/yyyy'}} - {{release.deadline | date: 'dd/MM/yyyy'}} </p>
+              <div class="icons-content-releases">
+                <a (click)="editRelease(release.id)">
+                  <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                </a>
+                <a class="padding-icon" (click)="deleteRelease(release.id)">
+                  <i class="fa fa-trash-o fa-2x" aria-hidden="true" ></i>
+                </a>
+              </div>
             </div>
-            <div class="icons-content-releases">
-              <a (click)="editRelease(release.id)">
-                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
-              </a>
-              <a class="padding-icon" (click)="deleteRelease(release.id)">
-                <i class="fa fa-trash-o fa-2x" aria-hidden="true" ></i>
-              </a>
-            </div>
-        </li>
-      </ul>
+        </div>
+      </div>
       <div id="addReleaseDiv" class="text-center">
         <button (click)="addReleaseModal()" type="button" class="btn add-btn">+</button>
       </div>

@@ -17,11 +17,11 @@
             </div>
             <div class="col-4">
                 <label class="col-12 col-form-label pl-0">Hours/Effort Unit</label>
-                <input [readonly]="true" [value]="project?.hours_per_effort_unit" type="text" class="form-control">
+                <input [readonly]="true" [value]="(project?.hours_per_effort_unit | number : '1.0-0')"  type="text" class="form-control">
             </div>
             <div class="col-4 pl-0">
                 <label class="col-12 col-form-label pl-0">Hours/Week and Full Time Resource</label>
-                <input [readonly]="true" [value]="project?.hours_per_week_and_full_time_resource" type="text" class="form-control">
+                <input [readonly]="true" [value]="(project?.hours_per_week_and_full_time_resource | number : '1.0-0')" type="text" class="form-control">
             </div>
             <div class="col-1 pr-1">
                 <a (click)="editProject()" class="padding-icon edit-settings-icon">
@@ -39,7 +39,7 @@
             <div class="col-sm-4 skill-card" *ngFor="let skill of skills"> 
                 <div class="card text-center">
                     <div class="card-block">
-                        <h4 class="card-title">{{skill.name}}</h4>
+                        <h4 class="card-title skill-title">{{skill.name}}</h4>
                         <p class="card-text">{{skill.description}}</p>
                         <button (click)="deleteSkill(skill.id)" class="btn btn-danger">Delete</button>
                     </div>
@@ -69,8 +69,8 @@
                                 <span *ngIf="i === resource.skills.length-1">{{skill.name}}</span>
                             </span> 
                         </div>
-                        <h4 class="card-title disponability-content">
-                            {{resource.availability}}% <span class="disponability">available</span>
+                        <h4 class="disponability-content">
+                            {{resource.availability | number: '1.0-0'}}% <span class="disponability">available</span>
                         </h4>
                         <div class="icons-resources-content">
                             <a class="padding-icon" (click)="editResource(resource.id)">
