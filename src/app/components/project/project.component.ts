@@ -482,7 +482,7 @@ export class ProjectComponent implements OnInit {
 
   goToPlan(idRelease: number) {
     if (!this.isEditReleaseButtonClicked && !this.isDeleteReleaseButtonClicked) {
-      this.router.navigate( ['/project', this.idProject, 'release', idRelease, 'plan'] );
+      this.router.navigate( ['/projects', this.idProject, 'releases', idRelease, 'plan'] );
     }
     this.isEditReleaseButtonClicked = false;
     this.isDeleteReleaseButtonClicked = false;

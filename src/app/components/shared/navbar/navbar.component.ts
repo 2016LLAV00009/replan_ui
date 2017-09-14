@@ -20,12 +20,12 @@ export class NavbarComponent implements OnInit {
 
   goToHome() {
     this.currentIdProject = this.globaldata.getCurrentProjectId();
-    this.router.navigate( ['/project/', this.currentIdProject] );
+    this.router.navigate( ['/projects/', this.currentIdProject] );
   }
 
   goToProjectSettings() {
     this.currentIdProject = this.globaldata.getCurrentProjectId();
-    this.router.navigate( ['/project/', this.currentIdProject, 'settings'] );
+    this.router.navigate( ['/projects/', this.currentIdProject, 'settings'] );
   }
 
   exitProject() {

@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
 
   goToProject(id: number) {
     if (!this.isDeleteButtonClicked) {
-      this.router.navigate( ['/project', id] );
+      this.router.navigate( ['/projects', id] );
     }
     this.isDeleteButtonClicked = false;
   }

@@ -6,9 +6,9 @@ import { ProjectSettingsComponent } from './components/projectSettings/projectse
 
 const app_routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'project/:id', component: ProjectComponent },
-  { path: 'project/:id/settings', component: ProjectSettingsComponent },
-  { path: 'project/:id/release/:id2/plan', component: PlanComponent },
+  { path: 'projects/:id', component: ProjectComponent },
+  { path: 'projects/:id/settings', component: ProjectSettingsComponent },
+  { path: 'projects/:id/releases/:id2/plan', component: PlanComponent },
   { path: '**', pathMatch: 'full', redirectTo: '' }
 ];
 
