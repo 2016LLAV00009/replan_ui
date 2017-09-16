@@ -95,9 +95,9 @@ export class ProjectSettingsComponent implements OnInit {
 
   getClass(availability: string) {
     const num = parseFloat(availability);
-    if (num === 0) {
+    if (num >= 0 && num <= 25) {
       return 'card-danger';
-    } else if (num < 30) {
+    } else if (num > 25 && num <= 50) {
       return 'card-warning';
     } else {
         return 'card-success';
@@ -150,6 +150,7 @@ export class ProjectSettingsComponent implements OnInit {
 
   addNewSkill() {
     $('#add-skill-modal').modal('hide');
+    $('.skills-span').text('');
     $('#loading_for_skills').show();
     $('#addSkillDiv').addClass('margin_to_loading');
     $('.skills-container').hide();
@@ -163,8 +164,6 @@ export class ProjectSettingsComponent implements OnInit {
               this.skills = data2;
               if (this.skills.length === 0) {
                 $('.skills-span').text('No skills found');
-              } else {
-                $('.skills-span').text('');
               }
             });
         });
@@ -176,6 +175,7 @@ export class ProjectSettingsComponent implements OnInit {
 
   addNewResource() {
     $('#add-resource-modal').modal('hide');
+    $('.resources-span').text('');
     $('#loading_for_resources').show();
     $('#addResourceDiv').addClass('margin_to_loading');
     $('.resources-container').hide();
@@ -189,8 +189,6 @@ export class ProjectSettingsComponent implements OnInit {
               this.resources = data2;
               if (this.resources.length === 0) {
                 $('.resources-span').text('No resources found');
-              } else {
-                $('.resources-span').text('');
               }
             });
         });

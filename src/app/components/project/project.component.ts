@@ -149,6 +149,7 @@ export class ProjectComponent implements OnInit {
 
   addNewFeature() {
     $('#add-feature-modal').modal('hide');
+    $('.features-span').text('');
     $('#loading_for_features').show();
     $('#addFeatureDiv').addClass('margin_to_loading');
     $('.features-container').hide();
@@ -161,10 +162,10 @@ export class ProjectComponent implements OnInit {
               $('.features-container').show();
               this.dependencies = data2;
               this.features = data2.filter(f => f.release === 'pending');
+              if (this.features.length === 0) {
+                $('.features-span').text('No features found');
+              }
             });
-            if (this.features.length === 0) {
-              $('.features-span').text('No features found');
-            }
         });
   }
 
@@ -326,6 +327,7 @@ export class ProjectComponent implements OnInit {
 
   addNewRelease() {
     $('#add-release-modal').modal('hide');
+    $('.releases-span').text('');
     $('#loading_for_releases').show();
     $('#addReleaseDiv').addClass('margin_to_loading');
     $('.releases-container').hide();
@@ -339,8 +341,6 @@ export class ProjectComponent implements OnInit {
               this.releases = data2;
               if (this.releases.length === 0) {
                 $('.releases-span').text('No releases found');
-              } else {
-                $('.releases-span').text('');
               }
             });
         });
@@ -465,11 +465,17 @@ export class ProjectComponent implements OnInit {
   }
 
   addFeatureToRelease(idFeature: number, idRelease: number) {
+    $('#loading_for_features').show();
+    $('#addFeatureDiv').addClass('margin_to_loading');
+    $('.features-container').hide();
     const body = '[{"feature_id":' + idFeature + '}]';
      this._replanAPIService.addFeatureToRelease(this.idProject, idRelease, body)
         .subscribe( data => {
           this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
+              $('#loading_for_features').hide();
+              $('#addFeatureDiv').removeClass('margin_to_loading');
+              $('.features-container').show();
               this.features = data2.filter(f => f.release === 'pending');
               if (this.features.length === 0) {
                 $('.features-span').text('No features found');

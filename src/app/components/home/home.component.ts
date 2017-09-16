@@ -64,6 +64,7 @@ export class HomeComponent implements OnInit {
 
   addNewProject() {
     $('#add-project-modal').modal('hide');
+    $('.projects-span').text('');
     $('#loading_for_projects').show();
     $('#addProjectDiv').addClass('margin_to_loading');
     $('.list-group-projects').hide();
@@ -77,8 +78,6 @@ export class HomeComponent implements OnInit {
               this.projects = data2;
               if (this.projects.length === 0) {
                 $('.projects-span').text('No projects found');
-              } else {
-                $('.projects-span').text('');
               }
             });
         });

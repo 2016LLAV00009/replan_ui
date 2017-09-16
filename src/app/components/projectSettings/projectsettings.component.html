@@ -64,6 +64,7 @@
                     <div class="card-block">
                         <h4 class="card-title resource-title">{{resource.name}}</h4>
                         <div class="resource-skills">
+                            <span class="card-text" *ngIf="resource?.skills.length === 0">No Skills</span>
                             <span class="card-text" *ngFor="let skill of resource.skills; let i = index">
                                 <span *ngIf="i !== resource.skills.length-1">{{skill.name}}, </span>
                                 <span *ngIf="i === resource.skills.length-1">{{skill.name}}</span>
