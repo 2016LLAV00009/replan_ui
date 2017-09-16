@@ -578,6 +578,10 @@ hr {
   color: black;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .custom-modal-header {
     background-color: #219161;
     color: #fff;

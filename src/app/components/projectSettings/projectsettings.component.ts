@@ -170,6 +170,13 @@ export class ProjectSettingsComponent implements OnInit {
   }
 
   addResourceModal() {
+    const self = this;
+    this.skillsModified = false;
+    this.skillsNotAssigned = [];
+    this.skillsToAssign = [];
+    this.skills.forEach(skill => {
+      self.skillsNotAssigned.push(skill);
+    });
     $('#add-resource-modal').modal();
   }
 
@@ -181,16 +188,40 @@ export class ProjectSettingsComponent implements OnInit {
     $('.resources-container').hide();
     this._replanAPIService.addResourceToProject(JSON.stringify(this.formResource.value), this.idProject)
         .subscribe( data => {
-          this._replanAPIService.getResourcesProject(this.idProject)
+          debugger;
+          if (this.skillsModified) {
+            let objArray = [];
+            this.skillsToAssign.forEach(skill => {
+              let obj = {
+                skill_id: skill.id
+              };
+              objArray.push(obj);
+            });
+            this._replanAPIService.addSkillsToResource(JSON.stringify(objArray), this.idProject, data.id)
+            .subscribe( data => {
+              this._replanAPIService.getResourcesProject(this.idProject)
+              .subscribe( data2 => {
+                this.resources = data2;
+                if (this.resources.length === 0) {
+                  $('.resources-span').text('No resources found');
+                }
+                $('#loading_for_resources').hide();
+                $('#addResourceDiv').removeClass('margin_to_loading');
+                $('.resources-container').show();
+              });
+            });
+          } else {
+            this._replanAPIService.getResourcesProject(this.idProject)
             .subscribe( data2 => {
-              $('#loading_for_resources').hide();
-              $('#addResourceDiv').removeClass('margin_to_loading');
-              $('.resources-container').show();
               this.resources = data2;
               if (this.resources.length === 0) {
                 $('.resources-span').text('No resources found');
               }
+              $('#loading_for_resources').hide();
+              $('#addResourceDiv').removeClass('margin_to_loading');
+              $('.resources-container').show();
             });
+          }
         });
   }
 

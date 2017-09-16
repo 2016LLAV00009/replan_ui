@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, Response } from '@angular/http';
+import { Observable } from 'rxjs';
 import 'rxjs/Rx';
 
 @Injectable()
@@ -14,7 +15,8 @@ export class replanAPIService {
   getProjectsAPI() {
     const url = `${this.projectsURL}`;
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   addProject(project: string) {
@@ -26,13 +28,15 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
-  deleteProject(id: number) {
+  deleteProject(id: number): Observable<Response> {
     const url = this.projectsURL + id;
     return this.http.delete( url )
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   editProject(project: string, idProject: number) {
@@ -232,10 +236,11 @@ export class replanAPIService {
 
   /* PLAN */
 
-  getReleasePlan(idProject: number, idRelease: number) {
+  getReleasePlan(idProject: number, idRelease: number): Observable<Response> {
     const url = this.projectsURL + idProject + '/releases/' + idRelease + '/plan';
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   /* RESOURCES */

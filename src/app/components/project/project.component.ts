@@ -140,10 +140,34 @@ export class ProjectComponent implements OnInit {
   }
 
   addFeatureModal() {
+    const date = new Date();
+    const code = Number(date.getDate().toString() + date.getHours().toString() +
+                 date.getSeconds().toString() + date.getMilliseconds().toString());
+    this.formFeature.controls['code'].setValue(code);
+    const self = this;
+    this.skillsModified = false;
+    this.dependenciesModified = false;
+    this.skillsNotAssigned = [];
+    this.skillsToAssign = [];
+    this.dependenciesNotAssigned = [];
+    this.dependenciesToAssign = [];
+    this.skills.forEach(skill => {
+      self.skillsNotAssigned.push(skill);
+    });
+    this.dependencies.forEach(feature => {
+      self.dependenciesNotAssigned.push(feature);
+    });
     $('#add-feature-modal').modal();
   }
 
   addReleaseModal() {
+    this.resourcesModified = false;
+    const self = this;
+    this.resourcesNotAssigned = [];
+    this.resourcesToAssign = [];
+    this.resources.forEach(resource => {
+      self.resourcesNotAssigned.push(resource);
+    });
     $('#add-release-modal').modal();
   }
 
@@ -155,17 +179,52 @@ export class ProjectComponent implements OnInit {
     $('.features-container').hide();
     this._replanAPIService.addFeatureToProject(JSON.stringify(this.formFeature.value), this.idProject)
         .subscribe( data => {
-          this._replanAPIService.getFeaturesProject(this.idProject)
+          if (this.skillsModified || this.dependenciesModified) {
+            const idFeature = data.id;
+            let objArray = [];
+            this.skillsToAssign.forEach(skill => {
+              let obj = {
+                skill_id: skill.id
+              };
+              objArray.push(obj);
+            });
+            this._replanAPIService.addSkillsToFeature(JSON.stringify(objArray), this.idProject, idFeature)
+            .subscribe( data => {
+                let objArray2 = [];
+                this.dependenciesToAssign.forEach(feature => {
+                  let obj = {
+                    feature_id: feature.id
+                  };
+                  objArray2.push(obj);
+                });
+                this._replanAPIService.addDependenciesToFeature(JSON.stringify(objArray2), this.idProject, idFeature)
+                .subscribe( data => {
+                  this._replanAPIService.getFeaturesProject(this.idProject)
+                  .subscribe( data2 => {
+                    this.dependencies = data2;
+                    this.features = data2.filter(f => f.release === 'pending');
+                    if (this.features.length === 0) {
+                      $('.features-span').text('No features found');
+                    }
+                    $('#loading_for_features').hide();
+                    $('#addFeatureDiv').removeClass('margin_to_loading');
+                    $('.features-container').show();
+                  });
+                  });
+              });
+          } else {
+            this._replanAPIService.getFeaturesProject(this.idProject)
             .subscribe( data2 => {
-              $('#loading_for_features').hide();
-              $('#addFeatureDiv').removeClass('margin_to_loading');
-              $('.features-container').show();
               this.dependencies = data2;
               this.features = data2.filter(f => f.release === 'pending');
               if (this.features.length === 0) {
                 $('.features-span').text('No features found');
               }
+              $('#loading_for_features').hide();
+              $('#addFeatureDiv').removeClass('margin_to_loading');
+              $('.features-container').show();
             });
+          }
         });
   }
 
@@ -333,16 +392,39 @@ export class ProjectComponent implements OnInit {
     $('.releases-container').hide();
     this._replanAPIService.addReleaseToProject(JSON.stringify(this.formRelease.value), this.idProject)
         .subscribe( data => {
-          this._replanAPIService.getReleasesProject(this.idProject)
-            .subscribe( data2 => {
-              $('#loading_for_releases').hide();
-              $('#addReleaseDiv').removeClass('margin_to_loading');
-              $('.releases-container').show();
-              this.releases = data2;
-              if (this.releases.length === 0) {
-                $('.releases-span').text('No releases found');
-              }
-            });
+          if (this.resourcesModified) {
+              let objArray = [];
+              this.resourcesToAssign.forEach(resource => {
+                let obj = {
+                  resource_id: resource.id
+                };
+                objArray.push(obj);
+              });
+              this._replanAPIService.addResourcesToRelease(JSON.stringify(objArray), this.idProject, data.id)
+              .subscribe( data => {
+                this._replanAPIService.getReleasesProject(this.idProject)
+                  .subscribe( data2 => {
+                    this.releases = data2;
+                    if (this.releases.length === 0) {
+                      $('.releases-span').text('No releases found');
+                    }
+                    $('#loading_for_releases').hide();
+                    $('#addReleaseDiv').removeClass('margin_to_loading');
+                    $('.releases-container').show();
+                  });
+              });
+          } else {
+            this._replanAPIService.getReleasesProject(this.idProject)
+              .subscribe( data2 => {
+                this.releases = data2;
+                if (this.releases.length === 0) {
+                  $('.releases-span').text('No releases found');
+                }
+                $('#loading_for_releases').hide();
+                $('#addReleaseDiv').removeClass('margin_to_loading');
+                $('.releases-container').show();
+              });
+          }
         });
   }
 
