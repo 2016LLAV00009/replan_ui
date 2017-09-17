@@ -39,13 +39,16 @@ export class PlanComponent implements OnInit {
                       if (data.toString() === 'e') {
                         $('#error-modal').modal();
                         $('#error-text').text('Error loading release plan data. Try it again later.');
-                      }
-                      this.plan = data;
-                      $('#loading_for_plan').hide();
-                      if (this.plan.jobs.length === 0) {
+                        this.plan = '';
                         $('.plan-span').text('No planification found');
+                      } else {
+                        this.plan = data;
+                        if (this.plan.jobs.length === 0) {
+                          $('.plan-span').text('No planification found');
+                        }
+                        this.chartLogic(this.plan);
                       }
-                      this.chartLogic(this.plan);
+                      $('#loading_for_plan').hide();
                     });
               });
 
@@ -96,18 +99,22 @@ export class PlanComponent implements OnInit {
   refreshPlan() {
     $('#timeline').empty();
     $('#loading_for_plan').show();
+    this.plan = null;
     this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
     .subscribe( data => {
       if (data.toString() === 'e') {
         $('#error-modal').modal();
         $('#error-text').text('Error loading release plan data. Try it again later.');
-      }
-      this.plan = data;
-      $('#loading_for_plan').hide();
-      if (this.plan.length === 0) {
         $('.plan-span').text('No planification found');
+        this.plan = '';
+      } else {
+        this.plan = data;
+        if (this.plan.length === 0) {
+          $('.plan-span').text('No planification found');
+        }
+        this.chartLogic(this.plan);
       }
-      this.chartLogic(this.plan);
+      $('#loading_for_plan').hide();
     });
   }
 

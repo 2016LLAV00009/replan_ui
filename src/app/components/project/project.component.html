@@ -20,7 +20,7 @@
             <div class="li-features">
               <h4 class="feature-name"> {{ feature.name }} </h4>
               <p class="feature-deadline" *ngIf="feature?.deadline === null">No Deadline</p>
-              <p class="feature-deadline">{{feature?.deadline | date: 'dd/MM/yyyy'}} </p>
+              <p class="feature-deadline">deadline: <strong>{{feature?.deadline | date: 'dd/MM/yyyy'}}</strong></p>
               <div class="icons-features-content">
                 <a (click)="editFeature(feature.id)">
                   <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
             (onDropSuccess)="transferDataSuccess($event, release.id)">
             <div class="li-releases">
               <h4 class="release-name"> {{ release.name }} </h4>
-              <p class="release-dates"> {{release.starts_at | date: 'dd/MM/yyyy'}} - {{release.deadline | date: 'dd/MM/yyyy'}} </p>
+              <p class="release-dates">from <strong>{{release.starts_at | date: 'dd/MM/yyyy'}}</strong> to <strong>{{release.deadline | date: 'dd/MM/yyyy'}}</strong></p>
               <div class="icons-content-releases">
                 <a (click)="editRelease(release.id)">
                   <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
