@@ -64,10 +64,18 @@ export class ProjectSettingsComponent implements OnInit {
     $('.project-information-container').hide();
     this._replanAPIService.getProject(this.idProject)
     .subscribe( data => {
+      if (data.toString() === 'e') {
+        $('#error-modal').modal();
+        $('#error-text').text('Error loading project data. Try it again later.');
+      }
       this.project = data;
     });
     this._replanAPIService.getResourcesProject(this.idProject)
     .subscribe( data => {
+      if (data.toString() === 'e') {
+        $('#error-modal').modal();
+        $('#error-text').text('Error loading project resources data. Try it again later.');
+      }
       this.resources = data;
       if (this.resources.length === 0) {
         $('.resources-span').text('No resources found');
@@ -75,6 +83,10 @@ export class ProjectSettingsComponent implements OnInit {
     });
     this._replanAPIService.getSkillsProject(this.idProject)
     .subscribe( data => {
+      if (data.toString() === 'e') {
+        $('#error-modal').modal();
+        $('#error-text').text('Error loading project skills data. Try it again later.');
+      }
       this.skills = data;
       if (this.skills.length === 0) {
         $('.skills-span').text('No skills found');
@@ -118,8 +130,16 @@ export class ProjectSettingsComponent implements OnInit {
     $('#edit-project-modal').modal('hide');
     this._replanAPIService.editProject(JSON.stringify(this.formEditProject.value), this.idProject)
       .subscribe( data => {
+        if (data.toString() === 'e') {
+          $('#error-modal').modal();
+          $('#error-text').text('Error editing the project. Try it again later.');
+        }
         this._replanAPIService.getProject(this.idProject)
           .subscribe( data2 => {
+            if (data2.toString() === 'e') {
+              $('#error-modal').modal();
+              $('#error-text').text('Error loading project data. Try it again later.');
+            }
             this.project = data2;
           });
       });
@@ -131,8 +151,16 @@ export class ProjectSettingsComponent implements OnInit {
     $('.skills-container').hide();
     this._replanAPIService.deleteSkillFromProject(this.idProject, id)
       .subscribe( data => {
+        if (data.toString() === 'e') {
+          $('#error-modal').modal();
+          $('#error-text').text('Error deleting the skill. Try it again later.');
+        }
         this._replanAPIService.getSkillsProject(this.idProject)
           .subscribe( data2 => {
+            if (data2.toString() === 'e') {
+              $('#error-modal').modal();
+              $('#error-text').text('Error loading skills data. Try it again later.');
+            }
             $('#loading_for_skills').hide();
             $('#addSkillDiv').removeClass('margin_to_loading');
             $('.skills-container').show();
@@ -156,8 +184,16 @@ export class ProjectSettingsComponent implements OnInit {
     $('.skills-container').hide();
     this._replanAPIService.addSkillToProject(JSON.stringify(this.formSkill.value), this.idProject)
         .subscribe( data => {
+          if (data.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error creating the skill. Try it again later.');
+          }
           this._replanAPIService.getSkillsProject(this.idProject)
             .subscribe( data2 => {
+              if (data2.toString() === 'e') {
+                $('#error-modal').modal();
+                $('#error-text').text('Error loading skills data. Try it again later.');
+              }
               $('#loading_for_skills').hide();
               $('#addSkillDiv').removeClass('margin_to_loading');
               $('.skills-container').show();
@@ -188,7 +224,10 @@ export class ProjectSettingsComponent implements OnInit {
     $('.resources-container').hide();
     this._replanAPIService.addResourceToProject(JSON.stringify(this.formResource.value), this.idProject)
         .subscribe( data => {
-          debugger;
+          if (data.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error creating the resource. Try it again later.');
+          }
           if (this.skillsModified) {
             let objArray = [];
             this.skillsToAssign.forEach(skill => {
@@ -199,8 +238,16 @@ export class ProjectSettingsComponent implements OnInit {
             });
             this._replanAPIService.addSkillsToResource(JSON.stringify(objArray), this.idProject, data.id)
             .subscribe( data => {
+              if (data.toString() === 'e') {
+                $('#error-modal').modal();
+                $('#error-text').text('Error creating the resource. Try it again later.');
+              }
               this._replanAPIService.getResourcesProject(this.idProject)
               .subscribe( data2 => {
+                if (data2.toString() === 'e') {
+                  $('#error-modal').modal();
+                  $('#error-text').text('Error loading resources data. Try it again later.');
+                }
                 this.resources = data2;
                 if (this.resources.length === 0) {
                   $('.resources-span').text('No resources found');
@@ -213,6 +260,10 @@ export class ProjectSettingsComponent implements OnInit {
           } else {
             this._replanAPIService.getResourcesProject(this.idProject)
             .subscribe( data2 => {
+              if (data2.toString() === 'e') {
+                $('#error-modal').modal();
+                $('#error-text').text('Error loading resources data. Try it again later.');
+              }
               this.resources = data2;
               if (this.resources.length === 0) {
                 $('.resources-span').text('No resources found');
@@ -257,9 +308,17 @@ export class ProjectSettingsComponent implements OnInit {
     $('.resources-container').hide();
     this._replanAPIService.editResource(JSON.stringify(this.formEditResource.value), this.idProject, this.resourceToEdit.id)
         .subscribe( data => {
+          if (data.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error editing the resource. Try it again later.');
+          }
           if (this.skillsModified) {
             this._replanAPIService.deleteSkillsFromResource(this.idProject, this.resourceToEdit.id, this.resourceToEdit.skills)
               .subscribe( data => {
+                if (data.toString() === 'e') {
+                  $('#error-modal').modal();
+                  $('#error-text').text('Error editing the resource. Try it again later.');
+                }
                 let objArray = [];
                 this.skillsToAssign.forEach(skill => {
                   let obj = {
@@ -269,8 +328,16 @@ export class ProjectSettingsComponent implements OnInit {
                 });
                 this._replanAPIService.addSkillsToResource(JSON.stringify(objArray), this.idProject, this.resourceToEdit.id)
                 .subscribe( data => {
+                  if (data.toString() === 'e') {
+                    $('#error-modal').modal();
+                    $('#error-text').text('Error editing the resource. Try it again later.');
+                  }
                   this._replanAPIService.getResourcesProject(this.idProject)
                   .subscribe( data2 => {
+                    if (data2.toString() === 'e') {
+                      $('#error-modal').modal();
+                      $('#error-text').text('Error loading resources data. Try it again later.');
+                    }
                     this.resources = data2;
                     if (this.resources.length === 0) {
                       $('.resources-span').text('No resources found');
@@ -285,6 +352,10 @@ export class ProjectSettingsComponent implements OnInit {
           } else {
             this._replanAPIService.getResourcesProject(this.idProject)
             .subscribe( data2 => {
+              if (data2.toString() === 'e') {
+                $('#error-modal').modal();
+                $('#error-text').text('Error loading resources data. Try it again later.');
+              }
               this.resources = data2;
               if (this.resources.length === 0) {
                 $('.resources-span').text('No resources found');
@@ -319,8 +390,16 @@ export class ProjectSettingsComponent implements OnInit {
     $('.resources-container').hide();
     this._replanAPIService.deleteResourceFromProject(this.idProject, id)
       .subscribe( data => {
+        if (data.toString() === 'e') {
+          $('#error-modal').modal();
+          $('#error-text').text('Error deleting the resource. Try it again later.');
+        }
         this._replanAPIService.getResourcesProject(this.idProject)
           .subscribe( data2 => {
+            if (data2.toString() === 'e') {
+              $('#error-modal').modal();
+              $('#error-text').text('Error loading resources data. Try it again later.');
+            }
             $('#loading_for_resources').hide();
             $('#addResourceDiv').removeClass('margin_to_loading');
             $('.resources-container').show();

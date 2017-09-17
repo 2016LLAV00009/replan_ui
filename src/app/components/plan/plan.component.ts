@@ -27,12 +27,19 @@ export class PlanComponent implements OnInit {
 
                   this._replanAPIService.getProject(this.idProject)
                   .subscribe( data => {
+                    if (data.toString() === 'e') {
+                      $('#error-modal').modal();
+                      $('#error-text').text('Error loading project data. Try it again later.');
+                    }
                     $('.title-project').text(data.name);
                   });
                   $('#loading_for_plan').show();
                   this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
                     .subscribe( data => {
-                      debugger;
+                      if (data.toString() === 'e') {
+                        $('#error-modal').modal();
+                        $('#error-text').text('Error loading release plan data. Try it again later.');
+                      }
                       this.plan = data;
                       $('#loading_for_plan').hide();
                       if (this.plan.jobs.length === 0) {
@@ -91,6 +98,10 @@ export class PlanComponent implements OnInit {
     $('#loading_for_plan').show();
     this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
     .subscribe( data => {
+      if (data.toString() === 'e') {
+        $('#error-modal').modal();
+        $('#error-text').text('Error loading release plan data. Try it again later.');
+      }
       this.plan = data;
       $('#loading_for_plan').hide();
       if (this.plan.length === 0) {

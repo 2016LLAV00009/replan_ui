@@ -38,6 +38,10 @@ export class HomeComponent implements OnInit {
     $('#addProjectDiv').addClass('margin_to_loading');
     this._replanAPIService.getProjectsAPI()
       .subscribe( data => {
+        if (data.toString() === 'e') {
+          $('#error-modal').modal();
+          $('#error-text').text('Error loading projects data. Try it again later.');
+        }
         $('#loading_for_projects').hide();
         $('#addProjectDiv').removeClass('margin_to_loading');
         this.projects = data;

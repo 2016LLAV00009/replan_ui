@@ -48,13 +48,15 @@ export class replanAPIService {
     return this.http.put(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   getProject(id: number) {
     const url = this.projectsURL + id;
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   /* FEATURES */
@@ -62,13 +64,15 @@ export class replanAPIService {
   getFeaturesProject(id:number) {
     const url = this.projectsURL + id + '/features';
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   getFeature(idProject: number, idFeature: number) {
     const url = this.projectsURL + idProject + '/features/' + idFeature;
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   editFeature(feature: string, idProject: number, idFeature: number) {
@@ -80,7 +84,8 @@ export class replanAPIService {
     return this.http.put(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   deleteSkillsFromFeature(idProject: number, idFeature: number, skills: any) {
@@ -94,7 +99,8 @@ export class replanAPIService {
       }
     });
     return this.http.delete( url + params)
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   addSkillsToFeature(skills: string, idProject: number, idFeature: number) {
@@ -106,7 +112,8 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   deleteDependenciesFromFeature(idProject: number, idFeature: number, dependencies: any) {
@@ -120,7 +127,8 @@ export class replanAPIService {
       }
     });
     return this.http.delete( url + params)
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   addDependenciesToFeature(dependencies: string, idProject: number, idFeature: number) {
@@ -132,13 +140,15 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   deleteFeature(idProject: number, idFeature: number) {
     const url = this.projectsURL + idProject + '/features/' + idFeature;
     return this.http.delete( url )
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   addFeatureToProject(feature: string, id: number) {
@@ -150,7 +160,8 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   addFeatureToRelease(idProject: number, idRelease: number, body: string) {
@@ -161,7 +172,8 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   /* RELEASES */
@@ -169,13 +181,15 @@ export class replanAPIService {
   getReleasesProject(id:number) {
     const url = this.projectsURL + id + '/releases';
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   getRelease(idProject: number, idRelease: number) {
     const url = this.projectsURL + idProject + '/releases/' + idRelease;
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   editRelease(release: string, idProject: number, idRelease: number) {
@@ -187,7 +201,8 @@ export class replanAPIService {
     return this.http.put(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   deleteResourcesFromRelease(idProject: number, idRelease: number, resources: any) {
@@ -201,7 +216,8 @@ export class replanAPIService {
       }
     });
     return this.http.delete( url + params )
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   addResourcesToRelease(resources: string, idProject: number, idRelease: number) {
@@ -213,13 +229,15 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   deleteRelease(idProject: number, idRelease: number) {
     const url = this.projectsURL + idProject + '/releases/' + idRelease;
     return this.http.delete( url )
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   addReleaseToProject(release: string, id: number) {
@@ -231,7 +249,8 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   /* PLAN */
@@ -248,7 +267,8 @@ export class replanAPIService {
   getResourcesProject(id: number) {
     const url = this.projectsURL + id + '/resources';
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   editResource(resource: string, idProject: number, idResource: number) {
@@ -260,7 +280,8 @@ export class replanAPIService {
     return this.http.put(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   deleteSkillsFromResource(idProject: number, idResource: number, skills: any) {
@@ -274,7 +295,8 @@ export class replanAPIService {
       }
     });
     return this.http.delete( url + params )
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   addSkillsToResource(skills: string, idProject: number, idResource: number) {
@@ -286,13 +308,15 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   deleteResourceFromProject(idProject: number, idResource: number) {
     const url = this.projectsURL + idProject + '/resources/' + idResource;
     return this.http.delete( url )
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   addResourceToProject(resource: string, id: number) {
@@ -304,7 +328,8 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
   /* SKILLS */
@@ -312,13 +337,15 @@ export class replanAPIService {
   getSkillsProject(id:number) {
     const url = this.projectsURL + id + '/skills';
     return this.http.get( url )
-      .map(res => res.json() );
+      .map(res => res.json() )
+      .catch(error => 'e');
   }
 
   deleteSkillFromProject(idProject: number, idSkill: number) {
     const url = this.projectsURL + idProject + '/skills/' + idSkill;
     return this.http.delete( url )
-      .map(res => res.json());
+      .map(res => res.json())
+      .catch(error => 'e');
   }
 
   addSkillToProject(skill: string, id: number) {
@@ -330,7 +357,8 @@ export class replanAPIService {
     return this.http.post(url, body, { headers })
       .map(res => {
         return res.json();
-      });
+      })
+      .catch(error => 'e');
   }
 
 }
