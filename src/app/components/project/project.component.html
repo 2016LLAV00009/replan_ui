@@ -20,7 +20,7 @@
             <div class="li-features">
               <h4 class="feature-name"> {{ feature.name }} </h4>
               <p class="feature-deadline" *ngIf="feature?.deadline === null">No Deadline</p>
-              <p class="feature-deadline">deadline: <strong>{{feature?.deadline | date: 'dd/MM/yyyy'}}</strong></p>
+              <p class="feature-deadline" *ngIf="feature?.deadline !== null">deadline: <strong>{{feature?.deadline | date: 'dd/MM/yyyy'}}</strong></p>
               <div class="icons-features-content">
                 <a (click)="editFeature(feature.id)">
                   <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
