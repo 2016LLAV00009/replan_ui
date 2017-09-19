@@ -68,6 +68,13 @@ export class replanAPIService {
       .catch(error => 'e');
   }
 
+  getFeaturesRelease(idProject: number, idRelease: number) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/features';
+    return this.http.get( url )
+      .map(res => res.json() )
+      .catch(error => 'e');
+  }
+
   getFeature(idProject: number, idFeature: number) {
     const url = this.projectsURL + idProject + '/features/' + idFeature;
     return this.http.get( url )

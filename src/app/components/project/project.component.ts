@@ -647,7 +647,7 @@ export class ProjectComponent implements OnInit {
         }
         this._replanAPIService.getReleasesProject(this.idProject)
           .subscribe( data2 => {
-            if (data.toString() === 'e') {
+            if (data2.toString() === 'e') {
               $('#error-modal').modal();
               $('#error-text').text('Error loading releases data. Try it again later.');
             }

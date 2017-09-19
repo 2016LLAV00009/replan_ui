@@ -13,8 +13,9 @@ export class PlanComponent implements OnInit {
 
   idProject: number;
   idRelease: number;
+  features: any;
   plan: any;
-  featuresNotAssigned: any;
+  featuresNotAssigned: any[];
 
   chartRows: any[];
 
@@ -45,9 +46,24 @@ export class PlanComponent implements OnInit {
                         this.plan = data;
                         if (this.plan.jobs.length === 0) {
                           $('.plan-span').text('No planification found');
+                        } else {
+                          this.chartLogic(this.plan);
                         }
-                        this.chartLogic(this.plan);
                       }
+                      this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
+                      .subscribe( data2 => {
+                        const self = this;
+                        if (data2.toString() === 'e') {
+                          $('#error-modal').modal();
+                          $('#error-text').text('Error loading release data. Try it again later.');
+                        }
+                        data2.forEach(feature => {
+                          if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
+                            self.featuresNotAssigned.push(feature);
+                          }
+                        });
+                        this.features = data;
+                      });
                       $('#loading_for_plan').hide();
                     });
               });
@@ -111,8 +127,9 @@ export class PlanComponent implements OnInit {
         this.plan = data;
         if (this.plan.length === 0) {
           $('.plan-span').text('No planification found');
+        } else {
+          this.chartLogic(this.plan);
         }
-        this.chartLogic(this.plan);
       }
       $('#loading_for_plan').hide();
     });

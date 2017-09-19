@@ -69,6 +69,10 @@ hr {
 
 /* PLAN COMPONENT */
 
+.table-features {
+  margin-bottom: 40px;
+}
+
 .hr-planification {
   margin-top: 0;
 }
