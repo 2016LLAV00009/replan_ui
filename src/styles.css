@@ -95,6 +95,26 @@ hr {
   cursor: pointer;
 }
 
+.margin-trash {
+  width: 0;
+  margin: auto;
+}
+
+.trash-container {
+  margin-top: 53px;
+  margin-bottom: 40px;
+  width: 100%;
+  text-align: center;
+  height: 40px;
+  display: none;
+}
+
+.fa-trash-feature {
+  font-size: 40px;
+  float: right;
+  cursor: pointer;
+}
+
 /* HOME COMPONENT */
 
 #addProjectDiv {

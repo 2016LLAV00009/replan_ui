@@ -269,6 +269,14 @@ export class replanAPIService {
       .catch(error => 'e');
   }
 
+  deleteFeatureFromRelease(idProject: number, idRelease: number, idFeature: any) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/features';
+    const params = '?featureId=' + idFeature;
+    return this.http.delete( url + params)
+      .map(res => res.json())
+      .catch(error => 'e');
+  }
+
   /* RESOURCES */
 
   getResourcesProject(id: number) {
