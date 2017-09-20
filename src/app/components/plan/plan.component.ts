@@ -130,6 +130,7 @@ export class PlanComponent implements OnInit {
     $('#timeline').empty();
     $('#loading_for_plan').show();
     $('#loading_for_dependecies').show();
+    $('.not-assigned-span').text('');
     this.plan = null;
     this.featuresNotAssigned = [];
     this._replanAPIService.deleteFeatureFromRelease(this.idProject, this.idRelease, this.idFeatureToDelete)
