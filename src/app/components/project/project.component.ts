@@ -481,18 +481,18 @@ export class ProjectComponent implements OnInit {
                 objArray.push(obj);
               });
               this._replanAPIService.addResourcesToRelease(JSON.stringify(objArray), this.idProject, data.id)
-              .subscribe( data => {
-                if (data.toString() === 'e') {
+              .subscribe( data2 => {
+                if (data2.toString() === 'e') {
                   $('#error-modal').modal();
                   $('#error-text').text('Error creating the release. Try it again later.');
                 }
                 this._replanAPIService.getReleasesProject(this.idProject)
-                  .subscribe( data2 => {
-                    if (data2.toString() === 'e') {
+                  .subscribe( data3 => {
+                    if (data3.toString() === 'e') {
                       $('#error-modal').modal();
                       $('#error-text').text('Error loading releases data. Try it again later.');
                     }
-                    this.releases = data2;
+                    this.releases = data3;
                     if (this.releases.length === 0) {
                       $('.releases-span').text('No releases found');
                     }

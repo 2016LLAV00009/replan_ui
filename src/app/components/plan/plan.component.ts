@@ -28,11 +28,11 @@ export class PlanComponent implements OnInit {
                   this.idRelease = params['id2'];
                   this.featuresNotAssigned = [];
 
-                  this._replanAPIService.getProject(this.idProject)
+                  this._replanAPIService.getRelease(this.idProject, this.idRelease)
                   .subscribe( data => {
                     if (data.toString() === 'e') {
                       $('#error-modal').modal();
-                      $('#error-text').text('Error loading project data. Try it again later.');
+                      $('#error-text').text('Error loading release data. Try it again later.');
                     }
                     $('.title-project').text(data.name);
                   });

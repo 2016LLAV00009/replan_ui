@@ -25,7 +25,7 @@
             </div>
             <div class="col-1 pr-1">
                 <a (click)="editProject()" class="padding-icon edit-settings-icon">
-                    <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                    <i class="fa fa-pencil fa-2x" aria-hidden="true" title="Edit Project"></i>
                 </a>
             </div>
         </div>
@@ -41,14 +41,14 @@
                     <div class="card-block">
                         <h4 class="card-title skill-title">{{skill.name}}</h4>
                         <p class="card-text">{{skill.description}}</p>
-                        <button (click)="deleteSkill(skill.id)" class="btn btn-danger">Delete</button>
+                        <button (click)="deleteSkill(skill.id)" class="btn btn-danger" title="Delete Skill">Delete</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <div id="addSkillDiv" class="text-center">
-            <button (click)="addSkillModal()" type="button" class="btn add-btn">+</button>
+            <button (click)="addSkillModal()" type="button" class="btn add-btn" title="Add Skill">+</button>
         </div>
 
 
@@ -75,10 +75,10 @@
                         </h4>
                         <div class="icons-resources-content">
                             <a class="padding-icon" (click)="editResource(resource.id)">
-                                <i class="fa fa-pencil fa-2x" aria-hidden="true"></i>
+                                <i class="fa fa-pencil fa-2x" aria-hidden="true" title="Edit Resource"></i>
                             </a>
                             <a class="padding-icon" (click)="deleteResource(resource.id)">
-                                <i class="fa fa-trash-o fa-2x" aria-hidden="true" ></i>
+                                <i class="fa fa-trash-o fa-2x" aria-hidden="true" title="Delete Resource"></i>
                             </a>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
         </div>
 
         <div id="addResourceDiv" class="text-center">
-            <button (click)="addResourceModal()" type="button" class="btn add-btn">+</button>
+            <button (click)="addResourceModal()" type="button" class="btn add-btn" title="Add Resource">+</button>
         </div>
     </div>
 
