@@ -79,7 +79,7 @@ export class PlanComponent implements OnInit {
 
   }
 
-  ngOnInit() { 
+  ngOnInit() {
     $('li.nav-item').removeClass('active');
   }
 
@@ -137,7 +137,7 @@ export class PlanComponent implements OnInit {
     .subscribe( data => {
       if (data.toString() === 'e') {
         $('#error-modal').modal();
-        $('#error-text').text('Error deleting the feature. Try it again later.');
+        $('#error-text').text('Error removing the feature. Try it again later.');
       }
       this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
       .subscribe( data2 => {
@@ -184,6 +184,8 @@ export class PlanComponent implements OnInit {
     $('#timeline').empty();
     $('#loading_for_plan').show();
     $('#loading_for_dependecies').show();
+    $('.not-assigned-span').text('');
+    $('.plan-span').text('');
     this.plan = null;
     this.featuresNotAssigned = [];
     this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
@@ -195,7 +197,7 @@ export class PlanComponent implements OnInit {
         this.plan = '';
       } else {
         this.plan = data;
-        if (this.plan.length === 0) {
+        if (this.plan.jobs.length === 0) {
           $('.plan-span').text('No planification found');
         } else {
           this.chartLogic(this.plan);
