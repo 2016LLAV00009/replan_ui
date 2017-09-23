@@ -13,6 +13,7 @@ export class PlanComponent implements OnInit {
 
   idProject: number;
   idRelease: number;
+  release: any;
   features: any;
   plan: any;
   featuresNotAssigned: any;
@@ -34,6 +35,7 @@ export class PlanComponent implements OnInit {
                       $('#error-modal').modal();
                       $('#error-text').text('Error loading release data. Try it again later.');
                     }
+                    this.release = data;
                     $('.title-project').text(data.name);
                   });
                   $('#loading_for_plan').show();
