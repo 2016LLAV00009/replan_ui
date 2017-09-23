@@ -229,26 +229,26 @@ export class ProjectSettingsComponent implements OnInit {
             $('#error-text').text('Error creating the resource. Try it again later.');
           }
           if (this.skillsModified) {
-            let objArray = [];
+            const objArray = [];
             this.skillsToAssign.forEach(skill => {
-              let obj = {
+              const obj = {
                 skill_id: skill.id
               };
               objArray.push(obj);
             });
             this._replanAPIService.addSkillsToResource(JSON.stringify(objArray), this.idProject, data.id)
-            .subscribe( data => {
-              if (data.toString() === 'e') {
+            .subscribe( data2 => {
+              if (data2.toString() === 'e') {
                 $('#error-modal').modal();
                 $('#error-text').text('Error creating the resource. Try it again later.');
               }
               this._replanAPIService.getResourcesProject(this.idProject)
-              .subscribe( data2 => {
-                if (data2.toString() === 'e') {
+              .subscribe( data3 => {
+                if (data3.toString() === 'e') {
                   $('#error-modal').modal();
                   $('#error-text').text('Error loading resources data. Try it again later.');
                 }
-                this.resources = data2;
+                this.resources = data3;
                 if (this.resources.length === 0) {
                   $('.resources-span').text('No resources found');
                 }
@@ -314,31 +314,31 @@ export class ProjectSettingsComponent implements OnInit {
           }
           if (this.skillsModified) {
             this._replanAPIService.deleteSkillsFromResource(this.idProject, this.resourceToEdit.id, this.resourceToEdit.skills)
-              .subscribe( data => {
-                if (data.toString() === 'e') {
+              .subscribe( data2 => {
+                if (data2.toString() === 'e') {
                   $('#error-modal').modal();
                   $('#error-text').text('Error editing the resource. Try it again later.');
                 }
-                let objArray = [];
+                const objArray = [];
                 this.skillsToAssign.forEach(skill => {
-                  let obj = {
+                  const obj = {
                     skill_id: skill.id
                   };
                   objArray.push(obj);
                 });
                 this._replanAPIService.addSkillsToResource(JSON.stringify(objArray), this.idProject, this.resourceToEdit.id)
-                .subscribe( data => {
-                  if (data.toString() === 'e') {
+                .subscribe( data3 => {
+                  if (data3.toString() === 'e') {
                     $('#error-modal').modal();
                     $('#error-text').text('Error editing the resource. Try it again later.');
                   }
                   this._replanAPIService.getResourcesProject(this.idProject)
-                  .subscribe( data2 => {
-                    if (data2.toString() === 'e') {
+                  .subscribe( data4 => {
+                    if (data4.toString() === 'e') {
                       $('#error-modal').modal();
                       $('#error-text').text('Error loading resources data. Try it again later.');
                     }
-                    this.resources = data2;
+                    this.resources = data4;
                     if (this.resources.length === 0) {
                       $('.resources-span').text('No resources found');
                     }

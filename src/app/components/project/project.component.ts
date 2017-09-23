@@ -205,40 +205,40 @@ export class ProjectComponent implements OnInit {
           }
           if (this.skillsModified || this.dependenciesModified) {
             const idFeature = data.id;
-            let objArray = [];
+            const objArray = [];
             this.skillsToAssign.forEach(skill => {
-              let obj = {
+              const obj = {
                 skill_id: skill.id
               };
               objArray.push(obj);
             });
             this._replanAPIService.addSkillsToFeature(JSON.stringify(objArray), this.idProject, idFeature)
-            .subscribe( data => {
-                if (data.toString() === 'e') {
+            .subscribe( data2 => {
+                if (data2.toString() === 'e') {
                   $('#error-modal').modal();
                   $('#error-text').text('Error creating the feature. Try it again later.');
                 }
-                let objArray2 = [];
+                const objArray2 = [];
                 this.dependenciesToAssign.forEach(feature => {
-                  let obj = {
+                  const obj = {
                     feature_id: feature.id
                   };
                   objArray2.push(obj);
                 });
                 this._replanAPIService.addDependenciesToFeature(JSON.stringify(objArray2), this.idProject, idFeature)
-                .subscribe( data => {
-                  if (data.toString() === 'e') {
+                .subscribe( data3 => {
+                  if (data3.toString() === 'e') {
                     $('#error-modal').modal();
                     $('#error-text').text('Error creating the feature. Try it again later.');
                   }
                   this._replanAPIService.getFeaturesProject(this.idProject)
-                  .subscribe( data2 => {
-                    if (data2.toString() === 'e') {
+                  .subscribe( data4 => {
+                    if (data4.toString() === 'e') {
                       $('#error-modal').modal();
                       $('#error-text').text('Error loading features data. Try it again later.');
                     }
-                    this.dependencies = data2;
-                    this.features = data2.filter(f => f.release === 'pending');
+                    this.dependencies = data4;
+                    this.features = data4.filter(f => f.release === 'pending');
                     if (this.features.length === 0) {
                       $('.features-span').text('No features found');
                     }
@@ -320,51 +320,51 @@ export class ProjectComponent implements OnInit {
           }
           if (this.skillsModified || this.dependenciesModified) {
             this._replanAPIService.deleteSkillsFromFeature(this.idProject, this.featureToEdit.id, this.featureToEdit.required_skills)
-              .subscribe( data => {
-                if (data.toString() === 'e') {
+              .subscribe( data2 => {
+                if (data2.toString() === 'e') {
                   $('#error-modal').modal();
                   $('#error-text').text('Error editing the feature. Try it again later.');
                 }
-                let objArray = [];
+                const objArray = [];
                 this.skillsToAssign.forEach(skill => {
-                  let obj = {
+                  const obj = {
                     skill_id: skill.id
                   };
                   objArray.push(obj);
                 });
                 this._replanAPIService.addSkillsToFeature(JSON.stringify(objArray), this.idProject, this.featureToEdit.id)
-                .subscribe( data => {
-                  if (data.toString() === 'e') {
+                .subscribe( data3 => {
+                  if (data3.toString() === 'e') {
                     $('#error-modal').modal();
                     $('#error-text').text('Error editing the feature. Try it again later.');
                   }
                   this._replanAPIService.deleteDependenciesFromFeature(this.idProject, this.featureToEdit.id, this.featureToEdit.depends_on)
-                  .subscribe( data => { 
-                    if (data.toString() === 'e') {
+                  .subscribe( data4 => {
+                    if (data4.toString() === 'e') {
                       $('#error-modal').modal();
                       $('#error-text').text('Error editing the feature. Try it again later.');
                     }
-                    let objArray2 = [];
+                    const objArray2 = [];
                     this.dependenciesToAssign.forEach(feature => {
-                      let obj = {
+                      const obj = {
                         feature_id: feature.id
                       };
                       objArray2.push(obj);
                     });
                     this._replanAPIService.addDependenciesToFeature(JSON.stringify(objArray2), this.idProject, this.featureToEdit.id)
-                    .subscribe( data => {
-                      if (data.toString() === 'e') {
+                    .subscribe( data5 => {
+                      if (data5.toString() === 'e') {
                         $('#error-modal').modal();
                         $('#error-text').text('Error editing the features. Try it again later.');
                       }
                       this._replanAPIService.getFeaturesProject(this.idProject)
-                      .subscribe( data2 => {
-                        if (data2.toString() === 'e') {
+                      .subscribe( data6 => {
+                        if (data6.toString() === 'e') {
                           $('#error-modal').modal();
                           $('#error-text').text('Error loading features data. Try it again later.');
                         }
-                        this.dependencies = data2;
-                        this.features = data2.filter(f => f.release === 'pending');
+                        this.dependencies = data6;
+                        this.features = data6.filter(f => f.release === 'pending');
                         if (this.features.length === 0) {
                           $('.features-span').text('No features found');
                         }
@@ -473,9 +473,9 @@ export class ProjectComponent implements OnInit {
             $('#error-text').text('Error creating the release. Try it again later.');
           }
           if (this.resourcesModified) {
-              let objArray = [];
+              const objArray = [];
               this.resourcesToAssign.forEach(resource => {
-                let obj = {
+                const obj = {
                   resource_id: resource.id
                 };
                 objArray.push(obj);
@@ -565,31 +565,31 @@ export class ProjectComponent implements OnInit {
           }
           if (this.resourcesModified) {
             this._replanAPIService.deleteResourcesFromRelease(this.idProject, this.releaseToEdit.id, this.releaseToEdit.resources)
-            .subscribe( data => {
-              if (data.toString() === 'e') {
+            .subscribe( data2 => {
+              if (data2.toString() === 'e') {
                 $('#error-modal').modal();
                 $('#error-text').text('Error editing the release. Try it again later.');
               }
-              let objArray = [];
+              const objArray = [];
               this.resourcesToAssign.forEach(resource => {
-                let obj = {
+                const obj = {
                   resource_id: resource.id
                 };
                 objArray.push(obj);
               });
               this._replanAPIService.addResourcesToRelease(JSON.stringify(objArray), this.idProject, this.releaseToEdit.id)
-              .subscribe( data => {
-                if (data.toString() === 'e') {
+              .subscribe( data3 => {
+                if (data3.toString() === 'e') {
                   $('#error-modal').modal();
                   $('#error-text').text('Error editing the release. Try it again later.');
                 }
                 this._replanAPIService.getReleasesProject(this.idProject)
-                  .subscribe( data2 => {
-                    if (data2.toString() === 'e') {
+                  .subscribe( data4 => {
+                    if (data4.toString() === 'e') {
                       $('#error-modal').modal();
                       $('#error-text').text('Error loading releases data. Try it again later.');
                     }
-                    this.releases = data2;
+                    this.releases = data4;
                     if (this.releases.length === 0) {
                       $('.releases-span').text('No releases found');
                     }
