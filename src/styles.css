@@ -153,7 +153,6 @@ hr {
   box-shadow: 5px 7px 17px -8px rgba(0,0,0,0.68);
   border: 1px solid rgba(0,0,0,.125);
   margin-bottom: 5px;
-  text-align: center;
 }
 
 .padding-features {
@@ -370,7 +369,7 @@ hr {
 .feature-name {
   font-family: 'Josefin Slab', serif;
   font-weight: 600;
-  display: block;
+  display: inline-block;
   font-size: 25px;;
   color: black;
   margin-top: 15px;
@@ -378,8 +377,10 @@ hr {
 }
 
 .icons-features-content {
+  float: right;
   margin-bottom: 15px;
-  width: 100%;
+  margin-top: 15px;
+  display: inline-block;
 }
 
 #addFeatureDiv {

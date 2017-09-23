@@ -18,13 +18,14 @@
             [dragEnabled]="true"
             [dragData]="(feature.id)">
             <div class="li-features">
+              <i class="material-icons">looks_one</i>                
               <h4 class="feature-name"> {{ feature.name }} </h4>
               <div class="icons-features-content">
                 <a (click)="editFeature(feature.id)">
-                  <i class="fa fa-pencil fa-2x" aria-hidden="true" title="Edit Feature"></i>
+                  <i class="fa fa-pencil" aria-hidden="true" title="Edit Feature"></i>
                 </a>
                 <a class="padding-icon" (click)="deleteFeature(feature.id)">
-                  <i class="fa fa-trash-o fa-2x" aria-hidden="true" title="Delete Feature"></i>
+                  <i class="fa fa-trash-o" aria-hidden="true" title="Delete Feature"></i>
                 </a>
               </div>
             </div>
