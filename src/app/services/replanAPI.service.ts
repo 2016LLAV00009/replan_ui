@@ -32,7 +32,7 @@ export class replanAPIService {
       .catch(error => 'e');
   }
 
-  deleteProject(id: number): Observable<Response> {
+  deleteProject(id: number) {
     const url = this.projectsURL + id;
     return this.http.delete( url )
       .map(res => res.json())
@@ -61,7 +61,7 @@ export class replanAPIService {
 
   /* FEATURES */
 
-  getFeaturesProject(id:number) {
+  getFeaturesProject(id: number) {
     const url = this.projectsURL + id + '/features';
     return this.http.get( url )
       .map(res => res.json() )
@@ -266,6 +266,13 @@ export class replanAPIService {
     const url = this.projectsURL + idProject + '/releases/' + idRelease + '/plan';
     return this.http.get( url )
       .map(res => res.json() )
+      .catch(error => 'e');
+  }
+
+  deleteReleasePlan(idProject: number, idRelease: number) {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/plan';
+    return this.http.delete( url )
+      .map(res => res.json())
       .catch(error => 'e');
   }
 

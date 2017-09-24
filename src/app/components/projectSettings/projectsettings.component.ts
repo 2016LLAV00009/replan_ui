@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { replanAPIService } from '../../services/replanAPI.service';
+import { GlobalDataService } from '../../services/globaldata.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
@@ -27,9 +28,11 @@ export class ProjectSettingsComponent implements OnInit {
   skillsModified: any;
 
   constructor(private _replanAPIService: replanAPIService,
+              private globaldata: GlobalDataService,
               private activatedRoute: ActivatedRoute) {
               this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
+                  this.globaldata.setCurrentProjectId(this.idProject);
               });
 
               this.formEditProject = new FormGroup({

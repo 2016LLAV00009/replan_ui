@@ -470,6 +470,7 @@ export class ProjectComponent implements OnInit {
         .subscribe( data => {
           if (data.toString() === 'e') {
             $('#error-modal').modal();
+            $('#loading_for_releases').hide();
             $('#error-text').text('Error creating the release. Try it again later.');
           }
           if (this.resourcesModified) {
@@ -484,12 +485,14 @@ export class ProjectComponent implements OnInit {
               .subscribe( data2 => {
                 if (data2.toString() === 'e') {
                   $('#error-modal').modal();
+                  $('#loading_for_releases').hide();
                   $('#error-text').text('Error creating the release. Try it again later.');
                 }
                 this._replanAPIService.getReleasesProject(this.idProject)
                   .subscribe( data3 => {
                     if (data3.toString() === 'e') {
                       $('#error-modal').modal();
+                      $('#loading_for_releases').hide();
                       $('#error-text').text('Error loading releases data. Try it again later.');
                     }
                     this.releases = data3;

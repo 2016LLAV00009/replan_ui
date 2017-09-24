@@ -15,7 +15,7 @@
     <hr class="hr-planification">
 
     <div id="loading_for_plan" class="loading_spinner"></div>
-    <div class="plan-span data-founded" [hidden]="plan?.jobs.length !== 0"></div>
+    <div class="plan-span data-founded" [hidden]="plan !== null && plan?.jobs?.length !== 0"></div>
     <div id="timeline"></div>
 
     <div class="trash-container">

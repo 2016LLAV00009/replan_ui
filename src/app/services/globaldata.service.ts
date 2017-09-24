@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GlobalDataService {
 
-  currentProjectId: number = null;
+  currentProjectId: any = null;
+  currentReleaseId: any = null;
 
   getCurrentProjectId() {
     return this.currentProjectId;
@@ -15,6 +16,18 @@ export class GlobalDataService {
 
   resetCurrentProjectId() {
     this.currentProjectId = null;
+  }
+
+  getCurrentReleaseId() {
+    return this.currentReleaseId;
+  }
+
+  setCurrentReleaseId(releaseId: number) {
+    this.currentReleaseId = releaseId;
+  }
+
+  resetCurrentReleaseId() {
+    this.currentReleaseId = null;
   }
 
 }

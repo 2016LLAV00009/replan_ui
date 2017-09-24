@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { replanAPIService } from '../../services/replanAPI.service';
+import { GlobalDataService } from '../../services/globaldata.service';
 import { ActivatedRoute } from '@angular/router';
 
 declare var $: any;
@@ -22,12 +23,16 @@ export class PlanComponent implements OnInit {
   chartRows: any[];
 
   constructor(private _replanAPIService: replanAPIService,
+              private globaldata: GlobalDataService,
               private activatedRoute: ActivatedRoute) {
 
               this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
                   this.idRelease = params['id2'];
                   this.featuresNotAssigned = [];
+
+                  this.globaldata.setCurrentReleaseId(this.idRelease);
+                  this.globaldata.setCurrentProjectId(this.idProject);
 
                   this._replanAPIService.getRelease(this.idProject, this.idRelease)
                   .subscribe( data => {
@@ -46,8 +51,9 @@ export class PlanComponent implements OnInit {
                         $('#error-modal').modal();
                         $('#loading_for_plan').hide();
                         $('#error-text').text('Error loading release plan data. Try it again later.');
-                        this.plan = '';
+                        this.plan = null;
                         $('.plan-span').text('No planification found');
+                        $('.not-assigned-span').text('No features not assigned found');
                       } else {
                         this.plan = data;
                         if (this.plan.jobs.length === 0) {
@@ -61,19 +67,21 @@ export class PlanComponent implements OnInit {
                         const self = this;
                         if (data2.toString() === 'e') {
                           $('#error-modal').modal();
-                          $('#loading_for_dependecies').hide();
                           $('#error-text').text('Error loading release data. Try it again later.');
-                        }
-                        data2.forEach(feature => {
-                          if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
-                            self.featuresNotAssigned.push(feature);
+                        } else {
+                          if (this.plan !== null) {
+                            data2.forEach(feature => {
+                              if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
+                                self.featuresNotAssigned.push(feature);
+                              }
+                            });
+                            if (this.featuresNotAssigned.length === 0) {
+                              $('.not-assigned-span').text('No features not assigned found');
+                            }
+                            this.features = data;
                           }
-                        });
-                        if (this.featuresNotAssigned.length === 0) {
-                          $('.not-assigned-span').text('No features not assigned found');
                         }
                         $('#loading_for_dependecies').hide();
-                        this.features = data;
                       });
                       $('#loading_for_plan').hide();
                     });
@@ -147,8 +155,9 @@ export class PlanComponent implements OnInit {
           $('#error-modal').modal();
           $('#loading_for_plan').hide();
           $('#error-text').text('Error loading release plan data. Try it again later.');
-          this.plan = '';
+          this.plan = null;
           $('.plan-span').text('No planification found');
+          $('.not-assigned-span').text('No features not assigned found');
         } else {
           this.plan = data2;
           if (this.plan.jobs.length === 0) {
@@ -162,19 +171,21 @@ export class PlanComponent implements OnInit {
           const self = this;
           if (data3.toString() === 'e') {
             $('#error-modal').modal();
-            $('#loading_for_dependecies').hide();
             $('#error-text').text('Error loading release data. Try it again later.');
-          }
-          data3.forEach(feature => {
-            if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
-              self.featuresNotAssigned.push(feature);
+          } else {
+            if (this.plan !== null) {
+              data3.forEach(feature => {
+                if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
+                  self.featuresNotAssigned.push(feature);
+                }
+              });
+              if (this.featuresNotAssigned.length === 0) {
+                $('.not-assigned-span').text('No features not assigned found');
+              }
+              this.features = data3;
             }
-          });
-          if (this.featuresNotAssigned.length === 0) {
-            $('.not-assigned-span').text('No features not assigned found');
           }
           $('#loading_for_dependecies').hide();
-          this.features = data3;
         });
         $('#loading_for_plan').hide();
       });
@@ -196,7 +207,8 @@ export class PlanComponent implements OnInit {
         $('#error-modal').modal();
         $('#error-text').text('Error loading release plan data. Try it again later.');
         $('.plan-span').text('No planification found');
-        this.plan = '';
+        $('.not-assigned-span').text('No features not assigned found');
+        this.plan = null;
       } else {
         this.plan = data;
         if (this.plan.jobs.length === 0) {
@@ -210,19 +222,21 @@ export class PlanComponent implements OnInit {
         const self = this;
         if (data2.toString() === 'e') {
           $('#error-modal').modal();
-          $('#loading_for_dependecies').hide();
           $('#error-text').text('Error loading release data. Try it again later.');
-        }
-        data2.forEach(feature => {
-          if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
-            self.featuresNotAssigned.push(feature);
+        } else {
+          if (this.plan !== null) {
+            data2.forEach(feature => {
+              if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
+                self.featuresNotAssigned.push(feature);
+              }
+            });
+            if (this.featuresNotAssigned.length === 0) {
+              $('.not-assigned-span').text('No features not assigned found');
+            }
+            this.features = data;
           }
-        });
-        if (this.featuresNotAssigned.length === 0) {
-          $('.not-assigned-span').text('No features not assigned found');
         }
         $('#loading_for_dependecies').hide();
-        this.features = data;
       });
       $('#loading_for_plan').hide();
     });
