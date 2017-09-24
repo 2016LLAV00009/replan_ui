@@ -39,7 +39,8 @@
             <div class="col-sm-4 skill-card" *ngFor="let skill of skills"> 
                 <div class="card text-center">
                     <div class="card-block">
-                        <h4 class="card-title skill-title">{{skill.name}}</h4>
+                        <h4 [hidden]="skill?.name.length > 20" class="card-title skill-title" title="{{skill.name}}">{{skill.name}}</h4>
+                        <h4 [hidden]="skill?.name.length <= 20" class="card-title skill-title" title="{{skill.name}}">{{skill.name.substring(0, 19) + '...'}}</h4>
                         <p class="card-text">{{skill.description}}</p>
                         <button (click)="deleteSkill(skill.id)" class="btn btn-danger" title="Delete Skill">Delete</button>
                     </div>
@@ -62,7 +63,8 @@
                 <div class="card text-center" 
                     [ngClass]="getClass(resource.availability)">
                     <div class="card-block">
-                        <h4 class="card-title resource-title">{{resource.name}}</h4>
+                        <h4 [hidden]="resource?.name.length > 12" class="card-title resource-title" title="{{resource.name}}">{{resource.name}}</h4>
+                        <h4 [hidden]="resource?.name.length <= 12" class="card-title resource-title" title="{{resource.name}}">{{resource.name.substring(0, 11) + '...'}}</h4>
                         <div class="resource-skills">
                             <span class="card-text" *ngIf="resource?.skills.length === 0">No Skills</span>
                             <span class="card-text" *ngFor="let skill of resource.skills; let i = index">

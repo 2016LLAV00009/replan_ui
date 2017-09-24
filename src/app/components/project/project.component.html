@@ -18,8 +18,18 @@
             [dragEnabled]="true"
             [dragData]="(feature.id)">
             <div class="li-features">
-              <i class="material-icons">looks_one</i>                
-              <h4 class="feature-name"> {{ feature.name }} </h4>
+              <div class="level-container">
+                <i [hidden]="feature?.priority !== 1" class="priority material-icons" title="Priority">looks_one</i> 
+                <i [hidden]="feature?.priority !== 2" class="priority material-icons" title="Priority">looks_two</i>
+                <i [hidden]="feature?.priority !== 3" class="priority material-icons" title="Priority">looks_3</i> 
+                <i [hidden]="feature?.priority !== 4" class="priority material-icons" title="Priority">looks_4</i> 
+                <i [hidden]="feature?.priority !== 5" class="priority material-icons" title="Priority">looks_5</i>  
+                <img [hidden]="feature?.effort > 5" class="level-image" title="Effort" src="../../../assets/level-1.png">
+                <img [hidden]="feature?.effort <= 5 || feature?.effort > 30" class="level-image" title="Effort" src="../../../assets/level-2.png">
+                <img [hidden]="feature?.effort <= 30" class="level-image" title="Effort" src="../../../assets/level-3.png">
+              </div>              
+              <h4 [hidden]="feature?.name.length > 11" class="feature-name" title="{{feature.name}}">{{feature.name}}</h4>
+              <h4 [hidden]="feature?.name.length <= 11" class="feature-name" title="{{feature.name}}">{{feature.name.substring(0, 10) + '...'}}</h4>
               <div class="icons-features-content">
                 <a (click)="editFeature(feature.id)">
                   <i class="fa fa-pencil" aria-hidden="true" title="Edit Feature"></i>
@@ -45,7 +55,8 @@
             dnd-droppable
             (onDropSuccess)="transferDataSuccess($event, release.id)">
             <div class="li-releases">
-              <h4 class="release-name"> {{ release.name }} </h4>
+              <h4 [hidden]="release?.name.length > 26" class="release-name" title="{{release.name}}">{{release.name}}</h4>
+              <h4 [hidden]="release?.name.length <= 26" class="release-name" title="{{release.name}}">{{release.name.substring(0, 25) + '...'}}</h4>
               <p class="release-dates">from <strong>{{release.starts_at | date: 'dd/MM/yyyy'}}</strong> to <strong>{{release.deadline | date: 'dd/MM/yyyy'}}</strong></p>
               <div class="icons-content-releases">
                 <a (click)="editRelease(release.id)">
@@ -112,7 +123,7 @@
           </div>
         </form>
 
-        <div class="feature-skills-container">
+        <div class="feature-skills-container" [hidden]="skills?.length === 0">
           <div class="row">
               <div class="col-md-6">
                   <h5>Project's skills</h5>
@@ -147,7 +158,7 @@
           </div>
         </div>
 
-        <div class="feature-dependencies-container"> <!--[hidden]="features?.length === 0"-->
+        <div class="feature-dependencies-container" [hidden]="features?.length === 0">
           <div class="row">
               <div class="col-md-6">
                   <h5>Project's features</h5>

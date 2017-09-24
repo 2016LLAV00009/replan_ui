@@ -329,15 +329,13 @@ hr {
   color: black;
   margin-top: 10px;
   margin-bottom: 10px;
-  padding-bottom: 5px;
-  width: 90%;
+  width: 95%;
   margin-left: auto;
   margin-right: auto;
-  border-bottom: 1px solid;
 }
 
 .release-dates {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
 .add-btn {
@@ -372,15 +370,31 @@ hr {
   display: inline-block;
   font-size: 25px;;
   color: black;
-  margin-top: 15px;
-  margin-bottom: 15px;
+  margin-top: 13px;
+  margin-bottom: 10px;
 }
 
 .icons-features-content {
   float: right;
   margin-bottom: 15px;
-  margin-top: 15px;
+  margin-top: 13px;
   display: inline-block;
+}
+
+.level-container {
+  display: inline-block;
+}
+
+.priority {
+  position: absolute;
+  margin-left: 3px; 
+  bottom: 19px;
+}
+
+.level-image {
+  margin-left: 30px;
+  margin-right: 5px;
+  margin-top: -8px;
 }
 
 #addFeatureDiv {
@@ -398,14 +412,14 @@ hr {
 .features-container {
   margin: 0;
   margin-bottom: 1rem;
-  max-height: 459px;
+  max-height: 460px;
   overflow-y: auto;
 }
 
 .releases-container {
   margin: 0;
   margin-bottom: 1rem;
-  max-height: 456px;
+  max-height: 460px;
   overflow-y: auto;
 }
 
