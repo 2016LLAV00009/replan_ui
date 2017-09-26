@@ -663,6 +663,9 @@ export class ProjectComponent implements OnInit {
     $('#loading_for_releases').show();
     $('#addReleaseDiv').addClass('margin_to_loading');
     $('.releases-container').hide();
+    $('#loading_for_features').show();
+    $('#addFeatureDiv').addClass('margin_to_loading');
+    $('.features-container').hide();
     this._replanAPIService.deleteRelease(this.idProject, idRelease)
       .subscribe( data => {
         if (data.toString() === 'e') {
@@ -670,19 +673,35 @@ export class ProjectComponent implements OnInit {
           $('#error-text').text('Error deleting the release. Try it again later.');
         }
         this._replanAPIService.getReleasesProject(this.idProject)
-          .subscribe( data2 => {
-            if (data2.toString() === 'e') {
-              $('#error-modal').modal();
-              $('#error-text').text('Error loading releases data. Try it again later.');
-            }
-            $('#loading_for_releases').hide();
-            $('#addReleaseDiv').removeClass('margin_to_loading');
-            $('.releases-container').show();
-            this.releases = data2;
-            if (this.releases.length === 0) {
-              $('.releases-span').text('No releases found');
-            }
-          });
+        .subscribe( data2 => {
+          if (data2.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error loading releases data. Try it again later.');
+          }
+          $('#loading_for_releases').hide();
+          $('#addReleaseDiv').removeClass('margin_to_loading');
+          $('.releases-container').show();
+          this.releases = data2;
+          if (this.releases.length === 0) {
+            $('.releases-span').text('No releases found');
+          }
+        });
+        this._replanAPIService.getFeaturesProject(this.idProject)
+        .subscribe( data3 => {
+          if (data3.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error loading features data. Try it again later.');
+          }
+          $('#loading_for_features').hide();
+          $('#addFeatureDiv').removeClass('margin_to_loading');
+          $('.features-container').show();
+          this.features = data3.filter(f => f.release === 'pending');
+          if (this.features.length === 0) {
+            $('.features-span').text('No features found');
+          } else {
+            $('.features-span').text('');
+          }
+        });
       });
   }
 
