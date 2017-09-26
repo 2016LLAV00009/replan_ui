@@ -470,66 +470,72 @@ export class ProjectComponent implements OnInit {
   }
 
   addNewRelease() {
-    $('#add-release-modal').modal('hide');
-    $('.releases-span').text('');
-    $('#loading_for_releases').show();
-    $('#addReleaseDiv').addClass('margin_to_loading');
-    $('.releases-container').hide();
-    this._replanAPIService.addReleaseToProject(JSON.stringify(this.formRelease.value), this.idProject)
-        .subscribe( data => {
-          if (data.toString() === 'e') {
-            $('#error-modal').modal();
-            $('#loading_for_releases').hide();
-            $('#error-text').text('Error creating the release. Try it again later.');
-          }
-          if (this.resourcesModified) {
-              const objArray = [];
-              this.resourcesToAssign.forEach(resource => {
-                const obj = {
-                  resource_id: resource.id
-                };
-                objArray.push(obj);
-              });
-              this._replanAPIService.addResourcesToRelease(JSON.stringify(objArray), this.idProject, data.id)
-              .subscribe( data2 => {
-                if (data2.toString() === 'e') {
-                  $('#error-modal').modal();
-                  $('#loading_for_releases').hide();
-                  $('#error-text').text('Error creating the release. Try it again later.');
-                }
-                this._replanAPIService.getReleasesProject(this.idProject)
-                  .subscribe( data3 => {
-                    if (data3.toString() === 'e') {
-                      $('#error-modal').modal();
-                      $('#loading_for_releases').hide();
-                      $('#error-text').text('Error loading releases data. Try it again later.');
-                    }
-                    this.releases = data3;
-                    if (this.releases.length === 0) {
-                      $('.releases-span').text('No releases found');
-                    }
+    if (new Date(this.formRelease.controls['starts_at'].value) > new Date(this.formRelease.controls['deadline'].value)) {
+      $('#add-release-modal').modal('hide');
+      $('#error-modal').modal();
+      $('#error-text').text('Deadline date is before the start date.');
+    } else {
+      $('#add-release-modal').modal('hide');
+      $('.releases-span').text('');
+      $('#loading_for_releases').show();
+      $('#addReleaseDiv').addClass('margin_to_loading');
+      $('.releases-container').hide();
+      this._replanAPIService.addReleaseToProject(JSON.stringify(this.formRelease.value), this.idProject)
+          .subscribe( data => {
+            if (data.toString() === 'e') {
+              $('#error-modal').modal();
+              $('#loading_for_releases').hide();
+              $('#error-text').text('Error creating the release. Try it again later.');
+            }
+            if (this.resourcesModified) {
+                const objArray = [];
+                this.resourcesToAssign.forEach(resource => {
+                  const obj = {
+                    resource_id: resource.id
+                  };
+                  objArray.push(obj);
+                });
+                this._replanAPIService.addResourcesToRelease(JSON.stringify(objArray), this.idProject, data.id)
+                .subscribe( data2 => {
+                  if (data2.toString() === 'e') {
+                    $('#error-modal').modal();
                     $('#loading_for_releases').hide();
-                    $('#addReleaseDiv').removeClass('margin_to_loading');
-                    $('.releases-container').show();
-                  });
-              });
-          } else {
-            this._replanAPIService.getReleasesProject(this.idProject)
-              .subscribe( data2 => {
-                if (data2.toString() === 'e') {
-                  $('#error-modal').modal();
-                  $('#error-text').text('Error loading releases data. Try it again later.');
-                }
-                this.releases = data2;
-                if (this.releases.length === 0) {
-                  $('.releases-span').text('No releases found');
-                }
-                $('#loading_for_releases').hide();
-                $('#addReleaseDiv').removeClass('margin_to_loading');
-                $('.releases-container').show();
-              });
-          }
-        });
+                    $('#error-text').text('Error creating the release. Try it again later.');
+                  }
+                  this._replanAPIService.getReleasesProject(this.idProject)
+                    .subscribe( data3 => {
+                      if (data3.toString() === 'e') {
+                        $('#error-modal').modal();
+                        $('#loading_for_releases').hide();
+                        $('#error-text').text('Error loading releases data. Try it again later.');
+                      }
+                      this.releases = data3;
+                      if (this.releases.length === 0) {
+                        $('.releases-span').text('No releases found');
+                      }
+                      $('#loading_for_releases').hide();
+                      $('#addReleaseDiv').removeClass('margin_to_loading');
+                      $('.releases-container').show();
+                    });
+                });
+            } else {
+              this._replanAPIService.getReleasesProject(this.idProject)
+                .subscribe( data2 => {
+                  if (data2.toString() === 'e') {
+                    $('#error-modal').modal();
+                    $('#error-text').text('Error loading releases data. Try it again later.');
+                  }
+                  this.releases = data2;
+                  if (this.releases.length === 0) {
+                    $('.releases-span').text('No releases found');
+                  }
+                  $('#loading_for_releases').hide();
+                  $('#addReleaseDiv').removeClass('margin_to_loading');
+                  $('.releases-container').show();
+                });
+            }
+          });
+    }
   }
 
   editRelease(idRelease: number) {
@@ -565,69 +571,75 @@ export class ProjectComponent implements OnInit {
     this.formEditRelease.value.description = $('#descriptionReleaseEdit').val();
     this.formEditRelease.value.starts_at = $('#starts_atReleaseEdit').val();
     this.formEditRelease.value.deadline = $('#deadlineReleaseEdit').val();
-    $('#edit-release-modal').modal('hide');
-    $('#loading_for_releases').show();
-    $('#addReleaseDiv').addClass('margin_to_loading');
-    $('.releases-container').hide();
-    this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.releaseToEdit.id)
-        .subscribe( data => {
-          if (data.toString() === 'e') {
-            $('#error-modal').modal();
-            $('#error-text').text('Error editing the release. Try it again later.');
-          }
-          if (this.resourcesModified) {
-            this._replanAPIService.deleteResourcesFromRelease(this.idProject, this.releaseToEdit.id, this.releaseToEdit.resources)
-            .subscribe( data2 => {
-              if (data2.toString() === 'e') {
-                $('#error-modal').modal();
-                $('#error-text').text('Error editing the release. Try it again later.');
-              }
-              const objArray = [];
-              this.resourcesToAssign.forEach(resource => {
-                const obj = {
-                  resource_id: resource.id
-                };
-                objArray.push(obj);
-              });
-              this._replanAPIService.addResourcesToRelease(JSON.stringify(objArray), this.idProject, this.releaseToEdit.id)
-              .subscribe( data3 => {
-                if (data3.toString() === 'e') {
-                  $('#error-modal').modal();
-                  $('#error-text').text('Error editing the release. Try it again later.');
-                }
-                this._replanAPIService.getReleasesProject(this.idProject)
-                  .subscribe( data4 => {
-                    if (data4.toString() === 'e') {
-                      $('#error-modal').modal();
-                      $('#error-text').text('Error loading releases data. Try it again later.');
-                    }
-                    this.releases = data4;
-                    if (this.releases.length === 0) {
-                      $('.releases-span').text('No releases found');
-                    }
-                    $('#loading_for_releases').hide();
-                    $('#addReleaseDiv').removeClass('margin_to_loading');
-                    $('.releases-container').show();
-                  });
-              });
-            });
-          } else {
-            this._replanAPIService.getReleasesProject(this.idProject)
+    if (new Date(this.formEditRelease.controls['starts_at'].value) > new Date(this.formEditRelease.controls['deadline'].value)) {
+      $('#edit-release-modal').modal('hide');
+      $('#error-modal').modal();
+      $('#error-text').text('Deadline date is before the start date.');
+    } else {
+      $('#edit-release-modal').modal('hide');
+      $('#loading_for_releases').show();
+      $('#addReleaseDiv').addClass('margin_to_loading');
+      $('.releases-container').hide();
+      this._replanAPIService.editRelease(JSON.stringify(this.formEditRelease.value), this.idProject, this.releaseToEdit.id)
+          .subscribe( data => {
+            if (data.toString() === 'e') {
+              $('#error-modal').modal();
+              $('#error-text').text('Error editing the release. Try it again later.');
+            }
+            if (this.resourcesModified) {
+              this._replanAPIService.deleteResourcesFromRelease(this.idProject, this.releaseToEdit.id, this.releaseToEdit.resources)
               .subscribe( data2 => {
                 if (data2.toString() === 'e') {
                   $('#error-modal').modal();
-                  $('#error-text').text('Error loading releases data. Try it again later.');
+                  $('#error-text').text('Error editing the release. Try it again later.');
                 }
-                this.releases = data2;
-                if (this.releases.length === 0) {
-                  $('.releases-span').text('No releases found');
-                }
-                $('#loading_for_releases').hide();
-                $('#addReleaseDiv').removeClass('margin_to_loading');
-                $('.releases-container').show();
+                const objArray = [];
+                this.resourcesToAssign.forEach(resource => {
+                  const obj = {
+                    resource_id: resource.id
+                  };
+                  objArray.push(obj);
+                });
+                this._replanAPIService.addResourcesToRelease(JSON.stringify(objArray), this.idProject, this.releaseToEdit.id)
+                .subscribe( data3 => {
+                  if (data3.toString() === 'e') {
+                    $('#error-modal').modal();
+                    $('#error-text').text('Error editing the release. Try it again later.');
+                  }
+                  this._replanAPIService.getReleasesProject(this.idProject)
+                    .subscribe( data4 => {
+                      if (data4.toString() === 'e') {
+                        $('#error-modal').modal();
+                        $('#error-text').text('Error loading releases data. Try it again later.');
+                      }
+                      this.releases = data4;
+                      if (this.releases.length === 0) {
+                        $('.releases-span').text('No releases found');
+                      }
+                      $('#loading_for_releases').hide();
+                      $('#addReleaseDiv').removeClass('margin_to_loading');
+                      $('.releases-container').show();
+                    });
+                });
               });
-          }
-        });
+            } else {
+              this._replanAPIService.getReleasesProject(this.idProject)
+                .subscribe( data2 => {
+                  if (data2.toString() === 'e') {
+                    $('#error-modal').modal();
+                    $('#error-text').text('Error loading releases data. Try it again later.');
+                  }
+                  this.releases = data2;
+                  if (this.releases.length === 0) {
+                    $('.releases-span').text('No releases found');
+                  }
+                  $('#loading_for_releases').hide();
+                  $('#addReleaseDiv').removeClass('margin_to_loading');
+                  $('.releases-container').show();
+                });
+            }
+          });
+    }
   }
 
   transferResource($event: any) {
