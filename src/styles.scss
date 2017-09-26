@@ -69,7 +69,7 @@ hr {
 
 .icons-content-releases {
   display: inline-block;
-  width: 14%;
+  width: 50%;
 }
 
 /* PLAN COMPONENT */
@@ -382,6 +382,18 @@ hr {
   margin-right: auto;
 }
 
+@media (max-width:1200px){
+  .release-name {
+      font-size: 27px;
+  }
+}
+
+@media (max-width:767px){
+  .release-name {
+      font-size: 32px;
+  }
+}
+
 .release-dates {
   margin-bottom: 15px;
 }
@@ -431,6 +443,27 @@ hr {
 
 .level-container {
   display: inline-block;
+}
+
+@media (max-width:1200px){
+  .level-container {
+      display: none;
+  }
+}
+
+@media (max-width:1000px){
+  .feature-name {
+      font-size: 17px;
+  }
+}
+
+@media (max-width:767px){
+  .feature-name {
+      font-size: 20px;
+  }
+  .level-container {
+    display: inline-block;
+  }
 }
 
 .priority {
@@ -695,6 +728,12 @@ hr {
 .fa-sign-out {
   color: rgba(255,255,255,.5);
 }
+
+.carousel-inner .fa-2x {
+  font-size: 2rem;
+}
+
+
 
 /* Scrolls */
 
