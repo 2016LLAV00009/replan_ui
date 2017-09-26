@@ -3,6 +3,7 @@ import { replanAPIService } from '../../services/replanAPI.service';
 import { GlobalDataService } from '../../services/globaldata.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AppConstants } from '../../app.constants';
 import { CustomValidators } from 'ng2-validation';
 import {DndModule} from 'ng2-dnd';
 
@@ -110,9 +111,9 @@ export class ProjectSettingsComponent implements OnInit {
 
   getClass(availability: string) {
     const num = parseFloat(availability);
-    if (num >= 0 && num <= 25) {
+    if (num >= AppConstants.LOW_RESOURCE_AVAILABILITY && num <= AppConstants.MEDIUM_RESOURCE_AVAILABILITY) {
       return 'card-danger';
-    } else if (num > 25 && num <= 50) {
+    } else if (num > AppConstants.MEDIUM_RESOURCE_AVAILABILITY && num <= AppConstants.HIGH_RESOURCE_AVAILABILITY) {
       return 'card-warning';
     } else {
         return 'card-success';

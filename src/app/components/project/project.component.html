@@ -24,9 +24,9 @@
                 <i [hidden]="feature?.priority !== 3" class="priority material-icons" title="Priority">looks_3</i> 
                 <i [hidden]="feature?.priority !== 4" class="priority material-icons" title="Priority">looks_4</i> 
                 <i [hidden]="feature?.priority !== 5" class="priority material-icons" title="Priority">looks_5</i>  
-                <img [hidden]="feature?.effort > 5" class="level-image" title="Effort" src="../../../assets/level-1.png">
-                <img [hidden]="feature?.effort <= 5 || feature?.effort > 30" class="level-image" title="Effort" src="../../../assets/level-2.png">
-                <img [hidden]="feature?.effort <= 30" class="level-image" title="Effort" src="../../../assets/level-3.png">
+                <img [hidden]="feature?.effort > getLowFeatureEffort()" class="level-image" title="Effort" src="../../../assets/level-1.png">
+                <img [hidden]="feature?.effort <= getLowFeatureEffort() || feature?.effort > getHighFeatureEffort()" class="level-image" title="Effort" src="../../../assets/level-2.png">
+                <img [hidden]="feature?.effort <= getHighFeatureEffort()" class="level-image" title="Effort" src="../../../assets/level-3.png">
               </div>              
               <h4 [hidden]="feature?.name.length > 11" class="feature-name" title="{{feature.name}}">{{feature.name}}</h4>
               <h4 [hidden]="feature?.name.length <= 11" class="feature-name" title="{{feature.name}}">{{feature.name.substring(0, 10) + '...'}}</h4>

@@ -3,6 +3,7 @@ import { replanAPIService } from '../../services/replanAPI.service';
 import { GlobalDataService } from '../../services/globaldata.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { AppConstants } from '../../app.constants';
 import { CustomValidators } from 'ng2-validation';
 import {DndModule} from 'ng2-dnd';
 import { Router } from '@angular/router';
@@ -157,6 +158,14 @@ export class ProjectComponent implements OnInit {
     $('#add-release-modal').on('hidden.bs.modal', function (e) {
       self.clearAddReleaseModal();
     });
+  }
+
+  getLowFeatureEffort() {
+    return AppConstants.LOW_FEATURE_EFFORT;
+  }
+
+  getHighFeatureEffort() {
+    return AppConstants.HIGH_FEATURE_EFFORT;
   }
 
   addFeatureModal() {
