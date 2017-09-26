@@ -71,7 +71,7 @@ export class HomeComponent implements OnInit {
     $('.projects-span').text('');
     $('#loading_for_projects').show();
     $('#addProjectDiv').addClass('margin_to_loading');
-    $('.list-group-projects').hide();
+    $('#carouselProject').hide();
     this._replanAPIService.addProject(JSON.stringify(this.formProject.value))
         .subscribe( data => {
           if (data.toString() === 'e') {
@@ -86,7 +86,7 @@ export class HomeComponent implements OnInit {
               }
               $('#loading_for_projects').hide();
               $('#addProjectDiv').removeClass('margin_to_loading');
-              $('.list-group-projects').show();
+              $('#carouselProject').show();
               this.projects = data2;
               if (this.projects.length === 0) {
                 $('.projects-span').text('No projects found');
@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit {
     this.isDeleteButtonClicked = true;
     $('#loading_for_projects').show();
     $('#addProjectDiv').addClass('margin_to_loading');
-    $('.list-group-projects').hide();
+    $('#carouselProject').hide();
     this._replanAPIService.deleteProject(id)
       .subscribe( data => {
         if (data.toString() === 'e') {
@@ -112,7 +112,7 @@ export class HomeComponent implements OnInit {
               $('#error-modal').modal();
               $('#error-text').text('Error loading projects data. Try it again later.');
             }
-            $('.list-group-projects').show();
+            $('#carouselProject').show();
             $('#loading_for_projects').hide();
             $('#addProjectDiv').removeClass('margin_to_loading');
             this.projects = data2;
