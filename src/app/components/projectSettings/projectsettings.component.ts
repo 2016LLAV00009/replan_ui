@@ -153,6 +153,9 @@ export class ProjectSettingsComponent implements OnInit {
     $('#loading_for_skills').show();
     $('#addSkillDiv').addClass('margin_to_loading');
     $('.skills-container').hide();
+    $('#loading_for_resources').show();
+    $('#addResourceDiv').addClass('margin_to_loading');
+    $('.resources-container').hide();
     this._replanAPIService.deleteSkillFromProject(this.idProject, id)
       .subscribe( data => {
         if (data.toString() === 'e') {
@@ -160,19 +163,33 @@ export class ProjectSettingsComponent implements OnInit {
           $('#error-text').text('Error deleting the skill. Try it again later.');
         }
         this._replanAPIService.getSkillsProject(this.idProject)
-          .subscribe( data2 => {
-            if (data2.toString() === 'e') {
-              $('#error-modal').modal();
-              $('#error-text').text('Error loading skills data. Try it again later.');
-            }
-            $('#loading_for_skills').hide();
-            $('#addSkillDiv').removeClass('margin_to_loading');
-            $('.skills-container').show();
-            this.skills = data2;
-            if (this.skills.length === 0) {
-              $('.skills-span').text('No skills found');
-            }
-          });
+        .subscribe( data2 => {
+          if (data2.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error loading skills data. Try it again later.');
+          }
+          $('#loading_for_skills').hide();
+          $('#addSkillDiv').removeClass('margin_to_loading');
+          $('.skills-container').show();
+          this.skills = data2;
+          if (this.skills.length === 0) {
+            $('.skills-span').text('No skills found');
+          }
+        });
+        this._replanAPIService.getResourcesProject(this.idProject)
+        .subscribe( data3 => {
+          if (data3.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error loading resources data. Try it again later.');
+          }
+          this.resources = data3;
+          if (this.resources.length === 0) {
+            $('.resources-span').text('No resources found');
+          }
+          $('#loading_for_resources').hide();
+          $('#addResourceDiv').removeClass('margin_to_loading');
+          $('.resources-container').show();
+        });
       });
   }
 
@@ -193,19 +210,19 @@ export class ProjectSettingsComponent implements OnInit {
             $('#error-text').text('Error creating the skill. Try it again later.');
           }
           this._replanAPIService.getSkillsProject(this.idProject)
-            .subscribe( data2 => {
-              if (data2.toString() === 'e') {
-                $('#error-modal').modal();
-                $('#error-text').text('Error loading skills data. Try it again later.');
-              }
-              $('#loading_for_skills').hide();
-              $('#addSkillDiv').removeClass('margin_to_loading');
-              $('.skills-container').show();
-              this.skills = data2;
-              if (this.skills.length === 0) {
-                $('.skills-span').text('No skills found');
-              }
-            });
+          .subscribe( data2 => {
+            if (data2.toString() === 'e') {
+              $('#error-modal').modal();
+              $('#error-text').text('Error loading skills data. Try it again later.');
+            }
+            $('#loading_for_skills').hide();
+            $('#addSkillDiv').removeClass('margin_to_loading');
+            $('.skills-container').show();
+            this.skills = data2;
+            if (this.skills.length === 0) {
+              $('.skills-span').text('No skills found');
+            }
+          });
         });
   }
 
