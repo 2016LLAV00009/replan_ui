@@ -59,7 +59,7 @@
                 <span *ngIf="i === feature.depends_on.length-1">{{f?.name}}</span>
             </span> 
           </td>
-          <td>{{feature?.deadline | date: 'dd/MM/yyyy'}}</td>
+          <td><span [hidden]="feature.deadline !== null">-</span>{{feature?.deadline | date: 'dd/MM/yyyy'}}</td>
         </tr>
       </tbody>
     </table>
