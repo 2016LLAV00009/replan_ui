@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { replanAPIService } from '../../services/replanAPI.service';
 import { GlobalDataService } from '../../services/globaldata.service';
 import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 declare var $: any;
 declare const google: any;
@@ -19,12 +20,22 @@ export class PlanComponent implements OnInit {
   plan: any;
   featuresNotAssigned: any;
   idFeatureToDelete: any;
+  feature: any;
+  formEditFeature: FormGroup;
 
   chartRows: any[];
 
   constructor(private _replanAPIService: replanAPIService,
               private globaldata: GlobalDataService,
               private activatedRoute: ActivatedRoute) {
+
+              this.formEditFeature = new FormGroup({
+                'name': new FormControl(''),
+                'description': new FormControl(''),
+                'effort': new FormControl(''),
+                'deadline': new FormControl(''),
+                'priority': new FormControl('')
+              });
 
               this.activatedRoute.params.subscribe( params => {
                   this.idProject = params['id'];
@@ -126,8 +137,8 @@ export class PlanComponent implements OnInit {
         const select = chart.getSelection();
         if (select.length > 0) {
           $('.trash-container').show();
-          const feature = this.plan.jobs[select[0].row].feature;
-          this.idFeatureToDelete = feature.id;
+          this.feature = this.plan.jobs[select[0].row].feature;
+          this.idFeatureToDelete = this.feature.id;
         }
       }.bind(this), false);
       const height = dataTable.getDistinctValues(0).length * 57 + 30;
@@ -192,6 +203,76 @@ export class PlanComponent implements OnInit {
         $('#loading_for_plan').hide();
       });
     });
+  }
+
+  editFeatureModal() {
+    $('#edit-feature-modal').modal();
+    this.formEditFeature.controls['name'].setValue(this.feature.name);
+    this.formEditFeature.controls['description'].setValue(this.feature.description);
+    this.formEditFeature.controls['effort'].setValue(this.feature.effort);
+    this.formEditFeature.controls['deadline'].setValue(this.feature.deadline);
+    this.formEditFeature.controls['priority'].setValue(this.feature.priority);
+  }
+
+  editFeatureAPI() {
+    this.formEditFeature.value.name = $('#nameFeatureEdit').val();
+    this.formEditFeature.value.description = $('#descriptionFeatureEdit').val();
+    this.formEditFeature.value.effort = $('#effortFeatureEdit').val();
+    this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
+    this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
+    $('#edit-feature-modal').modal('hide');
+    $('.trash-container').hide();
+    $('#timeline').empty();
+    $('#loading_for_plan').show();
+    $('#loading_for_dependecies').show();
+    $('.not-assigned-span').text('');
+    this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.feature.id)
+        .subscribe( data => {
+          if (data.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error editing the feature. Try it again later.');
+          }
+          this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
+          .subscribe( data2 => {
+            if (data2.toString() === 'e') {
+              $('#error-modal').modal();
+              $('#loading_for_plan').hide();
+              $('#error-text').text('Error loading release plan data. Try it again later.');
+              this.plan = null;
+              $('.plan-span').text('No planification found');
+              $('.not-assigned-span').text('No features not assigned found');
+            } else {
+              this.plan = data2;
+              if (this.plan.jobs.length === 0) {
+                $('.plan-span').text('No planification found');
+              } else {
+                this.chartLogic(this.plan);
+              }
+            }
+            this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
+            .subscribe( data3 => {
+              const self = this;
+              if (data3.toString() === 'e') {
+                $('#error-modal').modal();
+                $('#error-text').text('Error loading release data. Try it again later.');
+              } else {
+                if (this.plan !== null) {
+                  data3.forEach(feature => {
+                    if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
+                      self.featuresNotAssigned.push(feature);
+                    }
+                  });
+                  if (this.featuresNotAssigned.length === 0) {
+                    $('.not-assigned-span').text('No features not assigned found');
+                  }
+                  this.features = data3;
+                }
+              }
+              $('#loading_for_dependecies').hide();
+            });
+            $('#loading_for_plan').hide();
+          });
+        });
   }
 
   refreshPlan() {

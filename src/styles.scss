@@ -104,6 +104,15 @@ hr {
   float: right;
 }
 
+.fa-cogs-inner {
+  font-size: 34px;
+  color: rgba(255,255,255,.5);
+}
+
+.fa-cogs-inner:hover {
+  color: rgba(255,255,255,.5) !important;
+}
+
 .main-tools {
   font-size: 50px;
   margin-top: 5px;
@@ -128,8 +137,13 @@ hr {
 }
 
 .fa-trash-feature {
+  margin-left: 20px;
   font-size: 40px;
-  float: right;
+  cursor: pointer;
+}
+
+.fa-icon-feature {
+  font-size: 40px;
   cursor: pointer;
 }
 
