@@ -132,6 +132,8 @@ export class PlanComponent implements OnInit {
       }.bind(this), false);
       const height = dataTable.getDistinctValues(0).length * 57 + 30;
       $('#timeline').css('height', height + 'px');
+      $('#timeline div div').first().css('height', height + 'px');
+      $('#timeline svg').css('height', height + 'px');
     }
   }
 
