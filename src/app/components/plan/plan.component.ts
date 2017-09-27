@@ -328,4 +328,61 @@ export class PlanComponent implements OnInit {
     });
   }
 
+  deleteFeatureNotAssigned(id: number) {
+    $('.trash-container').hide();
+    $('#timeline').empty();
+    $('#loading_for_plan').show();
+    $('#loading_for_dependecies').show();
+    $('.not-assigned-span').text('');
+    this.plan = null;
+    this.featuresNotAssigned = [];
+    this._replanAPIService.deleteFeatureFromRelease(this.idProject, this.idRelease, id)
+    .subscribe( data => {
+      if (data.toString() === 'e') {
+        $('#error-modal').modal();
+        $('#error-text').text('Error removing the feature. Try it again later.');
+      }
+      this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
+      .subscribe( data2 => {
+        if (data2.toString() === 'e') {
+          $('#error-modal').modal();
+          $('#loading_for_plan').hide();
+          $('#error-text').text('Error loading release plan data. Try it again later.');
+          this.plan = null;
+          $('.plan-span').text('No planification found');
+          $('.not-assigned-span').text('No features not assigned found');
+        } else {
+          this.plan = data2;
+          if (this.plan.jobs.length === 0) {
+            $('.plan-span').text('No planification found');
+          } else {
+            this.chartLogic(this.plan);
+          }
+        }
+        this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
+        .subscribe( data3 => {
+          const self = this;
+          if (data3.toString() === 'e') {
+            $('#error-modal').modal();
+            $('#error-text').text('Error loading release data. Try it again later.');
+          } else {
+            if (this.plan !== null) {
+              data3.forEach(feature => {
+                if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
+                  self.featuresNotAssigned.push(feature);
+                }
+              });
+              if (this.featuresNotAssigned.length === 0) {
+                $('.not-assigned-span').text('No features not assigned found');
+              }
+              this.features = data3;
+            }
+          }
+          $('#loading_for_dependecies').hide();
+        });
+        $('#loading_for_plan').hide();
+      });
+    });
+  }
+
 }

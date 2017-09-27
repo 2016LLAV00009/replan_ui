@@ -38,6 +38,7 @@
           <th>Required Skills</th>
           <th>Dependecies</th>
           <th>Deadline</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -60,6 +61,9 @@
             </span> 
           </td>
           <td><span [hidden]="feature.deadline !== null">-</span>{{feature?.deadline | date: 'dd/MM/yyyy'}}</td>
+          <td>
+            <i (click)="deleteFeatureNotAssigned(feature?.id)" class="fa fa-trash-o" aria-hidden="true" title="Delete Feature"></i>
+          </td>
         </tr>
       </tbody>
     </table>
