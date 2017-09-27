@@ -100,6 +100,19 @@ hr {
   cursor: pointer;
 }
 
+.fa-cogs {
+  float: right;
+}
+
+.main-tools {
+  font-size: 50px;
+  margin-top: 5px;
+}
+
+.main-tools:hover {
+  color: black !important;
+}
+
 .margin-trash {
   width: 0;
   margin: auto;
@@ -659,6 +672,19 @@ hr {
   cursor: pointer;
 }
 
+.icon-tools {
+  font-size: 34px;
+  color: rgba(255,255,255,.5);
+}
+
+.icon-tools:hover {
+  color: white !important;
+}
+
+.icon-sign-out:hover {
+  color: white !important;
+}
+
 .navbar-center
 {
     font-family: 'Josefin Slab', serif;
@@ -673,6 +699,10 @@ hr {
 
 .navbar-nav {
   z-index: 3;
+}
+
+.nav-link {
+  font-size: 18px;
 }
 
 /* MODALS */
