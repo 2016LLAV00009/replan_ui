@@ -152,13 +152,15 @@ hr {
 
 .carousel-inner {
   cursor: pointer;
-  -webkit-box-shadow: 5px 7px 17px -8px rgba(0,0,0,0.68);
-  -moz-box-shadow: 5px 7px 17px -8px rgba(0,0,0,0.68);
-  box-shadow: 5px 7px 17px -8px rgba(0,0,0,0.68);
+  -webkit-box-shadow: 11px 10px 5px -4px rgba(0,0,0,0.45);
+  -moz-box-shadow: 11px 10px 5px -4px rgba(0,0,0,0.45);
+  box-shadow: 11px 10px 5px -4px rgba(0,0,0,0.45);
 }
 
 .carousel-inner:hover {
-  box-shadow: none;
+  -webkit-box-shadow: 11px 10px 5px -4px rgba(0,0,0,0.19);
+  -moz-box-shadow: 11px 10px 5px -4px rgba(0,0,0,0.19);
+  box-shadow: 11px 10px 5px -4px rgba(0,0,0,0.19);
 }
 
 .carousel-caption {
