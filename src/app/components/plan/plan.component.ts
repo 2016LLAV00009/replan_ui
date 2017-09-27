@@ -24,6 +24,7 @@ export class PlanComponent implements OnInit {
   formEditFeature: FormGroup;
 
   chartRows: any[];
+  resourceChartRows: any[];
 
   constructor(private _replanAPIService: replanAPIService,
               private globaldata: GlobalDataService,
@@ -71,6 +72,11 @@ export class PlanComponent implements OnInit {
                           $('.plan-span').text('No planification found');
                         } else {
                           this.chartLogic(this.plan);
+                        }
+                        if (this.plan.resource_usage.length === 0) {
+                          //text for not resources found
+                        } else {
+                          this.resourceChartLogic(this.plan);
                         }
                       }
                       this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -148,6 +154,41 @@ export class PlanComponent implements OnInit {
       $('#timeline').css('height', height + 'px');
       $('#timeline div div').first().css('height', height + 'px');
       $('#timeline svg').css('height', height + 'px');
+    }
+  }
+
+  resourceChartLogic(data) {
+    if (data.resource_usage.length > 0) {
+      this.resourceChartRows = [];
+      this.resourceChartRows.push(['', 'Total available hours', 'Total used hours']);
+      data.resource_usage.forEach(resource => {
+        const row = [
+          resource.resource_name,
+          resource.total_available_hours,
+          resource.total_used_hours,
+        ];
+        this.resourceChartRows.push(row);
+      });
+      this.drawResourcesChart(this.resourceChartRows);
+    }
+  }
+
+  drawResourcesChart(rows) {
+    if (rows.length > 0) {
+      const data = google.visualization.arrayToDataTable(rows);
+
+      const options = {
+        bars: 'vertical',
+        backgroundColor: '#F3FAB6',
+        vAxes: {
+          0: {title: '', baseline: 0},
+          1: {title: ''}
+      },
+      };
+
+      const chart = new google.charts.Bar(document.getElementById('resources_chart'));
+      chart.draw(data, google.charts.Bar.convertOptions(options));
+
     }
   }
 
