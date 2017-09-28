@@ -164,8 +164,8 @@ export class PlanComponent implements OnInit {
       data.resource_usage.forEach(resource => {
         const row = [
           resource.resource_name,
-          resource.total_available_hours,
-          resource.total_used_hours,
+          Number(resource.total_available_hours),
+          Number(resource.total_used_hours),
         ];
         this.resourceChartRows.push(row);
       });
@@ -180,10 +180,7 @@ export class PlanComponent implements OnInit {
       const options = {
         bars: 'vertical',
         backgroundColor: '#F3FAB6',
-        vAxes: {
-          0: {title: '', baseline: 0},
-          1: {title: ''}
-      },
+        legend: {position: 'none'}
       };
 
       const chart = new google.charts.Bar(document.getElementById('resources_chart'));
