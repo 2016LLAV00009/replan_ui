@@ -57,14 +57,17 @@ export class PlanComponent implements OnInit {
                   });
                   $('#loading_for_plan').show();
                   $('#loading_for_dependecies').show();
+                  $('#loading_for_resources_chart').show();
                   this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
                     .subscribe( data => {
                       if (data.toString() === 'e') {
                         $('#error-modal').modal();
                         $('#loading_for_plan').hide();
+                        $('#loading_for_resources_chart').hide();
                         $('#error-text').text('Error loading release plan data. Try it again later.');
                         this.plan = null;
                         $('.plan-span').text('No planification found');
+                        $('.resources-chart-span').text('No resources found');
                         $('.not-assigned-span').text('No features not assigned found');
                       } else {
                         this.plan = data;
@@ -74,7 +77,7 @@ export class PlanComponent implements OnInit {
                           this.chartLogic(this.plan);
                         }
                         if (this.plan.resource_usage.length === 0) {
-                          //text for not resources found
+                          $('.resources-chart-span').text('No resources found');
                         } else {
                           this.resourceChartLogic(this.plan);
                         }
@@ -101,6 +104,7 @@ export class PlanComponent implements OnInit {
                         $('#loading_for_dependecies').hide();
                       });
                       $('#loading_for_plan').hide();
+                      $('#loading_for_resources_chart').hide();
                     });
               });
 
@@ -192,7 +196,9 @@ export class PlanComponent implements OnInit {
   deleteFeature() {
     $('.trash-container').hide();
     $('#timeline').empty();
+    $('#resources_chart').empty();
     $('#loading_for_plan').show();
+    $('#loading_for_resources_chart').show();
     $('#loading_for_dependecies').show();
     $('.not-assigned-span').text('');
     this.plan = null;
@@ -208,9 +214,11 @@ export class PlanComponent implements OnInit {
         if (data2.toString() === 'e') {
           $('#error-modal').modal();
           $('#loading_for_plan').hide();
+          $('#loading_for_resources_chart').hide();
           $('#error-text').text('Error loading release plan data. Try it again later.');
           this.plan = null;
           $('.plan-span').text('No planification found');
+          $('.resources-chart-span').text('No resources found');
           $('.not-assigned-span').text('No features not assigned found');
         } else {
           this.plan = data2;
@@ -218,6 +226,11 @@ export class PlanComponent implements OnInit {
             $('.plan-span').text('No planification found');
           } else {
             this.chartLogic(this.plan);
+          }
+          if (this.plan.resource_usage.length === 0) {
+            $('.resources-chart-span').text('No resources found');
+          } else {
+            this.resourceChartLogic(this.plan);
           }
         }
         this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -242,6 +255,7 @@ export class PlanComponent implements OnInit {
           $('#loading_for_dependecies').hide();
         });
         $('#loading_for_plan').hide();
+        $('#loading_for_resources_chart').hide();
       });
     });
   }
@@ -264,7 +278,9 @@ export class PlanComponent implements OnInit {
     $('#edit-feature-modal').modal('hide');
     $('.trash-container').hide();
     $('#timeline').empty();
+    $('#resources_chart').empty();
     $('#loading_for_plan').show();
+    $('#loading_for_resources_chart').show();
     $('#loading_for_dependecies').show();
     $('.not-assigned-span').text('');
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.feature.id)
@@ -278,9 +294,11 @@ export class PlanComponent implements OnInit {
             if (data2.toString() === 'e') {
               $('#error-modal').modal();
               $('#loading_for_plan').hide();
+              $('#loading_for_resources_chart').hide();
               $('#error-text').text('Error loading release plan data. Try it again later.');
               this.plan = null;
               $('.plan-span').text('No planification found');
+              $('.resources-chart-span').text('No resources found');
               $('.not-assigned-span').text('No features not assigned found');
             } else {
               this.plan = data2;
@@ -288,6 +306,11 @@ export class PlanComponent implements OnInit {
                 $('.plan-span').text('No planification found');
               } else {
                 this.chartLogic(this.plan);
+              }
+              if (this.plan.resource_usage.length === 0) {
+                $('.resources-chart-span').text('No resources found');
+              } else {
+                this.resourceChartLogic(this.plan);
               }
             }
             this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -312,6 +335,7 @@ export class PlanComponent implements OnInit {
               $('#loading_for_dependecies').hide();
             });
             $('#loading_for_plan').hide();
+            $('#loading_for_resources_chart').hide();
           });
         });
   }
@@ -319,7 +343,9 @@ export class PlanComponent implements OnInit {
   refreshPlan() {
     $('.trash-container').hide();
     $('#timeline').empty();
+    $('#resources_chart').empty();
     $('#loading_for_plan').show();
+    $('#loading_for_resources_chart').show();
     $('#loading_for_dependecies').show();
     $('.not-assigned-span').text('');
     $('.plan-span').text('');
@@ -329,8 +355,11 @@ export class PlanComponent implements OnInit {
     .subscribe( data => {
       if (data.toString() === 'e') {
         $('#error-modal').modal();
+        $('#loading_for_plan').hide();
+        $('#loading_for_resources_chart').hide();
         $('#error-text').text('Error loading release plan data. Try it again later.');
         $('.plan-span').text('No planification found');
+        $('.resources-chart-span').text('No resources found');
         $('.not-assigned-span').text('No features not assigned found');
         this.plan = null;
       } else {
@@ -339,6 +368,11 @@ export class PlanComponent implements OnInit {
           $('.plan-span').text('No planification found');
         } else {
           this.chartLogic(this.plan);
+        }
+        if (this.plan.resource_usage.length === 0) {
+          $('.resources-chart-span').text('No resources found');
+        } else {
+          this.resourceChartLogic(this.plan);
         }
       }
       this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -363,13 +397,16 @@ export class PlanComponent implements OnInit {
         $('#loading_for_dependecies').hide();
       });
       $('#loading_for_plan').hide();
+      $('#loading_for_resources_chart').hide();
     });
   }
 
   deleteFeatureNotAssigned(id: number) {
     $('.trash-container').hide();
     $('#timeline').empty();
+    $('#resources_chart').empty();
     $('#loading_for_plan').show();
+    $('#loading_for_resources_chart').show();
     $('#loading_for_dependecies').show();
     $('.not-assigned-span').text('');
     this.plan = null;
@@ -385,9 +422,11 @@ export class PlanComponent implements OnInit {
         if (data2.toString() === 'e') {
           $('#error-modal').modal();
           $('#loading_for_plan').hide();
+          $('#loading_for_resources_chart').hide();
           $('#error-text').text('Error loading release plan data. Try it again later.');
           this.plan = null;
           $('.plan-span').text('No planification found');
+          $('.resources-chart-span').text('No resources found');
           $('.not-assigned-span').text('No features not assigned found');
         } else {
           this.plan = data2;
@@ -395,6 +434,11 @@ export class PlanComponent implements OnInit {
             $('.plan-span').text('No planification found');
           } else {
             this.chartLogic(this.plan);
+          }
+          if (this.plan.resource_usage.length === 0) {
+            $('.resources-chart-span').text('No resources found');
+          } else {
+            this.resourceChartLogic(this.plan);
           }
         }
         this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -419,6 +463,7 @@ export class PlanComponent implements OnInit {
           $('#loading_for_dependecies').hide();
         });
         $('#loading_for_plan').hide();
+        $('#loading_for_resources_chart').hide();
       });
     });
   }

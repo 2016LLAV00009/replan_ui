@@ -25,10 +25,12 @@
 
     <div class="row">
       <div class="col-md-6">
-          <div class="margin-features-planification">
-              <span class="planification-title">Resources disponability</span>
-          </div>
-          <hr class="hr-planification">
+        <div class="margin-features-planification">
+            <span class="planification-title">Resources disponability</span>
+        </div>
+        <hr class="hr-planification">
+        <div id="loading_for_resources_chart" class="loading_spinner"></div>
+        <div class="resources-chart-span data-founded" [hidden]="plan !== null && plan?.jobs?.length !== 0"></div>
         <div id="resources_chart"></div>
       </div>
       <div class="col-md-6">
