@@ -24,6 +24,18 @@
     </div>
 
     <div class="row">
+      <div class="col-md-12">
+        <div class="margin-features-planification">
+          <span class="planification-title">Features dependecies</span>
+        </div>
+        <hr class="hr-planification">
+        <div id="loading_for_dependecies_chart" class="loading_spinner"></div>
+        <div class="dependecies-chart-span data-founded" [hidden]="dependeciesFound"></div>
+        <div id="dependecies_chart"></div>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="col-md-6">
         <div class="margin-features-planification">
             <span class="planification-title">Resources disponability</span>
@@ -33,20 +45,13 @@
         <div class="resources-chart-span data-founded" [hidden]="plan !== null && plan?.jobs?.length !== 0"></div>
         <div id="resources_chart"></div>
       </div>
-      <div class="col-md-6">
-        <div class="margin-features-planification">
-            <span class="planification-title">Features dependecies</span>
-        </div>
-        <hr class="hr-planification">
-        <div id="dependecies_chart"></div>
-      </div>
     </div>
 
     <div class="margin-features-planification">
         <span class="planification-title">Features not assigned</span>
     </div>
     <hr class="hr-planification">
-    <div id="loading_for_dependecies" class="loading_spinner"></div>
+    <div id="loading_for_features_not_assigned" class="loading_spinner"></div>
     <div class="not-assigned-span data-founded" [hidden]="featuresNotAssigned?.length !== 0"></div>
     <table class="table table-striped table-features" [hidden]="featuresNotAssigned?.length === 0">
       <thead>

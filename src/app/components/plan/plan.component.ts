@@ -22,9 +22,10 @@ export class PlanComponent implements OnInit {
   idFeatureToDelete: any;
   feature: any;
   formEditFeature: FormGroup;
-
+  dependeciesFound: Boolean = false;
   chartRows: any[];
   resourceChartRows: any[];
+  dependeciesChartRows: any[];
 
   constructor(private _replanAPIService: replanAPIService,
               private globaldata: GlobalDataService,
@@ -56,14 +57,16 @@ export class PlanComponent implements OnInit {
                     $('.title-project').text(data.name);
                   });
                   $('#loading_for_plan').show();
-                  $('#loading_for_dependecies').show();
+                  $('#loading_for_features_not_assigned').show();
                   $('#loading_for_resources_chart').show();
+                  $('#loading_for_dependecies_chart').show();
                   this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
                     .subscribe( data => {
                       if (data.toString() === 'e') {
                         $('#error-modal').modal();
                         $('#loading_for_plan').hide();
                         $('#loading_for_resources_chart').hide();
+                        $('#loading_for_dependecies_chart').hide();;
                         $('#error-text').text('Error loading release plan data. Try it again later.');
                         this.plan = null;
                         $('.plan-span').text('No planification found');
@@ -80,6 +83,12 @@ export class PlanComponent implements OnInit {
                           $('.resources-chart-span').text('No resources found');
                         } else {
                           this.resourceChartLogic(this.plan);
+                        }
+                        this.dependeciesFound = this.plan.jobs.some(job => job.depends_on.length > 0);
+                        if (!this.dependeciesFound) {
+                          $('.dependecies-chart-span').text('No dependecies found');
+                        } else {
+                          this.dependeciesChartLogic(this.plan);
                         }
                       }
                       this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -101,10 +110,11 @@ export class PlanComponent implements OnInit {
                             this.features = data;
                           }
                         }
-                        $('#loading_for_dependecies').hide();
+                        $('#loading_for_features_not_assigned').hide();
                       });
                       $('#loading_for_plan').hide();
                       $('#loading_for_resources_chart').hide();
+                      $('#loading_for_dependecies_chart').hide();
                     });
               });
 
@@ -118,13 +128,11 @@ export class PlanComponent implements OnInit {
     if (data.jobs.length > 0) {
       this.chartRows = [];
       data.jobs.forEach(job => {
-        const starts = new Date(job.starts);
-        const ends = new Date(job.ends);
         const row = [
           job.resource.name,
           job.feature.name,
-          new Date(starts.getFullYear(), starts.getMonth(), starts.getDate()),
-          new Date(ends.getFullYear(), ends.getMonth(), ends.getDate())
+          new Date(job.starts),
+          new Date(job.ends)
         ];
         this.chartRows.push(row);
       });
@@ -193,13 +201,91 @@ export class PlanComponent implements OnInit {
     }
   }
 
+  dependeciesChartLogic(data) {
+    if (data.jobs.length > 0) {
+      const self = this;
+      this.dependeciesChartRows = [];
+      const jobsWithDependecies = data.jobs.filter(obj => obj.depends_on.length > 0);
+      jobsWithDependecies.forEach(job => {
+        let dependecies = '';
+        for (let i = 0; i < job.depends_on.length; i++) {
+          dependecies += job.depends_on[i].feature_id;
+          if (i !== job.depends_on.length - 1) {
+            dependecies += ',';
+          }
+        }
+        const row = [
+          job.feature.id.toString(),
+          job.feature.name,
+          new Date(job.starts),
+          new Date(job.ends),
+          null,
+          100,
+          dependecies
+        ];
+        this.dependeciesChartRows.push(row);
+        job.depends_on.forEach(dp => {
+          const job2 = data.jobs.filter(obj => obj.feature.id === dp.feature_id)[0];
+          const row2 = [
+            job2.feature.id.toString(),
+            job2.feature.name,
+            new Date(job2.starts),
+            new Date(job2.ends),
+            null,
+            100,
+            null
+          ];
+          this.dependeciesChartRows.push(row2);
+        });
+      });
+      this.dependeciesChartRows.forEach(dp => {
+        if (self.dependeciesChartRows.some(x => x[0] === dp[0] && x !== dp )) {
+          const other = self.dependeciesChartRows.filter(x2 => x2[0] === dp[0] && x2 !== dp)[0];
+          if (dp[6] !== null) {
+            self.dependeciesChartRows = self.dependeciesChartRows.filter(obj => obj !== other);
+          } else if (other[6] !== null) {
+            self.dependeciesChartRows = self.dependeciesChartRows.filter(obj => obj !== dp);
+          } else {
+            self.dependeciesChartRows = self.dependeciesChartRows.filter(obj => obj !== other);
+          }
+        }
+      });
+      this.drawDependeciesChart(this.dependeciesChartRows);
+    }
+  }
+
+  drawDependeciesChart(rows) {
+    if (rows.length > 0) {
+      const data = new google.visualization.DataTable();
+      data.addColumn('string', 'Task ID');
+      data.addColumn('string', 'Task Name');
+      data.addColumn('date', 'Start Date');
+      data.addColumn('date', 'End Date');
+      data.addColumn('number', 'Duration');
+      data.addColumn('number', 'Percent Complete');
+      data.addColumn('string', 'Dependencies');
+      data.addRows(rows);
+      const options = {
+        backgroundColor: {
+          fill: '#F3FAB6'
+        }
+      };
+      const chart = new google.visualization.Gantt(document.getElementById('dependecies_chart'));
+      chart.draw(data, options);
+      const height = data.getDistinctValues(0).length * 57 + 30;
+      $('#dependecies_chart').css('height', height + 'px');
+      $('#dependecies_chart div div').first().css('height', height + 'px');
+      $('#dependecies_chart svg').css('height', height + 'px');
+    }
+  }
+
   deleteFeature() {
     $('.trash-container').hide();
     $('#timeline').empty();
     $('#resources_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
-    $('#loading_for_dependecies').show();
+    $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
     this.plan = null;
     this.featuresNotAssigned = [];
@@ -252,7 +338,7 @@ export class PlanComponent implements OnInit {
               this.features = data3;
             }
           }
-          $('#loading_for_dependecies').hide();
+          $('#loading_for_features_not_assigned').hide();
         });
         $('#loading_for_plan').hide();
         $('#loading_for_resources_chart').hide();
@@ -281,7 +367,7 @@ export class PlanComponent implements OnInit {
     $('#resources_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
-    $('#loading_for_dependecies').show();
+    $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.feature.id)
         .subscribe( data => {
@@ -332,7 +418,7 @@ export class PlanComponent implements OnInit {
                   this.features = data3;
                 }
               }
-              $('#loading_for_dependecies').hide();
+              $('#loading_for_features_not_assigned').hide();
             });
             $('#loading_for_plan').hide();
             $('#loading_for_resources_chart').hide();
@@ -346,7 +432,7 @@ export class PlanComponent implements OnInit {
     $('#resources_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
-    $('#loading_for_dependecies').show();
+    $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
     $('.plan-span').text('');
     this.plan = null;
@@ -394,7 +480,7 @@ export class PlanComponent implements OnInit {
             this.features = data;
           }
         }
-        $('#loading_for_dependecies').hide();
+        $('#loading_for_features_not_assigned').hide();
       });
       $('#loading_for_plan').hide();
       $('#loading_for_resources_chart').hide();
@@ -407,7 +493,7 @@ export class PlanComponent implements OnInit {
     $('#resources_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
-    $('#loading_for_dependecies').show();
+    $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
     this.plan = null;
     this.featuresNotAssigned = [];
@@ -460,7 +546,7 @@ export class PlanComponent implements OnInit {
               this.features = data3;
             }
           }
-          $('#loading_for_dependecies').hide();
+          $('#loading_for_features_not_assigned').hide();
         });
         $('#loading_for_plan').hide();
         $('#loading_for_resources_chart').hide();
