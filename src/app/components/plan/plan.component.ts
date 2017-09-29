@@ -142,10 +142,10 @@ export class PlanComponent implements OnInit {
       dataTable.addColumn({ type: 'date', id: 'Start' });
       dataTable.addColumn({ type: 'date', id: 'End' });
       dataTable.addRows(rows);
-      /*const options = {
-        timeline: { colorByRowLabel: true }
-      };*/
-      chart.draw(dataTable);
+      const options = {
+        hAxis: { format: 'dd/MM' }
+      };
+      chart.draw(dataTable, options);
       google.visualization.events.addListener(chart, 'select', function(e) {
         const select = chart.getSelection();
         if (select.length > 0) {
