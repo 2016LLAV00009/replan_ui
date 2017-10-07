@@ -285,6 +285,7 @@ export class PlanComponent implements OnInit {
     $('.trash-container').hide();
     $('#timeline').empty();
     $('#resources_chart').empty();
+    $('#dependecies_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
     $('#loading_for_features_not_assigned').show();
@@ -377,6 +378,7 @@ export class PlanComponent implements OnInit {
     $('.trash-container').hide();
     $('#timeline').empty();
     $('#resources_chart').empty();
+    $('#dependecies_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
     $('#loading_for_features_not_assigned').show();
@@ -451,6 +453,7 @@ export class PlanComponent implements OnInit {
     $('.trash-container').hide();
     $('#timeline').empty();
     $('#resources_chart').empty();
+    $('#dependecies_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
     $('#loading_for_features_not_assigned').show();
@@ -523,6 +526,7 @@ export class PlanComponent implements OnInit {
     $('.trash-container').hide();
     $('#timeline').empty();
     $('#resources_chart').empty();
+    $('#dependecies_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
     $('#loading_for_features_not_assigned').show();
@@ -604,6 +608,7 @@ export class PlanComponent implements OnInit {
     $('.trash-container').hide();
     $('#timeline').empty();
     $('#resources_chart').empty();
+    $('#dependecies_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
     $('#loading_for_features_not_assigned').show();
