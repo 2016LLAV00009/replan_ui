@@ -78,6 +78,20 @@ hr {
   margin-bottom: 40px;
 }
 
+.btn-pln {
+  float: right;
+  cursor: pointer;
+}
+
+.btn-previous {
+  margin-right: 15px;
+}
+
+.btn-success {
+  background-color: $color-dark-green !important;
+  border-color: $color-dark-green !important;
+}
+
 .not-assigned-span {
   margin-bottom: 30px;
 }

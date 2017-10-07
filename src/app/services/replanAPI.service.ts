@@ -269,6 +269,14 @@ export class replanAPIService {
       .catch(error => 'e');
   }
 
+  getReleasePlanNew(idProject: number, idRelease: number): Observable<Response> {
+    const url = this.projectsURL + idProject + '/releases/' + idRelease + '/plan';
+    const forceNew = '?force_new=true';
+    return this.http.get( url + forceNew )
+      .map(res => res.json() )
+      .catch(error => 'e');
+  }
+
   deleteReleasePlan(idProject: number, idRelease: number) {
     const url = this.projectsURL + idProject + '/releases/' + idRelease + '/plan';
     return this.http.delete( url )

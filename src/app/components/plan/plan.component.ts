@@ -122,6 +122,7 @@ export class PlanComponent implements OnInit {
 
   ngOnInit() {
     $('li.nav-item').removeClass('active');
+    $('.btn-previous').prop('disabled' , true);
   }
 
   chartLogic(data) {
@@ -280,6 +281,7 @@ export class PlanComponent implements OnInit {
   }
 
   deleteFeature() {
+    $('.btn-previous').prop('disabled' , true);
     $('.trash-container').hide();
     $('#timeline').empty();
     $('#resources_chart').empty();
@@ -287,6 +289,8 @@ export class PlanComponent implements OnInit {
     $('#loading_for_resources_chart').show();
     $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
+    $('#loading_for_dependecies_chart').show();
+    $('.dependecies-chart-span').text('');
     this.plan = null;
     this.featuresNotAssigned = [];
     this._replanAPIService.deleteFeatureFromRelease(this.idProject, this.idRelease, this.idFeatureToDelete)
@@ -295,7 +299,7 @@ export class PlanComponent implements OnInit {
         $('#error-modal').modal();
         $('#error-text').text('Error removing the feature. Try it again later.');
       }
-      this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
+      this._replanAPIService.getReleasePlanNew(this.idProject, this.idRelease)
       .subscribe( data2 => {
         if (data2.toString() === 'e') {
           $('#error-modal').modal();
@@ -317,6 +321,12 @@ export class PlanComponent implements OnInit {
             $('.resources-chart-span').text('No resources found');
           } else {
             this.resourceChartLogic(this.plan);
+          }
+          this.dependeciesFound = this.plan.jobs.some(job => job.depends_on.length > 0);
+          if (!this.dependeciesFound) {
+            $('.dependecies-chart-span').text('No dependecies found');
+          } else {
+            this.dependeciesChartLogic(this.plan);
           }
         }
         this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -342,6 +352,7 @@ export class PlanComponent implements OnInit {
         });
         $('#loading_for_plan').hide();
         $('#loading_for_resources_chart').hide();
+        $('#loading_for_dependecies_chart').hide();
       });
     });
   }
@@ -361,6 +372,7 @@ export class PlanComponent implements OnInit {
     this.formEditFeature.value.effort = $('#effortFeatureEdit').val();
     this.formEditFeature.value.deadline = $('#deadlineFeatureEdit').val();
     this.formEditFeature.value.priority = $('#priorityFeatureEdit').val();
+    $('.btn-previous').prop('disabled' , true);
     $('#edit-feature-modal').modal('hide');
     $('.trash-container').hide();
     $('#timeline').empty();
@@ -369,13 +381,15 @@ export class PlanComponent implements OnInit {
     $('#loading_for_resources_chart').show();
     $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
+    $('#loading_for_dependecies_chart').show();
+    $('.dependecies-chart-span').text('');
     this._replanAPIService.editFeature(JSON.stringify(this.formEditFeature.value), this.idProject, this.feature.id)
         .subscribe( data => {
           if (data.toString() === 'e') {
             $('#error-modal').modal();
             $('#error-text').text('Error editing the feature. Try it again later.');
           }
-          this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
+          this._replanAPIService.getReleasePlanNew(this.idProject, this.idRelease)
           .subscribe( data2 => {
             if (data2.toString() === 'e') {
               $('#error-modal').modal();
@@ -397,6 +411,12 @@ export class PlanComponent implements OnInit {
                 $('.resources-chart-span').text('No resources found');
               } else {
                 this.resourceChartLogic(this.plan);
+              }
+              this.dependeciesFound = this.plan.jobs.some(job => job.depends_on.length > 0);
+              if (!this.dependeciesFound) {
+                $('.dependecies-chart-span').text('No dependecies found');
+              } else {
+                this.dependeciesChartLogic(this.plan);
               }
             }
             this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -422,6 +442,7 @@ export class PlanComponent implements OnInit {
             });
             $('#loading_for_plan').hide();
             $('#loading_for_resources_chart').hide();
+            $('#loading_for_dependecies_chart').hide();
           });
         });
   }
@@ -435,11 +456,15 @@ export class PlanComponent implements OnInit {
     $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
     $('.plan-span').text('');
+    $('#loading_for_dependecies_chart').show();
+    $('.dependecies-chart-span').text('');
+    $('.btn-previous').prop('disabled' , false);
     this.plan = null;
     this.featuresNotAssigned = [];
-    this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
+    this._replanAPIService.getReleasePlanNew(this.idProject, this.idRelease)
     .subscribe( data => {
       if (data.toString() === 'e') {
+        $('.btn-previous').prop('disabled' , false);
         $('#error-modal').modal();
         $('#loading_for_plan').hide();
         $('#loading_for_resources_chart').hide();
@@ -459,6 +484,12 @@ export class PlanComponent implements OnInit {
           $('.resources-chart-span').text('No resources found');
         } else {
           this.resourceChartLogic(this.plan);
+        }
+        this.dependeciesFound = this.plan.jobs.some(job => job.depends_on.length > 0);
+        if (!this.dependeciesFound) {
+          $('.dependecies-chart-span').text('No dependecies found');
+        } else {
+          this.dependeciesChartLogic(this.plan);
         }
       }
       this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -484,10 +515,11 @@ export class PlanComponent implements OnInit {
       });
       $('#loading_for_plan').hide();
       $('#loading_for_resources_chart').hide();
+      $('#loading_for_dependecies_chart').hide();
     });
   }
 
-  deleteFeatureNotAssigned(id: number) {
+  previousPlan() {
     $('.trash-container').hide();
     $('#timeline').empty();
     $('#resources_chart').empty();
@@ -495,6 +527,89 @@ export class PlanComponent implements OnInit {
     $('#loading_for_resources_chart').show();
     $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
+    $('.plan-span').text('');
+    $('#loading_for_dependecies_chart').show();
+    $('.dependecies-chart-span').text('');
+    $('.btn-previous').prop('disabled' , true);
+    this.plan = null;
+    this.featuresNotAssigned = [];
+    this._replanAPIService.deleteReleasePlan(this.idProject, this.idRelease)
+    .subscribe( data => {
+      if (data.toString() === 'e') {
+        $('#error-modal').modal();
+        $('#error-text').text('Error removing release plan. Try it again later.');
+      } else {
+        this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
+        .subscribe( data2 => {
+          if (data2.toString() === 'e') {
+            $('.btn-previous').prop('disabled' , false);
+            $('#error-modal').modal();
+            $('#loading_for_plan').hide();
+            $('#loading_for_resources_chart').hide();
+            $('#error-text').text('Error loading release plan data. Try it again later.');
+            $('.plan-span').text('No planification found');
+            $('.resources-chart-span').text('No resources found');
+            $('.not-assigned-span').text('No features not assigned found');
+            this.plan = null;
+          } else {
+            this.plan = data2;
+            if (this.plan.jobs.length === 0) {
+              $('.plan-span').text('No planification found');
+            } else {
+              this.chartLogic(this.plan);
+            }
+            if (this.plan.resource_usage.length === 0) {
+              $('.resources-chart-span').text('No resources found');
+            } else {
+              this.resourceChartLogic(this.plan);
+            }
+            this.dependeciesFound = this.plan.jobs.some(job => job.depends_on.length > 0);
+            if (!this.dependeciesFound) {
+              $('.dependecies-chart-span').text('No dependecies found');
+            } else {
+              this.dependeciesChartLogic(this.plan);
+            }
+          }
+          this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
+          .subscribe( data3 => {
+            const self = this;
+            if (data3.toString() === 'e') {
+              $('#error-modal').modal();
+              $('#error-text').text('Error loading release data. Try it again later.');
+            } else {
+              if (this.plan !== null) {
+                data3.forEach(feature => {
+                  if (!self.plan.jobs.some(x => x.feature.id === feature.id )) {
+                    self.featuresNotAssigned.push(feature);
+                  }
+                });
+                if (this.featuresNotAssigned.length === 0) {
+                  $('.not-assigned-span').text('No features not assigned found');
+                }
+                this.features = data;
+              }
+            }
+            $('#loading_for_features_not_assigned').hide();
+          });
+          $('#loading_for_plan').hide();
+          $('#loading_for_resources_chart').hide();
+          $('#loading_for_dependecies_chart').hide();
+        });
+      }
+    });
+  }
+
+  deleteFeatureNotAssigned(id: number) {
+    $('.btn-previous').prop('disabled' , true);
+    $('.trash-container').hide();
+    $('#timeline').empty();
+    $('#resources_chart').empty();
+    $('#loading_for_plan').show();
+    $('#loading_for_resources_chart').show();
+    $('#loading_for_features_not_assigned').show();
+    $('.not-assigned-span').text('');
+    $('#loading_for_dependecies_chart').show();
+    $('.dependecies-chart-span').text('');
     this.plan = null;
     this.featuresNotAssigned = [];
     this._replanAPIService.deleteFeatureFromRelease(this.idProject, this.idRelease, id)
@@ -503,7 +618,7 @@ export class PlanComponent implements OnInit {
         $('#error-modal').modal();
         $('#error-text').text('Error removing the feature. Try it again later.');
       }
-      this._replanAPIService.getReleasePlan(this.idProject, this.idRelease)
+      this._replanAPIService.getReleasePlanNew(this.idProject, this.idRelease)
       .subscribe( data2 => {
         if (data2.toString() === 'e') {
           $('#error-modal').modal();
@@ -525,6 +640,12 @@ export class PlanComponent implements OnInit {
             $('.resources-chart-span').text('No resources found');
           } else {
             this.resourceChartLogic(this.plan);
+          }
+          this.dependeciesFound = this.plan.jobs.some(job => job.depends_on.length > 0);
+          if (!this.dependeciesFound) {
+            $('.dependecies-chart-span').text('No dependecies found');
+          } else {
+            this.dependeciesChartLogic(this.plan);
           }
         }
         this._replanAPIService.getFeaturesRelease(this.idProject, this.idRelease)
@@ -550,6 +671,7 @@ export class PlanComponent implements OnInit {
         });
         $('#loading_for_plan').hide();
         $('#loading_for_resources_chart').hide();
+        $('#loading_for_dependecies_chart').hide();
       });
     });
   }

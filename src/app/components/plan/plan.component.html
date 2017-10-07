@@ -10,7 +10,9 @@
 
     <div class="planification-title-container">
         <span class="planification-title">Planification</span>
-        <i (click)="refreshPlan()" class="fa fa-refresh fa-2x" aria-hidden="true" title="Refresh Planification"></i>
+        <button (click)="refreshPlan()" type="button" class="btn btn-success btn-pln" title="Force New Plan">Force New</button>
+        <button (click)="previousPlan()" type="button" class="btn btn-danger btn-pln btn-previous" title="Previous Plan">Previous Plan</button>
+        <!--<i (click)="refreshPlan()" class="fa fa-refresh fa-2x" aria-hidden="true" title="Refresh Planification"></i>-->
     </div>
     <hr class="hr-planification">
 
