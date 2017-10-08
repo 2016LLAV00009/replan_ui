@@ -42,7 +42,6 @@
     "ng2-dnd": "^4.0.2",
     "ng2-toastr": "^4.1.0",
     "ng2-validation": "^4.2.0",
-    "popper.js": "^1.12.5",
     "primeng": "^4.0.0-rc.5",
     "resolve-url-loader": "^2.1.0",
     "rxjs": "^5.4.0",
