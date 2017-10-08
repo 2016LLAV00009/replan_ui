@@ -46,6 +46,7 @@
     "typescript": "~2.2.0",
     "zone.js": "^0.8.4",
     "bootstrap": "^4.0.0-beta",
+    "bootstrap-loader": "^2.2.0",
     "jquery": "^3.2.1",
     "tether": "^1.4.0"
   },
