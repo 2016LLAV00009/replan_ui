@@ -288,6 +288,7 @@ export class PlanComponent implements OnInit {
     $('#dependecies_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
+    $('.resources-chart-span').text('');
     $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
     $('#loading_for_dependecies_chart').show();
@@ -381,6 +382,7 @@ export class PlanComponent implements OnInit {
     $('#dependecies_chart').empty();
     $('#loading_for_plan').show();
     $('#loading_for_resources_chart').show();
+    $('.resources-chart-span').text('');
     $('#loading_for_features_not_assigned').show();
     $('.not-assigned-span').text('');
     $('#loading_for_dependecies_chart').show();
@@ -461,6 +463,7 @@ export class PlanComponent implements OnInit {
     $('.plan-span').text('');
     $('#loading_for_dependecies_chart').show();
     $('.dependecies-chart-span').text('');
+    $('.resources-chart-span').text('');
     $('.btn-previous').prop('disabled' , false);
     this.plan = null;
     this.featuresNotAssigned = [];
@@ -534,6 +537,7 @@ export class PlanComponent implements OnInit {
     $('.plan-span').text('');
     $('#loading_for_dependecies_chart').show();
     $('.dependecies-chart-span').text('');
+    $('.resources-chart-span').text('');
     $('.btn-previous').prop('disabled' , true);
     this.plan = null;
     this.featuresNotAssigned = [];
@@ -615,6 +619,7 @@ export class PlanComponent implements OnInit {
     $('.not-assigned-span').text('');
     $('#loading_for_dependecies_chart').show();
     $('.dependecies-chart-span').text('');
+    $('.resources-chart-span').text('');
     this.plan = null;
     this.featuresNotAssigned = [];
     this._replanAPIService.deleteFeatureFromRelease(this.idProject, this.idRelease, id)
