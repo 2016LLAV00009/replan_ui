@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
+import { AppConstants } from '../app.constants';
 import { Observable } from 'rxjs';
 import 'rxjs/Rx';
 
 @Injectable()
 export class replanAPIService {
 
-  projectsURL: string = 'http://replan-api.herokuapp.com/replan/projects/';
+  projectsURL: string = AppConstants.urlAPI;
 
   constructor( private http: Http ) {  }
 
   /* PROJECTS */
 
   getProjectsAPI() {
-    const url = `${this.projectsURL}`;
+    const url = this.projectsURL;
     return this.http.get( url )
       .map(res => res.json() )
       .catch(error => 'e');
