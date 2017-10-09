@@ -3,7 +3,6 @@ import { replanAPIService } from '../../services/replanAPI.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CustomValidators } from 'ng2-validation';
-import { Project } from '../../interfaces/project.interface';
 
 declare var $: any;
 
