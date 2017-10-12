@@ -28,7 +28,7 @@
                 <img [hidden]="feature?.effort <= getLowFeatureEffort() || feature?.effort > getHighFeatureEffort()" class="level-image" title="Effort" src="../../../assets/level-2.png">
                 <img [hidden]="feature?.effort <= getHighFeatureEffort()" class="level-image" title="Effort" src="../../../assets/level-3.png">
               </div>              
-              <h4 [hidden]="feature?.name.length > 11" class="feature-name" title="{{feature.name}}">{{feature.name}}</h4>
+              <h4 [hidden]="feature?.name.length > 11" class="feature-name">{{feature.name}}</h4>
               <h4 [hidden]="feature?.name.length <= 11" class="feature-name" title="{{feature.name}}">{{feature.name.substring(0, 10) + '...'}}</h4>
               <div class="icons-features-content">
                 <a (click)="editFeature(feature.id)">
@@ -55,7 +55,7 @@
             <div class="li-releases"
             dnd-droppable
             (onDropSuccess)="transferDataSuccess($event, release.id)">
-              <h4 [hidden]="release?.name.length > 26" class="release-name" title="{{release.name}}">{{release.name}}</h4>
+              <h4 [hidden]="release?.name.length > 26" class="release-name">{{release.name}}</h4>
               <h4 [hidden]="release?.name.length <= 26" class="release-name" title="{{release.name}}">{{release.name.substring(0, 25) + '...'}}</h4>
               <p class="release-dates">from <strong>{{release.starts_at | date: 'dd/MM/yyyy'}}</strong> to <strong>{{release.deadline | date: 'dd/MM/yyyy'}}</strong></p>
               <div class="icons-content-releases">

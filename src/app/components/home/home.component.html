@@ -17,10 +17,11 @@
       <div *ngFor="let project of projects; let i = index;" (click)="goToProject(project.id)" class="carousel-item active" [ngClass]="{active: i == 0}">
         <img class="d-block img-fluid project-background">
         <div class="carousel-caption d-none d-md-block">
-          <h3 [hidden]="project?.name.length > 24" title="{{project.name}}">{{project.name}}</h3>
+          <h3 [hidden]="project?.name.length > 24">{{project.name}}</h3>
           <h3 [hidden]="project?.name.length <= 24" title="{{project.name}}">{{project.name.substring(0, 23) + '...'}}</h3>
           <hr>
-          <p>{{project.description}}</p>
+          <p [hidden]="project?.description.length > 160">{{project.description}}</p>
+          <p [hidden]="project?.description.length <= 160" title="{{project.description}}">{{project.description.substring(0, 158) + '...'}}</p>
           <a (click)="deleteProject(project.id)">
             <i class="fa fa-trash-o fa-2x" aria-hidden="true" title="Delete Project"></i>
           </a>
