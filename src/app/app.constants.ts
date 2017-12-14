@@ -1,6 +1,6 @@
 export class AppConstants {
 
-  public static urlAPI = 'http://replan-api.herokuapp.com/replan/projects/';
+  public static urlAPI = 'https://llavor-controller.herokuapp.com/replan/projects/';
 
   public static LOW_FEATURE_EFFORT = 5;
   public static HIGH_FEATURE_EFFORT = 30;
